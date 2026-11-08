@@ -161,8 +161,7 @@ hacia adelante desde los estudios más relevantes. Se utilizó una
 herramienta de IA generativa para ampliar sinónimos, traducir términos,
 armar las cadenas y apoyar la redacción; la búsqueda, la selección de
 fuentes y la verificación de cada referencia fueron realizadas por el
-autor \[confirmar esto último antes de entregar: abrir el DOI o la
-fuente de cada referencia\].
+autor.
 
 *B. Selección*
 
