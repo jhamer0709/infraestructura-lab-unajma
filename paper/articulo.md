@@ -180,7 +180,11 @@ TABLA III
 
 Los descartes por título y resumen se registran con su motivo. Se leyó y
 descartó a Weeraddana et al. (FSE 2024) por no medir el tiempo de
-descarga.
+descarga. De las diez referencias, siete están indexadas: \[3\]–\[5\] y
+\[9\] figuran como documentos en Scopus, y \[1\], \[2\] y \[6\] se
+publicaron en revistas Q1 de Scimago en su año de publicación (2016,
+2018 y 2022). \[7\] es un preprint, \[10\] es documentación técnica y
+\[8\] no se confirmó en Scopus.
 
 *C. Síntesis comparativa*
 
@@ -285,8 +289,8 @@ el texto del propio artículo (autores, medio, año y, cuando existe,
 DOI); el volumen y el número de \[6\] provienen de la página del grupo
 autor. \[7\] y \[10\] se comprobaron en arXiv y en la página web,
 respectivamente; \[9\] se confirmó en la ficha de IEEE Xplore (documento
-8891000). Falta la lectura a texto completo y la comprobación de
-indexación.*
+8891000). La indexación se comprobó en Scopus (\[3\]–\[5\], \[9\]) y
+Scimago (\[1\], \[2\], \[6\]). Falta la lectura a texto completo.*
 
 \[1\] W. Shi, J. Cao, Q. Zhang, Y. Li y L. Xu, «Edge computing: Vision
 and challenges», IEEE Internet Things J., vol. 3, n.º 5, pp. 637–646,
