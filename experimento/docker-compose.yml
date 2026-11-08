@@ -1,0 +1,25 @@
+# ESQUELETO SIN PROBAR (no había demonio Docker al escribirlo). Ensayo previo al laboratorio:
+# valida el procedimiento de medición, NO produce resultados del artículo.
+# Uso:  docker compose --profile baseline up --scale cliente=30
+#       docker compose --profile cache up --scale cliente=30
+services:
+  origen:            # "internet" simulado: sirve un paquete de prueba con ancho de banda limitado
+    image: nginx:alpine
+    volumes: [ "./origen.conf:/etc/nginx/conf.d/default.conf:ro", "./datos:/usr/share/nginx/html:ro" ]
+    networks: [ internet ]
+  cache:             # intervención: proxy de caché bajo demanda en la "LAN"
+    profiles: [ cache ]
+    image: nginx:alpine
+    volumes: [ "./cache.conf:/etc/nginx/conf.d/default.conf:ro" ]
+    networks: [ lan, internet ]
+  cliente:           # estación simulada: descarga y registra tiempo
+    image: alpine:3
+    profiles: [ baseline, cache ]
+    volumes: [ "./scripts:/scripts:ro", "./resultados:/resultados" ]
+    environment:
+      - OBJETIVO=${OBJETIVO:-http://origen/paquete.bin}
+    command: [ "sh", "/scripts/cliente.sh" ]
+    networks: [ lan, internet ]
+networks:
+  lan: {}
+  internet: {}
