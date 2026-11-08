@@ -280,12 +280,12 @@ método con que se miden las demás.
 
 <span class="smallcaps">Referencias</span>
 
-*Nota: las referencias \[1\]–\[6\] y \[8\] se verificaron contra el
-texto del propio artículo (autores, medio, año y, cuando existe, DOI);
-el volumen y el número de \[6\] provienen de la página del grupo autor.
-\[7\], \[9\] y \[10\] se comprobaron en arXiv, en el PDF sin datos de
-edición (en \[9\] falta confirmar congreso y DOI) y en la página web,
-respectivamente. Falta la lectura a texto completo y la comprobación de
+*Nota: las referencias \[1\]–\[6\], \[8\] y \[9\] se verificaron contra
+el texto del propio artículo (autores, medio, año y, cuando existe,
+DOI); el volumen y el número de \[6\] provienen de la página del grupo
+autor. \[7\] y \[10\] se comprobaron en arXiv y en la página web,
+respectivamente; \[9\] se confirmó en la ficha de IEEE Xplore (documento
+8891000). Falta la lectura a texto completo y la comprobación de
 indexación.*
 
 \[1\] W. Shi, J. Cao, Q. Zhang, Y. Li y L. Xu, «Edge computing: Vision
