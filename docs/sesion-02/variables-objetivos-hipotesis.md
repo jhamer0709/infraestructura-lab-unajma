@@ -12,11 +12,11 @@ Evaluar en qué medida la implementación de un servidor de caché y repositorio
 Prueba rápida: cumplir OE-1 a OE-4 basta para cumplir el general.
 
 ## Hipótesis
-- **H1a.** El mirror reduce el tiempo p95 de preparación del entorno por estación en al menos 70 % frente al acceso directo a internet, con 30 estaciones concurrentes y condiciones controladas.
+- **H1a.** El mirror reduce el tiempo p95 de preparación del entorno por estación en al menos 90 % frente al acceso directo a internet, con 30 estaciones concurrentes y condiciones controladas.
 - **H1b.** El mirror reduce el tráfico de salida hacia internet por sesión práctica en al menos 90 % frente al acceso directo. Justificación: si las 30 estaciones piden el mismo conjunto de paquetes, con caché tibia solo una descarga sale a internet, lo que da una reducción teórica de 1 - 1/30 = 96,7 %.
 - **H0.** El mirror no produce una diferencia significativa en el tiempo p95 de preparación ni en el tráfico de salida.
 
-Aviso de coherencia: una reducción de 70 % sobre 360 s deja el p95 en 108 s, todavía por encima del umbral operativo de 30 s. Llegar a 30 s exigiría una reducción de 91,7 %. Decidir si el umbral de 30 s es meta deseable o parte de la hipótesis.
+Decisión (autor): H1a se fija en 90 %. Sobre 360 s deja el p95 en 36 s, cerca de los 30 s de referencia, que quedan como meta operativa y no como parte de la hipótesis.
 
 ## Tabla de variables (Clase 02: variable · indicador · instrumento · línea base)
 

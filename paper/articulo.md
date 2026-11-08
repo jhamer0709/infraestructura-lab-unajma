@@ -80,7 +80,7 @@ los umbrales de H1a y H1b y cuánto aporta cada intervención.
 *D. Hipótesis*
 
 **H1a.** La mejor configuración (caché, mirror o ambos) reduce el tiempo
-p95 de preparación por estación en al menos 70 % frente al acceso
+p95 de preparación por estación en al menos 90 % frente al acceso
 directo a internet, con 30 estaciones concurrentes y condiciones
 controladas.
 
@@ -94,9 +94,10 @@ tiempo p95 de preparación ni en el tráfico de salida.
 
 Los umbrales quedan declarados antes de medir. Un umbral elegido después
 de observar los resultados es un umbral elegido para aprobar, y
-compromete la validez de la conclusión. Aviso de coherencia: 70 % sobre
-360 s deja el p95 en 108 s; llegar a los 30 s de referencia exigiría
-91,7 %.
+compromete la validez de la conclusión. Coherencia con el umbral
+operativo: 90 % sobre una línea base de 360 s deja el p95 en 36 s, cerca
+de los 30 s de referencia, que se mantienen como meta operativa y no
+como parte de la hipótesis.
 
 *E. Variables operacionalizadas*
 
