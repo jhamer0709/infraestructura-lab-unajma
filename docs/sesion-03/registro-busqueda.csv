@@ -1,0 +1,6 @@
+fecha,base,cadena_exacta,filtros,resultados,nota
+[completar],IEEE Xplore,"(""package mirror"" OR ""local mirror"" OR ""caching proxy"" OR ""pull-through cache"" OR ""registry cache"" OR ""dependency cache"") AND (""download time"" OR ""installation time"" OR ""provisioning time"" OR ""startup time"" OR ""build time"" OR latency)",2016-2026,[completar],Ejecutar y anotar el número real
+[completar],Scopus,"TITLE-ABS-KEY((""package mirror"" OR ""local mirror"" OR ""caching proxy"" OR ""pull-through cache"" OR ""registry cache"" OR ""dependency cache"") AND (""download time"" OR ""installation time"" OR ""provisioning time"" OR ""startup time"" OR ""build time"" OR latency))","2016-2026, article OR conference paper",[completar],Ejecutar y anotar el número real
+[completar],ACM DL,misma cadena de IEEE,2016-2026,[completar],Ejecutar y anotar el número real
+[completar],Google Scholar,"""pull-through cache"" OR ""package mirror"" OR ""caching proxy"" ""download time"" OR ""provisioning time"" OR ""build time""",2016-2026,[completar],Ejecutar y anotar el número real
+[completar],SciELO,servidor proxy caché ancho de banda,sin filtro,[completar],Ejecutar y anotar el número real
