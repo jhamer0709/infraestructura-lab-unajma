@@ -280,11 +280,12 @@ método con que se miden las demás.
 
 <span class="smallcaps">Referencias</span>
 
-*Nota: las referencias están verificadas con autores, medio y año en
-páginas de la editorial, del grupo autor o de arXiv. De \[6\] se
-confirmaron revista, volumen, número y páginas en la página del grupo
-autor, pero no su DOI; \[8\] se cita como preprint porque no se confirmó
-su publicación en congreso. Falta la lectura a texto completo.*
+*Nota: las referencias \[1\], \[4\], \[6\] y \[8\] se verificaron contra
+el texto del propio artículo (autores, medio, año y DOI); \[2\], \[3\],
+\[5\], \[7\], \[9\] y \[10\] con páginas de la editorial, del grupo
+autor o de arXiv. El volumen y el número de \[6\] provienen de la página
+del grupo autor. Falta la lectura a texto completo y la comprobación de
+indexación.*
 
 \[1\] W. Shi, J. Cao, Q. Zhang, Y. Li y L. Xu, «Edge computing: Vision
 and challenges», IEEE Internet Things J., vol. 3, n.º 5, pp. 637–646,
@@ -311,15 +312,16 @@ Storage Technologies (FAST ’18), Oakland, CA, 2018, pp. 265–278.
 \[6\] K. Gallaba, J. Ewart, Y. Junqueira y S. McIntosh, «Accelerating
 continuous integration by caching environments and inferring
 dependencies», IEEE Trans. Softw. Eng., vol. 48, n.º 8, pp. 2040–2052,
-2022.
+2022. doi: 10.1109/TSE.2020.3048335
 
 \[7\] T. A. Ghaleb, D. A. da Costa y Y. Zou, «The promise and reality of
 continuous integration caching: An empirical study of Travis CI builds»,
 arXiv:2601.19146, ene. 2026 (preprint).
 
 \[8\] S. Becker, F. Schmidt y O. Kao, «EdgePier: P2P-based container
-image distribution in edge computing environments», arXiv:2109.12983,
-sep. 2021 (preprint).
+image distribution in edge computing environments», en Proc. IEEE Int.
+Performance, Computing, and Communications Conf. (IPCCC), 2021. doi:
+10.1109/IPCCC51483.2021.9679447
 
 \[9\] N. Zhao et al., «Large-scale analysis of the Docker Hub dataset»,
 en Proc. IEEE Int. Conf. Cluster Computing (CLUSTER), Albuquerque, NM,
