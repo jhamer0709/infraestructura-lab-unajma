@@ -1,17 +1,20 @@
 digraph G {
-  rankdir=LR; nodesep=0.35; ranksep=0.9; bgcolor="white";
-  node [shape=box, style="rounded", fontname="Liberation Serif", fontsize=13, margin="0.12,0.07", color="#222222"];
+  rankdir=LR; nodesep=0.3; ranksep=0.8; bgcolor="white";
+  node [shape=box, style="rounded", fontname="Liberation Serif", fontsize=15, margin="0.12,0.07", color="#222222"];
   edge [fontname="Liberation Serif", fontsize=12, color="#222222"];
-  A [label="Caché bajo demanda\n(con / sin)\nIndependiente", color="#2b5db8", fontcolor="#2b5db8"];
-  B [label="Mirror sincronizado\n(con / sin)\nIndependiente", color="#2b5db8", fontcolor="#2b5db8"];
-  T [label="Tiempo de preparación\np95 (s)\nDependiente"];
-  G [label="Tráfico de salida\n(GB por sesión)\nDependiente"];
-  M [label="Estaciones concurrentes N\n(1, 10, 30)\nModeradora", shape=box, style="rounded,dashed"];
-  X [shape=point, width=0.05, label=""];
+  A [label="Caché bajo demanda\n(con / sin)\nIndependiente", color="#2b5db8", fontcolor="#2b5db8", style="rounded,filled", fillcolor="#e8effa"];
+  B [label="Mirror sincronizado\n(con / sin)\nIndependiente", color="#2b5db8", fontcolor="#2b5db8", style="rounded,filled", fillcolor="#e8effa"];
+  T [label="Tiempo de preparación\np95 (s)\nDependiente", style="rounded,filled", fillcolor="#f3e3c7"];
+  G [label="Tráfico de salida\n(GB por sesión)\nDependiente", style="rounded,filled", fillcolor="#f3e3c7"];
+  M [label="Estaciones concurrentes N\n(1, 10, 30)\nModeradora", style="rounded,dashed"];
+  K [label="Control (fijo)\nhardware, lista de paquetes,\nSO, horario, enlace, caché", style="filled", fillcolor="#e6e6e6", color="#888888", fontsize=12];
+  X [shape=point, width=0.06, label=""];
+
   A -> T [label=" −"]; A -> G [label=" −"];
   B -> T [label=" −"]; B -> G [label=" −"];
   A -> B [label=" efecto\n conjunto (?)", style=dashed, constraint=false, dir=both, color="#888888", fontcolor="#555555"];
-  M -> X [arrowhead=none, style=dashed]; X -> T [style=dashed, constraint=false];
-  {rank=same; A; B;}
-  {rank=same; T; G;}
+  M -> X [arrowhead=none, style=dashed]; X -> T [style=dashed];
+  {rank=same; A; B; M;}
+  {rank=same; T; G; K;}
+  G -> K [style=invis];
 }

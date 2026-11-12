@@ -1,0 +1,13 @@
+digraph G {
+  rankdir=TB; nodesep=0.3; ranksep=0.45; bgcolor="white";
+  node [shape=box, style="rounded", fontname="Liberation Serif", fontsize=12, margin="0.1,0.06", color="#222222"];
+  edge [fontname="Liberation Serif", fontsize=11, color="#222222"];
+  C [label="Gestor de paquetes en la estación\n(apt, pip, npm, docker)\napuntado al nodo local"];
+  subgraph cluster_n { label="Nodo en la LAN"; fontname="Liberation Serif"; fontsize=12; style=dotted; color="#2b5db8"; fontcolor="#2b5db8";
+    D [label="Enrutador de solicitudes", color="#2b5db8", fontcolor="#2b5db8"];
+    M [label="Mirror sincronizado\n(copia local de repositorios)", color="#2b5db8", fontcolor="#2b5db8", style="rounded,filled", fillcolor="#e8effa"];
+    P [label="Proxy de caché bajo demanda\n(guarda lo que se pide)", color="#2b5db8", fontcolor="#2b5db8", style="rounded,filled", fillcolor="#e8effa"]; }
+  U [label="Repositorios oficiales (upstream)"];
+  C -> D [label=" solicitud"]; D -> M [label=" repositorio espejado"]; D -> P [label=" el resto"];
+  P -> U [label=" si no está en caché"]; U -> M [label=" sincronización\n programada", style=dashed, color="#2b5db8", fontcolor="#2b5db8"];
+}
