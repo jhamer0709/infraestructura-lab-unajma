@@ -1,0 +1,3 @@
+# Autochequeo contra las listas de las clases 04 y 05
+Clase 04: columnas salen de la pregunta [ok, 5]; celdas llenadas leyendo el paper [pendiente: el autor confirma]; brecha dice «no se halló» [ok]; cajas del modelo sin nombres de tecnología [ok]; flecha con signo y medible [ok].
+Clase 05 (nueve preguntas): VI señalada (azul) [ok]; punto de medición marcado (ámbar) [ok]; frontera visible [ok]; figuras con pie, número y mención [ok]; versiones y tamaños [pendiente: versiones de SO/paquetes y hardware reales]; alternativa evaluada por escrito [ok, Tabla VI]; el diagrama dibuja solo lo que existirá al medir [ok]; controles listados [ok]; otra persona puede reconstruir el entorno [pendiente: depende del experimento/compose].

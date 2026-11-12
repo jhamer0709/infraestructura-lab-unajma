@@ -24,3 +24,5 @@ Repositorio de trabajo del artículo. Cada documento y cada cambio entra con su 
 - Leer a texto completo (pasada 2) las 10 referencias antes de entregar.
 - Medir la línea base en el laboratorio (sesiones 5 y 6). Los valores de 6 min y 90 % del enlace son observaciones preliminares por validar.
 - Resultados: sesión 7.
+
+- `docs/sesion-05/`: ADR-001 y autochequeo de las clases 04 y 05.
