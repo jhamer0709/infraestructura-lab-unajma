@@ -23,7 +23,7 @@ duración en centros de datos e integración continua, pero ninguno de los
 diez estudios incluidos lo mide en un laboratorio académico con enlace
 limitado. Este trabajo mide el efecto de dos intervenciones separables,
 un caché bajo demanda y un mirror sincronizado, con 30 estaciones
-concurrentes, al menos tres corridas y condiciones controladas, y
+concurrentes, al menos tres sesiones y condiciones controladas, y
 declara de antemano los umbrales de reducción. \[Resultados pendientes:
 sesión 7.\]**
 
@@ -50,6 +50,13 @@ referencia es 30 segundos, declarado antes de medir. El problema no es
 la lentitud en abstracto, sino una lentitud acotada y medible en un
 momento concreto de la práctica.
 
+Esto es el gap tecnológico: un problema de ingeniería que se cierra
+construyendo. La brecha de investigación, lo que la literatura no midió,
+se establece en II.D. El trabajo se ubica en el cruce de dos frentes:
+Cloud (distribución de imágenes y paquetes) y DevOps (preparación de
+entornos). La métrica principal es el p95 del tiempo de preparación,
+junto con el tráfico de salida.
+
 *B. Pregunta de investigación*
 
 ¿En qué medida un servidor de caché y repositorio local (mirror) reduce
@@ -66,7 +73,7 @@ a internet, en los laboratorios de la EPIS-UNAJMA.
 
 *OE1.* Medir la línea base de tiempo p95 de preparación, tráfico de
 salida y tasa de error con 30 estaciones concurrentes, en al menos tres
-corridas.
+sesiones.
 
 *OE2.* Implementar el caché bajo demanda (proxy de paquetes y caché de
 descargas de imágenes) y medir su efecto frente a la línea base.
@@ -235,37 +242,25 @@ ese alcance.
 
 La intervención se modela como dos variables independientes separables,
 no como una sola: el caché bajo demanda y el mirror sincronizado. Con
-dos niveles cada una resultan cuatro combinaciones: línea base, caché,
+dos niveles cada una resultan cuatro configuraciones: línea base, caché,
 mirror y ambos. Medir por intervención es lo que permite atribuir una
-reducción de 360 s a 40 s a una de ellas, y no a un conjunto.
+reducción de 360 s a 40 s a una de ellas, y no a un conjunto. La Fig. 1
+muestra el modelo.
 
-<img src="media/image2.png" style="width:3.3in;height:2.20651in" />
+<img src="media/image2.png" style="width:3.3in;height:1.98366in" />
 
 Fig. 1. Modelo conceptual: dos variables independientes, dos
-dependientes y una moderadora.
+dependientes, una moderadora y los controles fijos.
 
 Cada flecha lleva el signo esperado. La flecha entre ambas
 intervenciones lleva signo de interrogación: no se sabe si el mirror
 aporta reducción adicional con el caché ya activo, y esa es una de las
 preguntas que el experimento responde en OE3 y OE4. La moderadora, el
 número de estaciones concurrentes, importa porque el beneficio del caché
-depende de cuántas estaciones piden lo mismo \[8\].
+depende de cuántas estaciones piden lo mismo \[8\]. Las variables de
+control (caja gris) se mantienen fijas entre configuraciones.
 
-*B. Arquitectura que mide las flechas*
-
-La arquitectura propuesta añade un único componente en la LAN y deja
-fijo todo lo demás: es lo que permite atribuir el efecto. Cada medición
-cuelga de un objetivo: el script cronometrado por estación y el contador
-de tráfico del router sirven a OE1 y OE4.
-
-<img src="media/image3.png" style="width:2.9in;height:3.17219in" />
-
-Fig. 2. Arquitectura actual y propuesta. En azul, lo único que cambia.
-
-El nodo debe estar dentro de la LAN: un mirror en la nube no reduce el
-uso del enlace de salida de la universidad, que es el cuello de botella.
-
-*C. Trazabilidad con los objetivos*
+*B. Trazabilidad con los objetivos*
 
 TABLA V
 
@@ -280,6 +275,106 @@ TABLA V
 
 Toda flecha del modelo tiene objetivo asignado. El último objetivo es el
 método con que se miden las demás.
+
+*C. Arquitectura propuesta*
+
+Se adopta un nodo único en la LAN del laboratorio porque el diagnóstico
+preliminar localiza el cuello de botella en el enlace de salida
+compartido (cerca del 90 % de saturación, por validar en OE1) y no en
+las estaciones. Se evaluaron además un mirror alojado en la nube y un
+caché distribuido entre las estaciones, descartados por los criterios de
+la Tabla VI. La decisión mantiene fijos el hardware, la lista de
+paquetes y el enlace, lo que permite atribuir las variaciones del tiempo
+y del tráfico a las dos intervenciones. El registro completo de la
+decisión (ADR-001) está en el repositorio.
+
+<img src="media/image3.png" style="width:3in;height:2.32424in" />
+
+Fig. 2. Vista de despliegue, actual y propuesta. Azul: lo que se
+interviene; ámbar: dónde se mide; línea punteada: frontera del sistema.
+
+La Fig. 2 responde tres preguntas: qué se cambia (el nodo en azul),
+dónde se mide (en cada estación y en el router, en ámbar) y qué queda
+fijo (el enlace, las estaciones y los repositorios oficiales, fuera de
+la frontera y declarados). El nodo debe estar dentro de la LAN: un
+mirror en la nube no reduce el uso del enlace de salida, que es el
+cuello de botella.
+
+<img src="media/image4.png" style="width:3in;height:2.70336in" />
+
+Fig. 3. Vista de componentes del nodo en la LAN.
+
+La Fig. 3 muestra dónde vive la lógica que se cambia: un enrutador envía
+los repositorios espejados al mirror y el resto al proxy de caché, que
+consulta a los repositorios oficiales solo si no tiene el paquete. El
+mirror se sincroniza fuera de la sesión de medición.
+
+TABLA VI
+
+<span class="smallcaps">Decisión de arquitectura</span>
+
+| **Criterio**                     | **A. Nodo en la LAN**              | **B. Mirror en la nube**                         | **C. Caché entre estaciones**                  |
+|----------------------------------|------------------------------------|--------------------------------------------------|------------------------------------------------|
+| Control del entorno              | Total: hardware propio             | Parcial: red y proveedor ajenos                  | Total, pero depende de estaciones encendidas   |
+| ¿Aísla caché y mirror?           | Sí, se activan por separado        | Solo el mirror                                   | Solo el caché                                  |
+| Efecto sobre el enlace de salida | Solo salen fallos y sincronización | No alivia: la descarga sigue saliendo del campus | Reduce repeticiones, con coordinación compleja |
+| Esfuerzo de montaje              | Medio: un servidor                 | Bajo, con costo por uso                          | Alto: software en 30 estaciones                |
+| Veredicto                        | Elegida                            | Descartada: no alivia el enlace                  | Descartada: no permite medir el mirror         |
+
+Los valores de esfuerzo son una estimación cualitativa del autor. La
+alternativa C se apoya en la línea de \[8\].
+
+*D. Diseño experimental*
+
+TABLA VII
+
+<span class="smallcaps">Diseño experimental</span>
+
+| **Elemento**       | **Definición**                                                                                                                              |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| Diseño             | Cuasi-experimental en un laboratorio: cuatro configuraciones medidas en las mismas condiciones                                              |
+| Independientes     | Caché bajo demanda y mirror sincronizado (con / sin)                                                                                        |
+| Dependientes       | Tiempo de preparación (s), medido en la estación; tráfico de salida (GB por sesión), medido en el router                                    |
+| Moderadora         | Estaciones concurrentes N = 1, 10, 30                                                                                                       |
+| Control            | Hardware, lista de paquetes versionada, SO y versiones, horario, enlace, caché vaciado al inicio                                            |
+| Unidad de análisis | Una estación en una sesión de preparación                                                                                                   |
+| Muestra            | Mínimo 30 observaciones por celda (configuración × N): N = 30, tres sesiones (90); N = 10, tres sesiones (30); N = 1, treinta sesiones (30) |
+| Estadísticos       | Mediana, p95, p99 y desviación; prueba no paramétrica entre configuraciones                                                                 |
+| Criterio de éxito  | p95 y tráfico reducidos en al menos 90 % (H1a, H1b)                                                                                         |
+
+Las configuraciones se miden en orden aleatorio y, cuando es posible, el
+mismo día, para que la hora no se confunda con el tratamiento.
+
+*E. Instrumentación y protocolo*
+
+El tiempo se toma en cada estación con un script y reloj monotónico,
+desde el inicio de la preparación hasta que el entorno queda listo. No
+se mide en el nodo: este no ve el tiempo de instalación local. El
+tráfico de salida se toma con un contador en el router, y los aciertos y
+fallos del proxy se registran como medida auxiliar. Cada sesión sigue
+seis pasos: (1) vaciar el caché y reconstruir el entorno desde la lista
+versionada; (2) verificar que solo está activa la configuración a medir;
+(3) hacer una sesión previa de calentamiento, que se descarta y se
+anota; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con
+fecha y versión de la lista; (6) calcular los percentiles al final,
+desde el CSV.
+
+<span class="smallcaps">IV. Amenazas a la validez</span>
+
+TABLA VIII
+
+<span class="smallcaps">Amenazas y mitigaciones</span>
+
+| **Amenaza**                     | **Efecto en el número**                                           | **Mitigación**                                                            |
+|---------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------|
+| Tráfico ajeno en el enlace      | Otros usuarios del campus inflan los tiempos de una configuración | Mismo horario, tráfico base sin carga registrado y repetición en otro día |
+| Estado del caché                | Un caché ya poblado favorece a una configuración                  | Vaciarlo antes de cada sesión y declararlo                                |
+| Cambios en repositorios         | Un paquete se actualiza entre configuraciones                     | Lista de paquetes con versiones fijas                                     |
+| Observaciones no independientes | Las estaciones de una sesión comparten el enlace                  | Reportar por sesión y no solo por estación                                |
+| Un solo laboratorio             | El resultado no generaliza a otro hardware                        | Declararlo como límite del estudio                                        |
+
+Declarar estas amenazas no debilita el trabajo: indica qué se controló y
+qué queda como límite.
 
 <span class="smallcaps">Referencias</span>
 
