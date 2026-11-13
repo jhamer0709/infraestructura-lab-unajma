@@ -43,10 +43,12 @@ El demostrador y el ensayo usan un origen simulado: validan el procedimiento. Lo
 
 `feat`, `fix`, `test`, `chore`, y `docs(sesion-0X)` o `docs(paper)` para documentos.
 
-## Pendiente (no se inventa)
+## Hoja de ruta
 
-- Números reales de búsqueda y fecha (Tablas II y III del artículo).
-- Lectura a texto completo de las 10 referencias y confirmación de la matriz.
-- Versiones reales de SO, paquetes y hardware.
-- Probar el ensayo de `experimento/`.
-- Medición en el laboratorio y sección de resultados.
+| Entrega | Actividad | Estado |
+|---|---|---|
+| v0.2 | Pruebas automáticas en cada PR, capas, modos mirror y ambos, base de datos | En curso |
+| v0.2 | Ensayo con contenedores (`experimento/`) | Por validar |
+| v1.0 | Inventario del laboratorio: SO, paquetes y hardware | Programado |
+| v1.0 | Medición en el laboratorio y sección de resultados | Programado |
+| v1.0 | Registro de búsqueda y matriz de literatura consolidados | En curso |
