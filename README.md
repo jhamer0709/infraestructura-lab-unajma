@@ -9,19 +9,26 @@ Repositorio del artículo y de su prototipo. El historial es la bitácora de la 
 | Etiqueta | Fecha | Contenido |
 |---|---|---|
 | `v0.1` | 13 nov. | Planes como propuesta, demostrador mínimo con dos modos, pruebas, despliegue en Vercel |
-| `v0.2` | 18 nov. | Capas, base de datos, modos mirror y ambos, pruebas automáticas en cada PR |
+| `v0.2` | 18 nov. | Capas, base de datos, cuatro configuraciones, resumen, pruebas automáticas en cada PR |
 | `v1.0` | 20 nov. | Panel de resultados, análisis final, artículo con resultados |
 
 ## Estructura
 
 | Carpeta | Contenido |
 |---|---|
-| `api/`, `public/` | Demostrador: servicio con modo directo y con caché, y su página |
-| `scripts/` | `medir.py` (runner, CSV crudo) y `analizar.py` (mediana y p95) |
-| `tests/` | Pruebas automáticas del servicio |
-| `docs/` | `PLAN_ESTRUCTURA.md`, `PLAN_BASE_DE_DATOS.md`, `PLAN_MEDICION.md`, ADR y documentos por sesión |
+| `api/` | Punto de entrada del servicio |
+| `demostrador/` | Capas: controladores, servicios, repositorios y modelos |
+| `public/` | Página: ejecutar una sesión y ver el resumen |
+| `scripts/` | `medir.py` (runner) y `analizar.py` (mediana y p95 desde el CSV crudo) |
+| `tests/` | Pruebas automáticas; corren en cada PR |
+| `supabase/migrations/` | Esquema de la base de datos |
+| `docs/` | Planes de estructura, base de datos y medición; despliegue; ADR; documentos por sesión |
 | `paper/` | Artículo (`articulo.md`, `Articulo_IMRyD.docx`) y figuras |
-| `experimento/` | Ensayo con Docker Compose (sin probar) |
+| `experimento/` | Ensayo con Docker Compose |
+
+## Configuraciones
+
+El servicio ejecuta las cuatro configuraciones del artículo: `base`, `cache`, `mirror` y `ambos`. Se eligen con un código en el pedido o con la variable `CONFIGURACION`; el resto del código es el mismo. Variables de entorno y base de datos: `docs/DESPLIEGUE.md` y `.env.example`.
 
 ## Ejecutar en local
 
@@ -33,7 +40,7 @@ python -m pytest
 python -m uvicorn api.index:app --port 8000
 ```
 
-Abrir http://127.0.0.1:8000. Para medir, ver `docs/PLAN_MEDICION.md`.
+Abrir http://127.0.0.1:8000. Sin `DATABASE_URL` usa SQLite local. Para medir, ver `docs/PLAN_MEDICION.md`.
 
 ## Qué es dato real y qué no
 
