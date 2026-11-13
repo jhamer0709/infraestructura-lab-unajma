@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preparación de entornos · demostrador</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; background: #faf8f3; }
+  h1 { font-weight: normal; border-bottom: 2px solid #1c1c1c; padding-bottom: .4rem; }
+  .aviso { background: #fbf0dc; border-left: 4px solid #c77d00; padding: .6rem .9rem; font-size: .95rem; }
+  fieldset { margin: 1.2rem 0; border: 1px solid #999; }
+  label { margin-right: 1.5rem; }
+  input[type=number] { width: 4.5rem; font: inherit; }
+  button { font: inherit; padding: .6rem 1.4rem; background: #2b5db8; color: #fff; border: 0; cursor: pointer; }
+  button:disabled { background: #999; }
+  table { border-collapse: collapse; width: 100%; margin-top: 1rem; font-family: monospace; }
+  td, th { border-bottom: 1px dotted #999; padding: .3rem .5rem; text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  #resumen { font-family: monospace; margin-top: 1rem; }
+</style>
+</head>
+<body>
+<h1>Preparación de entornos</h1>
+<p class="aviso">Demostrador con origen <strong>simulado</strong>. Valida el procedimiento de medición; los resultados del artículo se miden en el laboratorio.</p>
+
+<fieldset>
+  <legend>Configuración</legend>
+  <label><input type="radio" name="modo" value="directo" checked> Directo (línea base)</label>
+  <label><input type="radio" name="modo" value="cache"> Con caché</label>
+  <label>Estaciones <input type="number" id="n" value="10" min="1" max="30"></label>
+</fieldset>
+<button id="ir">Preparar entorno</button>
+<span id="api"></span>
+
+<div id="resumen"></div>
+<table id="tabla" hidden>
+  <thead><tr><th>Estación</th><th>Segundos</th><th>Aciertos</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const $ = (s) => document.querySelector(s);
+
+function p95(valores) {
+  const v = [...valores].sort((a, b) => a - b);
+  return v[Math.max(0, Math.ceil(0.95 * v.length) - 1)];
+}
+
+async function estacion(id, modo, paquetes) {
+  const inicio = performance.now();
+  let aciertos = 0;
+  for (const p of paquetes) {
+    const r = await fetch(`/api/paquete/${p}?modo=${modo}`);
+    if ((await r.json()).acierto) aciertos++;
+  }
+  return { id, segundos: (performance.now() - inicio) / 1000, aciertos };
+}
+
+$("#ir").addEventListener("click", async () => {
+  const modo = document.querySelector("input[name=modo]:checked").value;
+  const n = Math.min(30, Math.max(1, +$("#n").value || 1));
+  $("#ir").disabled = true;
+  $("#resumen").textContent = "midiendo...";
+  try {
+    await fetch("/api/cache/vaciar", { method: "POST" });      // caché frío
+    const { paquetes } = await (await fetch("/api/paquetes")).json();
+    const filas = await Promise.all(
+      Array.from({ length: n }, (_, i) => estacion(i + 1, modo, paquetes)));
+    const t = filas.map((f) => f.segundos);
+    const estado = await (await fetch("/api/cache/estado")).json();
+    $("#resumen").textContent =
+      `modo=${modo}  N=${n}  p95=${p95(t).toFixed(2)} s  salidas al origen=${estado.salidas_al_origen}`;
+    $("#tabla tbody").innerHTML = filas.map((f) =>
+      `<tr><td>${f.id}</td><td>${f.segundos.toFixed(2)}</td><td>${f.aciertos}/${paquetes.length}</td></tr>`).join("");
+    $("#tabla").hidden = false;
+  } catch (e) {
+    $("#resumen").textContent = "error: " + e.message;
+  }
+  $("#ir").disabled = false;
+});
+
+fetch("/api/salud").then((r) => r.json())
+  .then((s) => { $("#api").textContent = ` API disponible · v${s.version}`; })
+  .catch(() => { $("#api").textContent = " API no disponible"; });
+</script>
+</body>
+</html>
