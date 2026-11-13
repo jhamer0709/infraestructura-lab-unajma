@@ -1,7 +1,7 @@
 Optimización de la infraestructura de laboratorios de cómputo mediante
 un servidor de caché y repositorio local (mirror)
 
-Jhamer Anderson Rojas Silva
+Jhamer Anderson Rojas Silva, Edwing Alcides Maquera Flores, Richard Carrion Abollaneda, Ruben Apaza Apaza, Norma Catacora Flores
 
 *Diplomado en Metodología Científica en Ingeniería de Sistemas*
 
@@ -14,8 +14,7 @@ Andahuaylas, Perú
 **En los laboratorios de la Escuela Profesional de Ingeniería de
 Sistemas las prácticas se ejecutan de forma concurrente en estaciones
 con hardware limitado, y las 30 estaciones descargan las mismas
-dependencias por un único enlace de salida. La observación preliminar
-del autor indica unos 6 minutos de preparación por estación y una
+dependencias por un único enlace de salida. La observación preliminar de los autores indica unos 6 minutos de preparación por estación y una
 saturación cercana al 90 % del enlace, cifras que se validarán en la
 línea base. La literatura revisada coincide en que descargar paquetes
 pesa en el arranque y en el build, y en que el caché reduce latencia o
@@ -163,8 +162,7 @@ como quedó. La búsqueda se complementa con bola de nieve hacia atrás y
 hacia adelante desde los estudios más relevantes. Se utilizó una
 herramienta de IA generativa para ampliar sinónimos, traducir términos,
 armar las cadenas y apoyar la redacción; la búsqueda, la selección de
-fuentes y la verificación de cada referencia fueron realizadas por el
-autor.
+fuentes y la verificación de cada referencia fueron realizadas por los autores.
 
 *B. Selección*
 
@@ -317,7 +315,7 @@ TABLA VI
 | Esfuerzo de montaje              | Medio: un servidor                 | Bajo, con costo por uso                          | Alto: software en 30 estaciones                |
 | Veredicto                        | Elegida                            | Descartada: no alivia el enlace                  | Descartada: no permite medir el mirror         |
 
-Los valores de esfuerzo son una estimación cualitativa del autor. La
+Los valores de esfuerzo son una estimación cualitativa de los autores. La
 alternativa C se apoya en la línea de \[8\].
 
 *D. Diseño experimental*
