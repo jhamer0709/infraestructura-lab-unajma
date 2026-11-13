@@ -22,8 +22,7 @@ pesa en el arranque y en el build, y en que el caché reduce latencia o
 duración en centros de datos e integración continua, pero ninguno de los
 diez estudios incluidos lo mide en un laboratorio académico con enlace
 limitado. Este trabajo mide el efecto de dos intervenciones separables,
-un caché bajo demanda y un mirror sincronizado, con 30 estaciones
-concurrentes, al menos tres sesiones y condiciones controladas, y
+un caché bajo demanda y un mirror sincronizado, con 30 estaciones concurrentes, cinco sesiones por configuración como objetivo (tres como mínimo) y condiciones controladas, y
 declara de antemano los umbrales de reducción. \[Resultados pendientes:
 sesión 7.\]**
 
@@ -72,8 +71,7 @@ preparación de entornos y el tráfico de salida frente al acceso directo
 a internet, en los laboratorios de la EPIS-UNAJMA.
 
 *OE1.* Medir la línea base de tiempo p95 de preparación, tráfico de
-salida y tasa de error con 30 estaciones concurrentes, en al menos tres
-sesiones.
+salida y tasa de error con 30 estaciones concurrentes, en cinco sesiones como objetivo y tres como mínimo.
 
 *OE2.* Implementar el caché bajo demanda (proxy de paquetes y caché de
 descargas de imágenes) y medir su efecto frente a la línea base.
@@ -81,7 +79,7 @@ descargas de imágenes) y medir su efecto frente a la línea base.
 *OE3.* Implementar el mirror sincronizado de repositorios y medir su
 efecto, solo y combinado con el caché.
 
-*OE4.* Determinar, con pruebas estadísticas, si las reducciones alcanzan
+*OE4.* Determinar, con una prueba no paramétrica a nivel de sesión en N = 30, si las reducciones alcanzan
 los umbrales de H1a y H1b y cuánto aporta cada intervención.
 
 *D. Hipótesis*
@@ -92,9 +90,7 @@ directo a internet, con 30 estaciones concurrentes y condiciones
 controladas.
 
 **H1b.** La misma configuración reduce el tráfico de salida por sesión
-práctica en al menos 90 %. Con caché tibia y 30 estaciones que piden el
-mismo conjunto de paquetes, solo una descarga sale a internet: la
-reducción teórica es 1 − 1/30 = 96,7 %.
+práctica en al menos 90 %. Con el caché frío al inicio de la sesión y 30 estaciones que piden el mismo conjunto de paquetes, solo una descarga sale a internet, siempre que el proxy retenga las peticiones concurrentes del mismo paquete hasta completar la primera: la reducción teórica es 1 − 1/30 = 96,7 %.
 
 **H0.** Ninguna configuración produce una diferencia significativa en el
 tiempo p95 de preparación ni en el tráfico de salida.
@@ -120,7 +116,7 @@ TABLA I
 | Tráfico de salida                                | Dep.     | GB por sesión; Mbps pico | SNMP o vnstat en el router             |
 | Tasa de error                                    | Dep.     | % (razón)                | Registros del script                   |
 | Estaciones concurrentes                          | Moder.   | 1, 10, 30                | Carga declarada                        |
-| Estado del caché                                 | Control  | Fría / tibia             | Vaciado previo                         |
+| Estado del caché                                 | Control  | Fría al inicio             | Vaciado antes de cada sesión medida                         |
 | Hardware, lista de paquetes, SO, horario, enlace | Control  | Declarados, fijos        | Inventario y lista versionada          |
 
 Las dos primeras filas separan las intervenciones, a diferencia del
@@ -334,12 +330,12 @@ TABLA VII
 |--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | Diseño             | Cuasi-experimental en un laboratorio: cuatro configuraciones medidas en las mismas condiciones                                              |
 | Independientes     | Caché bajo demanda y mirror sincronizado (con / sin)                                                                                        |
-| Dependientes       | Tiempo de preparación (s), medido en la estación; tráfico de salida (GB por sesión), medido en el router                                    |
+| Dependientes       | Tiempo de preparación (s), medido en la estación; tráfico de salida (GB por sesión), medido en el router; tasa de error (%), medida secundaria sin hipótesis                                    |
 | Moderadora         | Estaciones concurrentes N = 1, 10, 30                                                                                                       |
 | Control            | Hardware, lista de paquetes versionada, SO y versiones, horario, enlace, caché vaciado al inicio                                            |
 | Unidad de análisis | Una estación en una sesión de preparación                                                                                                   |
-| Muestra            | Mínimo 30 observaciones por celda (configuración × N): N = 30, tres sesiones (90); N = 10, tres sesiones (30); N = 1, treinta sesiones (30) |
-| Estadísticos       | Mediana, p95, p99 y desviación; prueba no paramétrica entre configuraciones                                                                 |
+| Muestra            | Por configuración: N = 30, cinco sesiones como objetivo y tres como mínimo (150 o 90 observaciones por estación); N = 10, tres sesiones (30); N = 1, cinco sesiones (5). Total: 52 sesiones. Las hipótesis se contrastan solo en N = 30; N = 1 y N = 10 son descriptivos |
+| Estadísticos       | Mediana, p95 y dispersión, por sesión y agrupados; prueba no paramétrica entre configuraciones con la sesión como unidad. Con cinco sesiones por configuración el contraste es posible; con tres, el resultado se reporta como descriptivo                                                                 |
 | Criterio de éxito  | p95 y tráfico reducidos en al menos 90 % (H1a, H1b)                                                                                         |
 
 Las configuraciones se miden en orden aleatorio y, cuando es posible, el
@@ -350,14 +346,7 @@ mismo día, para que la hora no se confunda con el tratamiento.
 El tiempo se toma en cada estación con un script y reloj monotónico,
 desde el inicio de la preparación hasta que el entorno queda listo. No
 se mide en el nodo: este no ve el tiempo de instalación local. El
-tráfico de salida se toma con un contador en el router, y los aciertos y
-fallos del proxy se registran como medida auxiliar. Cada sesión sigue
-seis pasos: (1) vaciar el caché y reconstruir el entorno desde la lista
-versionada; (2) verificar que solo está activa la configuración a medir;
-(3) hacer una sesión previa de calentamiento, que se descarta y se
-anota; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con
-fecha y versión de la lista; (6) calcular los percentiles al final,
-desde el CSV.
+tráfico de salida se toma con un contador en el router, y los aciertos y fallos del proxy se registran, en orden de llegada, como medida auxiliar que describe la transición del caché de frío a tibio dentro de la sesión. Toda sesión medida parte de caché frío. El mirror se sincroniza fuera de la sesión y su tráfico de sincronización se reporta aparte. Cada sesión sigue seis pasos: (1) reconstruir el entorno desde la lista versionada y verificar que solo está activa la configuración a medir; (2) hacer una sesión previa de calentamiento, que se descarta y se anota; (3) vaciar el caché; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con fecha y versión de la lista; (6) calcular los percentiles al final, desde el CSV.
 
 <span class="smallcaps">IV. Amenazas a la validez</span>
 
@@ -368,9 +357,9 @@ TABLA VIII
 | **Amenaza**                     | **Efecto en el número**                                           | **Mitigación**                                                            |
 |---------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------|
 | Tráfico ajeno en el enlace      | Otros usuarios del campus inflan los tiempos de una configuración | Mismo horario, tráfico base sin carga registrado y repetición en otro día |
-| Estado del caché                | Un caché ya poblado favorece a una configuración                  | Vaciarlo antes de cada sesión y declararlo                                |
+| Estado del caché                | Un caché ya poblado favorece a una configuración                  | Vaciarlo antes de cada sesión medida, también después del calentamiento, y declararlo                                |
 | Cambios en repositorios         | Un paquete se actualiza entre configuraciones                     | Lista de paquetes con versiones fijas                                     |
-| Observaciones no independientes | Las estaciones de una sesión comparten el enlace                  | Reportar por sesión y no solo por estación                                |
+| Observaciones no independientes | Las estaciones de una sesión comparten el enlace                  | Tomar la sesión como unidad de la prueba y reportar el p95 por sesión además del agrupado                                |
 | Un solo laboratorio             | El resultado no generaliza a otro hardware                        | Declararlo como límite del estudio                                        |
 
 Declarar estas amenazas no debilita el trabajo: indica qué se controló y
