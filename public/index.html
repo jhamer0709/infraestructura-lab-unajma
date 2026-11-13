@@ -5,83 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Preparación de entornos · demostrador</title>
 <style>
-  body { font-family: Georgia, serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; background: #faf8f3; }
+  body { font-family: Georgia, serif; max-width: 860px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; background: #faf8f3; }
   h1 { font-weight: normal; border-bottom: 2px solid #1c1c1c; padding-bottom: .4rem; }
+  h2 { font-weight: normal; margin-top: 2.2rem; }
   .aviso { background: #fbf0dc; border-left: 4px solid #c77d00; padding: .6rem .9rem; font-size: .95rem; }
   fieldset { margin: 1.2rem 0; border: 1px solid #999; }
-  label { margin-right: 1.5rem; }
+  label { margin-right: 1.3rem; white-space: nowrap; }
   input[type=number] { width: 4.5rem; font: inherit; }
   button { font: inherit; padding: .6rem 1.4rem; background: #2b5db8; color: #fff; border: 0; cursor: pointer; }
+  button.secundario { background: #fff; color: #2b5db8; border: 1px solid #2b5db8; padding: .35rem .9rem; }
   button:disabled { background: #999; }
-  table { border-collapse: collapse; width: 100%; margin-top: 1rem; font-family: monospace; }
+  table { border-collapse: collapse; width: 100%; margin-top: .8rem; font-family: monospace; font-size: .92rem; }
   td, th { border-bottom: 1px dotted #999; padding: .3rem .5rem; text-align: right; }
-  th:first-child, td:first-child { text-align: left; }
-  #resumen { font-family: monospace; margin-top: 1rem; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  #ultimo { font-family: monospace; margin-top: 1rem; }
+  .nota { font-size: .9rem; color: #555; }
+  .ok { color: #1f6b3a; }
 </style>
 </head>
 <body>
 <h1>Preparación de entornos</h1>
-<p class="aviso">Demostrador con origen <strong>simulado</strong>. Valida el procedimiento de medición; los resultados del artículo se miden en el laboratorio.</p>
+<p class="aviso">Demostrador con origen y enlace <strong>simulados</strong>. Valida el procedimiento de medición; los resultados del artículo se miden en el laboratorio.</p>
 
 <fieldset>
   <legend>Configuración</legend>
-  <label><input type="radio" name="modo" value="directo" checked> Directo (línea base)</label>
-  <label><input type="radio" name="modo" value="cache"> Con caché</label>
-  <label>Estaciones <input type="number" id="n" value="10" min="1" max="30"></label>
+  <label><input type="radio" name="cfg" value="base" checked> Línea base</label>
+  <label><input type="radio" name="cfg" value="cache"> Caché</label>
+  <label><input type="radio" name="cfg" value="mirror"> Mirror</label>
+  <label><input type="radio" name="cfg" value="ambos"> Ambos</label>
+  <label>Estaciones <input type="number" id="n" value="30" min="1" max="30"></label>
 </fieldset>
-<button id="ir">Preparar entorno</button>
-<span id="api"></span>
+<button id="ir">Ejecutar sesión</button>
+<span id="api" class="nota"></span>
 
-<div id="resumen"></div>
-<table id="tabla" hidden>
-  <thead><tr><th>Estación</th><th>Segundos</th><th>Aciertos</th></tr></thead>
-  <tbody></tbody>
+<div id="ultimo"></div>
+
+<h2>Resumen de sesiones guardadas</h2>
+<p class="nota">Calculado desde las observaciones crudas de la base de datos. La reducción compara con la línea base del mismo N. Las sesiones de calentamiento no entran.
+  <button class="secundario" id="recargar">Actualizar</button>
+  <a href="/api/observaciones.csv">Descargar CSV crudo</a></p>
+<table id="resumen">
+  <thead><tr>
+    <th>N</th><th>Configuración</th><th>Sesiones</th><th>Obs.</th><th>Mediana (s)</th>
+    <th>p95 (s)</th><th>p95 por sesión</th><th>Reducción p95</th><th>Salidas</th><th>Reducción salidas</th>
+  </tr></thead>
+  <tbody><tr><td colspan="10">Sin sesiones todavía.</td></tr></tbody>
 </table>
 
 <script>
 const $ = (s) => document.querySelector(s);
+const pct = (v) => (v === null ? "–" : v.toFixed(1) + " %");
 
-function p95(valores) {
-  const v = [...valores].sort((a, b) => a - b);
-  return v[Math.max(0, Math.ceil(0.95 * v.length) - 1)];
-}
-
-async function estacion(id, modo, paquetes) {
-  const inicio = performance.now();
-  let aciertos = 0;
-  for (const p of paquetes) {
-    const r = await fetch(`/api/paquete/${p}?modo=${modo}`);
-    if ((await r.json()).acierto) aciertos++;
-  }
-  return { id, segundos: (performance.now() - inicio) / 1000, aciertos };
+async function cargarResumen() {
+  const { filas } = await (await fetch("/api/resumen")).json();
+  if (!filas.length) return;
+  $("#resumen tbody").innerHTML = filas.map((f) => `<tr>
+    <td>${f.n}</td><td>${f.configuracion}</td><td>${f.sesiones}</td><td>${f.observaciones}</td>
+    <td>${f.mediana.toFixed(3)}</td><td>${f.p95.toFixed(3)}</td>
+    <td>${f.p95_sesion_min.toFixed(3)}–${f.p95_sesion_max.toFixed(3)}</td>
+    <td>${pct(f.reduccion_p95)}</td><td>${f.salidas_origen}</td><td>${pct(f.reduccion_salidas)}</td></tr>`).join("");
 }
 
 $("#ir").addEventListener("click", async () => {
-  const modo = document.querySelector("input[name=modo]:checked").value;
+  const configuracion = document.querySelector("input[name=cfg]:checked").value;
   const n = Math.min(30, Math.max(1, +$("#n").value || 1));
   $("#ir").disabled = true;
-  $("#resumen").textContent = "midiendo...";
+  $("#ultimo").textContent = "ejecutando...";
   try {
-    await fetch("/api/cache/vaciar", { method: "POST" });      // caché frío
-    const { paquetes } = await (await fetch("/api/paquetes")).json();
-    const filas = await Promise.all(
-      Array.from({ length: n }, (_, i) => estacion(i + 1, modo, paquetes)));
-    const t = filas.map((f) => f.segundos);
-    const estado = await (await fetch("/api/cache/estado")).json();
-    $("#resumen").textContent =
-      `modo=${modo}  N=${n}  p95=${p95(t).toFixed(2)} s  salidas al origen=${estado.salidas_al_origen}`;
-    $("#tabla tbody").innerHTML = filas.map((f) =>
-      `<tr><td>${f.id}</td><td>${f.segundos.toFixed(2)}</td><td>${f.aciertos}/${paquetes.length}</td></tr>`).join("");
-    $("#tabla").hidden = false;
+    const r = await fetch("/api/sesiones", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ configuracion, n }) });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const s = await r.json();
+    $("#ultimo").innerHTML = `<span class="ok">sesión guardada</span> · ${s.configuracion} · N=${s.n} · ` +
+      `p95=${s.p95.toFixed(3)} s · mediana=${s.mediana.toFixed(3)} s · salidas al origen=${s.salidas_origen}` +
+      (s.sincronizacion_mirror ? ` · sincronización previa del mirror=${s.sincronizacion_mirror}` : "");
+    await cargarResumen();
   } catch (e) {
-    $("#resumen").textContent = "error: " + e.message;
+    $("#ultimo").textContent = "error: " + e.message;
   }
   $("#ir").disabled = false;
 });
 
+$("#recargar").addEventListener("click", cargarResumen);
+
 fetch("/api/salud").then((r) => r.json())
-  .then((s) => { $("#api").textContent = ` API disponible · v${s.version}`; })
+  .then((s) => { $("#api").textContent = ` API disponible · v${s.version} · lista ${s.lista}`; })
   .catch(() => { $("#api").textContent = " API no disponible"; });
+cargarResumen().catch(() => {});
 </script>
 </body>
 </html>

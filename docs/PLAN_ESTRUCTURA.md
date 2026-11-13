@@ -1,59 +1,88 @@
 # Plan de estructura
 
-Estado: **propuesta (v0.1)**. Lo marcado como v0.2 o v1.0 todavía no existe.
+Estado: **implementado en v0.2**. Lo marcado como v1.0 todavía no existe.
 
 ## 1. Qué es cada cosa
 
 | Pieza | Para qué sirve | Dónde corre |
 |---|---|---|
-| Demostrador (`api/`, `public/`) | Validar el procedimiento: dos modos, caché frío, CSV crudo, p95 | Vercel y local |
-| Ensayo con contenedores (`experimento/`) | Ensayar 30 clientes con enlace limitado antes del laboratorio | Local o CI (sin probar) |
+| Demostrador (`api/`, `demostrador/`, `public/`) | Validar el procedimiento: cuatro configuraciones, caché frío, datos crudos, p95 | Vercel y local |
+| Ensayo con contenedores (`experimento/`) | Ensayar 30 clientes con enlace limitado antes del laboratorio | Local o CI (por validar) |
 | Medición real | Producir los resultados del artículo | Laboratorio EPIS-UNAJMA |
 
 El demostrador y el ensayo usan datos sintéticos. Ningún número de ellos entra a la sección de resultados del artículo.
 
-## 2. Carpetas
+## 2. Capas
 
 ```
-api/index.py          servicio: /api/paquete, /api/cache, /api/salud
-public/index.html     página para lanzar una preparación y ver el p95
-scripts/medir.py      runner: modos en orden aleatorio, calentamiento, CSV crudo
-scripts/analizar.py   mediana y p95 por modo y N, desde el CSV
-tests/                pruebas automáticas del servicio
-docs/                 planes, ADR y documentos por sesión
-paper/                artículo y figuras
-experimento/          ensayo con Docker Compose
-vercel.json           envía /api/* a la función; lo demás sale de public/
+api/index.py                    punto de entrada (Vercel y uvicorn)
+demostrador/
+  app.py                        arma la aplicación: une las capas
+  config.py                     variables de entorno
+  models.py                     tablas (SQLAlchemy)
+  controllers/sesiones.py       rutas HTTP: validan y delegan
+  services/
+    origen.py                   origen y enlace simulados; lista de paquetes
+    entrega.py                  las cuatro configuraciones, una clase cada una
+    medicion.py                 ejecuta una sesión, la guarda y la resume
+    estadistica.py              mediana y p95
+  repositories/
+    base_datos.py               conexión: PostgreSQL o SQLite
+    sesiones.py                 lectura y escritura de sesiones
+public/index.html               página: ejecutar una sesión y ver el resumen
+scripts/medir.py, analizar.py   runner y análisis desde el CSV crudo
+tests/                          pruebas automáticas
+supabase/migrations/            esquema SQL
 ```
 
-## 3. Evolución por entrega
+Regla de dependencias: controladores → servicios → repositorios. Un controlador no toca la base; un repositorio no conoce HTTP.
 
-| Entrega | Fecha | Estructura | Ramas |
-|---|---|---|---|
-| v0.1 | 13 nov. | Todo el servicio en `api/index.py`; caché en memoria | `dev` → `main` con PR |
-| v0.2 | 18 nov. | Capas: controladores, servicios, repositorios; base de datos; modo `mirror` y `ambos` | se añade `release`; pruebas automáticas en cada PR |
-| v1.0 | 20 nov. | Panel de resultados; análisis final | `dev` → `release` → `main` |
+Solo `api/index.py` está dentro de `api/`, para que Vercel despliegue una única función.
 
-## 4. Reglas de trabajo
+## 3. Cómo se elige la configuración
 
-- Nada entra a `main` por push directo: siempre por PR desde `dev`.
-- Un commit por cambio, con prefijo: `feat`, `fix`, `docs`, `test`, `chore`.
-- Cada entrega se marca con una etiqueta (`v0.1`, `v0.2`, `v1.0`).
-- Las configuraciones se eligen con una variable, nunca con ramas ni copias del código: así lo único que cambia entre mediciones es la intervención.
+Las cuatro configuraciones del artículo son cuatro clases con la misma interfaz (`services/entrega.py`). Una función elige la clase a partir de un código (`base`, `cache`, `mirror`, `ambos`), que llega en el pedido o, si falta, en la variable de entorno `CONFIGURACION`. El resto del código es idéntico entre configuraciones: lo único que cambia entre mediciones es la intervención.
 
-## 5. Correspondencia con el artículo
+## 4. Rutas
 
-| Artículo | En el demostrador v0.1 |
+| Ruta | Qué hace |
 |---|---|
-| Línea base (acceso directo) | `modo=directo` |
-| Caché bajo demanda | `modo=cache` |
-| Mirror sincronizado, ambos | pendiente, v0.2 |
-| Estaciones concurrentes N | `--n 1 10 30` en `medir.py` |
-| Estado del caché: frío | `POST /api/cache/vaciar` antes de cada sesión |
-| Lista de paquetes versionada | `VERSION_LISTA` en `api/index.py` |
-| Tráfico de salida | `salidas_al_origen` (conteo, no GB) |
+| `GET /api/salud` | Versión del servicio y de la lista de paquetes |
+| `GET /api/configuraciones` | Configuraciones disponibles y la que rige por defecto |
+| `POST /api/sesiones` | Ejecuta una sesión con N estaciones y la guarda |
+| `GET /api/resumen` | Mediana, p95 y reducción por configuración y N |
+| `GET /api/observaciones.csv` | Datos crudos: una fila por estación y sesión |
 
-## 6. Límites declarados
+## 5. Evolución por entrega
 
-- El origen y el enlace son simulados. El modelo supone que el enlace reparte su capacidad por igual entre descargas simultáneas; la reducción que muestra el demostrador es consecuencia de ese supuesto, no una medición.
-- En Vercel el caché vive en la memoria de cada instancia. Con carga concurrente puede haber varias instancias y el conteo deja de ser exacto. La corrida de referencia del demostrador es la local.
+| Entrega | Estructura | Ramas |
+|---|---|---|
+| v0.1 | Todo el servicio en `api/index.py`; caché en memoria; dos configuraciones | `dev` → `main` con PR |
+| v0.2 | Capas; base de datos; cuatro configuraciones; resumen; pruebas automáticas en cada PR | `dev` → `release` → `main` |
+| v1.0 | Datos del laboratorio cargados; análisis final | igual |
+
+## 6. Reglas de trabajo
+
+- Nada entra a `main` ni a `release` por push directo: siempre por PR.
+- Un commit por cambio, con prefijo: `feat`, `fix`, `docs`, `test`, `chore`, `refactor`, `ci`.
+- Cada entrega se marca con una etiqueta (`v0.1`, `v0.2`, `v1.0`).
+- Las pruebas corren solas en cada PR; no se fusiona con pruebas en rojo.
+
+## 7. Correspondencia con el artículo
+
+| Artículo | En el demostrador |
+|---|---|
+| Línea base, caché, mirror, ambos | `base`, `cache`, `mirror`, `ambos` |
+| Estaciones concurrentes N | campo `n` del pedido (1 a 30) |
+| Estado del caché: frío | cada sesión crea un caché vacío |
+| Lista de paquetes versionada | `VERSION_LISTA` y `PAQUETES` |
+| Tiempo de preparación por estación | `t_observacion.segundos` |
+| Tráfico de salida | `t_sesion.salidas_origen` (conteo); `bytes_salida` queda para el laboratorio |
+| Sincronización del mirror, fuera de la sesión | `t_sesion.sincronizacion_mirror`, reportada aparte |
+
+## 8. Supuestos y límites del modelo
+
+- El enlace reparte su capacidad por igual entre descargas simultáneas.
+- La entrega desde la LAN cuesta el 2 % del tiempo del origen.
+- El mirror contiene los paquetes de repositorio, no las imágenes de contenedor; por eso `mirror` y `ambos` dan resultados distintos.
+- Las reducciones que muestra el demostrador son consecuencia de estos supuestos, no mediciones.

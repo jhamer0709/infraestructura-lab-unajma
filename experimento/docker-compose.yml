@@ -1,4 +1,4 @@
-# ESQUELETO SIN PROBAR (no había demonio Docker al escribirlo). Ensayo previo al laboratorio:
+# Estado: por validar. Ensayo previo al laboratorio:
 # valida el procedimiento de medición, NO produce resultados del artículo.
 # Uso:  docker compose --profile baseline up --scale cliente=30
 #       docker compose --profile cache up --scale cliente=30

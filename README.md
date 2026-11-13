@@ -2,6 +2,8 @@
 
 Diplomado en Metodología Científica en Ingeniería de Sistemas · Módulo IV (Cloud Computing, DevOps y Arquitectura de Software) · UNAJMA
 
+**Autores:** Jhamer Anderson Rojas Silva, Edwing Alcides Maquera Flores, Richard Carrion Abollaneda, Ruben Apaza Apaza y Norma Catacora Flores.
+
 Repositorio del artículo y de su prototipo. El historial es la bitácora de la investigación: un commit por cambio, y nada entra a `main` sin PR.
 
 ## Entregas
@@ -9,19 +11,26 @@ Repositorio del artículo y de su prototipo. El historial es la bitácora de la 
 | Etiqueta | Fecha | Contenido |
 |---|---|---|
 | `v0.1` | 13 nov. | Planes como propuesta, demostrador mínimo con dos modos, pruebas, despliegue en Vercel |
-| `v0.2` | 18 nov. | Capas, base de datos, modos mirror y ambos, pruebas automáticas en cada PR |
+| `v0.2` | 18 nov. | Capas, base de datos, cuatro configuraciones, resumen, pruebas automáticas en cada PR |
 | `v1.0` | 20 nov. | Panel de resultados, análisis final, artículo con resultados |
 
 ## Estructura
 
 | Carpeta | Contenido |
 |---|---|
-| `api/`, `public/` | Demostrador: servicio con modo directo y con caché, y su página |
-| `scripts/` | `medir.py` (runner, CSV crudo) y `analizar.py` (mediana y p95) |
-| `tests/` | Pruebas automáticas del servicio |
-| `docs/` | `PLAN_ESTRUCTURA.md`, `PLAN_BASE_DE_DATOS.md`, `PLAN_MEDICION.md`, ADR y documentos por sesión |
+| `api/` | Punto de entrada del servicio |
+| `demostrador/` | Capas: controladores, servicios, repositorios y modelos |
+| `public/` | Página: ejecutar una sesión y ver el resumen |
+| `scripts/` | `medir.py` (runner) y `analizar.py` (mediana y p95 desde el CSV crudo) |
+| `tests/` | Pruebas automáticas; corren en cada PR |
+| `supabase/migrations/` | Esquema de la base de datos |
+| `docs/` | Planes de estructura, base de datos y medición; despliegue; ADR; documentos por sesión |
 | `paper/` | Artículo (`articulo.md`, `Articulo_IMRyD.docx`) y figuras |
-| `experimento/` | Ensayo con Docker Compose (sin probar) |
+| `experimento/` | Ensayo con Docker Compose |
+
+## Configuraciones
+
+El servicio ejecuta las cuatro configuraciones del artículo: `base`, `cache`, `mirror` y `ambos`. Se eligen con un código en el pedido o con la variable `CONFIGURACION`; el resto del código es el mismo. Variables de entorno y base de datos: `docs/DESPLIEGUE.md` y `.env.example`.
 
 ## Ejecutar en local
 
@@ -33,7 +42,7 @@ python -m pytest
 python -m uvicorn api.index:app --port 8000
 ```
 
-Abrir http://127.0.0.1:8000. Para medir, ver `docs/PLAN_MEDICION.md`.
+Abrir http://127.0.0.1:8000. Sin `DATABASE_URL` usa SQLite local. Para medir, ver `docs/PLAN_MEDICION.md`.
 
 ## Qué es dato real y qué no
 
@@ -43,10 +52,12 @@ El demostrador y el ensayo usan un origen simulado: validan el procedimiento. Lo
 
 `feat`, `fix`, `test`, `chore`, y `docs(sesion-0X)` o `docs(paper)` para documentos.
 
-## Pendiente (no se inventa)
+## Hoja de ruta
 
-- Números reales de búsqueda y fecha (Tablas II y III del artículo).
-- Lectura a texto completo de las 10 referencias y confirmación de la matriz.
-- Versiones reales de SO, paquetes y hardware.
-- Probar el ensayo de `experimento/`.
-- Medición en el laboratorio y sección de resultados.
+| Entrega | Actividad | Estado |
+|---|---|---|
+| v0.2 | Pruebas automáticas en cada PR, capas, modos mirror y ambos, base de datos | En curso |
+| v0.2 | Ensayo con contenedores (`experimento/`) | Por validar |
+| v1.0 | Inventario del laboratorio: SO, paquetes y hardware | Programado |
+| v1.0 | Medición en el laboratorio y sección de resultados | Programado |
+| v1.0 | Registro de búsqueda y matriz de literatura consolidados | En curso |
