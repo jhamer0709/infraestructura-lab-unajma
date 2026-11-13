@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1081 837.5" width="1081" height="837.5" font-family="Liberation Serif, Times New Roman, serif">
+<defs><marker id="m0" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" viewBox="0 0 12 12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#222222"/></marker><marker id="m1" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" viewBox="0 0 12 12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#2b5db8"/></marker></defs>
+<rect width="1081" height="837.5" fill="white"/>
+<rect x="12" y="12" width="510" height="748" fill="none" stroke="#888888" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="267.0" y="48" text-anchor="middle" font-size="30" font-weight="bold" fill="#111">Actual</text>
+<rect x="32" y="70" width="470" height="100" rx="16" fill="#fbf0dc" stroke="#c77d00" stroke-width="2.5"/>
+<g transform="translate(48,90.0)"><rect x="18" y="0" width="50" height="34" rx="3" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><path d="M43,34 v9 M30,44 h26" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><rect x="0" y="14" width="50" height="34" rx="3" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><path d="M25,48 v9 M12,58 h26" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/></g>
+<text x="313.0" y="113.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#7a4b00">30 estaciones</text>
+<text x="313.0" y="145.0" text-anchor="middle" font-size="25"  fill="#7a4b00">medida: script por estación</text>
+<path d="M267.0,170 V477" stroke="#222222" stroke-width="3" marker-end="url(#m0)"/>
+<text x="281.0" y="320.0" font-size="25" fill="#222222">N descargas</text>
+<text x="281.0" y="348.0" font-size="25" fill="#222222">idénticas</text>
+<rect x="32" y="480" width="470" height="100" rx="16" fill="#fbf0dc" stroke="#c77d00" stroke-width="2.5"/>
+<g transform="translate(48,500.0)"><path d="M18,30 V6 M52,30 V6" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><rect x="4" y="30" width="62" height="24" rx="5" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><circle cx="18" cy="42" r="2.5" fill="#7a4b00"/><circle cx="29" cy="42" r="2.5" fill="#7a4b00"/><circle cx="40" cy="42" r="2.5" fill="#7a4b00"/><circle cx="51" cy="42" r="2.5" fill="#7a4b00"/></g>
+<text x="313.0" y="523.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#7a4b00">Router y enlace de salida</text>
+<text x="313.0" y="555.0" text-anchor="middle" font-size="25"  fill="#7a4b00">medida: tráfico de salida</text>
+<path d="M267.0,580 V643" stroke="#222222" stroke-width="3" marker-end="url(#m0)"/>
+<rect x="32" y="646" width="470" height="104" rx="16" fill="#ffffff" stroke="#222222" stroke-width="2.5"/>
+<g transform="translate(48,668.0)"><path d="M18,52 a14,14 0 0 1 0,-28 a18,18 0 0 1 34,-4 a14,14 0 0 1 2,32 z" stroke="#111111" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/></g>
+<text x="313.0" y="675.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#111111">Internet</text>
+<text x="313.0" y="707.0" text-anchor="middle" font-size="25"  fill="#111111">repositorios oficiales</text>
+<text x="313.0" y="739.0" text-anchor="middle" font-size="25"  fill="#111111">fuera de la frontera, fijo</text>
+<rect x="540" y="12" width="529" height="748" fill="none" stroke="#888888" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="804.5" y="48" text-anchor="middle" font-size="30" font-weight="bold" fill="#111">Propuesta</text>
+<rect x="570" y="70" width="470" height="100" rx="16" fill="#fbf0dc" stroke="#c77d00" stroke-width="2.5"/>
+<g transform="translate(586,90.0)"><rect x="18" y="0" width="50" height="34" rx="3" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><path d="M43,34 v9 M30,44 h26" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><rect x="0" y="14" width="50" height="34" rx="3" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><path d="M25,48 v9 M12,58 h26" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/></g>
+<text x="851.0" y="113.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#7a4b00">30 estaciones</text>
+<text x="851.0" y="145.0" text-anchor="middle" font-size="25"  fill="#7a4b00">medida: script por estación</text>
+<path d="M805.0,170 V277" stroke="#222222" stroke-width="3" marker-end="url(#m0)"/>
+<text x="819.0" y="208" font-size="25" fill="#222222">1 consulta local</text>
+<rect x="552" y="228" width="506" height="172" fill="none" stroke="#2b5db8" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round"/>
+<text x="562" y="256" font-size="23" fill="#2b5db8">Frontera del sistema</text>
+<rect x="570" y="280" width="470" height="104" rx="16" fill="#e8effa" stroke="#2b5db8" stroke-width="5"/>
+<g transform="translate(586,302.0)"><rect x="6" y="2" width="58" height="16" rx="3" stroke="#2b5db8" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><circle cx="17" cy="10" r="2.5" fill="#2b5db8"/><path d="M30,10 h24" stroke="#2b5db8" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><rect x="6" y="22" width="58" height="16" rx="3" stroke="#2b5db8" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><circle cx="17" cy="30" r="2.5" fill="#2b5db8"/><path d="M30,30 h24" stroke="#2b5db8" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><rect x="6" y="42" width="58" height="16" rx="3" stroke="#2b5db8" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><circle cx="17" cy="50" r="2.5" fill="#2b5db8"/><path d="M30,50 h24" stroke="#2b5db8" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/></g>
+<text x="851.0" y="309.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#2b5db8">Nodo en la LAN</text>
+<text x="851.0" y="341.0" text-anchor="middle" font-size="25"  fill="#2b5db8">caché bajo demanda</text>
+<text x="851.0" y="373.0" text-anchor="middle" font-size="25"  fill="#2b5db8">+ mirror sincronizado</text>
+<path d="M805.0,384 V477" stroke="#2b5db8" stroke-width="3" marker-end="url(#m1)"/>
+<text x="819.0" y="430" font-size="25" fill="#2b5db8">solo fallos y</text>
+<text x="819.0" y="458" font-size="25" fill="#2b5db8">sincronización</text>
+<rect x="570" y="480" width="470" height="100" rx="16" fill="#fbf0dc" stroke="#c77d00" stroke-width="2.5"/>
+<g transform="translate(586,500.0)"><path d="M18,30 V6 M52,30 V6" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><rect x="4" y="30" width="62" height="24" rx="5" stroke="#7a4b00" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/><circle cx="18" cy="42" r="2.5" fill="#7a4b00"/><circle cx="29" cy="42" r="2.5" fill="#7a4b00"/><circle cx="40" cy="42" r="2.5" fill="#7a4b00"/><circle cx="51" cy="42" r="2.5" fill="#7a4b00"/></g>
+<text x="851.0" y="523.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#7a4b00">Router y enlace de salida</text>
+<text x="851.0" y="555.0" text-anchor="middle" font-size="25"  fill="#7a4b00">medida: tráfico de salida</text>
+<path d="M805.0,580 V643" stroke="#222222" stroke-width="3" marker-end="url(#m0)"/>
+<rect x="570" y="646" width="470" height="104" rx="16" fill="#ffffff" stroke="#222222" stroke-width="2.5"/>
+<g transform="translate(586,668.0)"><path d="M18,52 a14,14 0 0 1 0,-28 a18,18 0 0 1 34,-4 a14,14 0 0 1 2,32 z" stroke="#111111" stroke-width="3.5" fill="white" stroke-linejoin="round" stroke-linecap="round"/></g>
+<text x="851.0" y="675.0" text-anchor="middle" font-size="28" font-weight="bold" fill="#111111">Internet</text>
+<text x="851.0" y="707.0" text-anchor="middle" font-size="25"  fill="#111111">repositorios oficiales</text>
+<text x="851.0" y="739.0" text-anchor="middle" font-size="25"  fill="#111111">fuera de la frontera, fijo</text>
+<rect x="20" y="775" width="44" height="30" rx="6" fill="#e8effa" stroke="#2b5db8" stroke-width="3"/>
+<text x="74" y="798" font-size="25" fill="#111">se interviene</text>
+<rect x="250" y="775" width="44" height="30" rx="6" fill="#fbf0dc" stroke="#c77d00" stroke-width="3"/>
+<text x="304" y="798" font-size="25" fill="#111">dónde se mide</text>
+<rect x="500" y="775" width="44" height="30" rx="6" fill="#ffffff" stroke="#222222" stroke-width="3"/>
+<text x="554" y="798" font-size="25" fill="#111">queda fijo</text>
+<rect x="700" y="775" width="44" height="30" fill="none" stroke="#2b5db8" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+<text x="754" y="798" font-size="25" fill="#111">frontera del sistema</text>
+</svg>
