@@ -2,27 +2,51 @@
 
 Diplomado en Metodología Científica en Ingeniería de Sistemas · Módulo IV (Cloud Computing, DevOps y Arquitectura de Software) · UNAJMA
 
-Repositorio de trabajo del artículo. Cada documento y cada cambio entra con su propio commit, igual que el flujo del docente: el historial es la bitácora de la investigación.
+Repositorio del artículo y de su prototipo. El historial es la bitácora de la investigación: un commit por cambio, y nada entra a `main` sin PR.
+
+## Entregas
+
+| Etiqueta | Fecha | Contenido |
+|---|---|---|
+| `v0.1` | 13 nov. | Planes como propuesta, demostrador mínimo con dos modos, pruebas, despliegue en Vercel |
+| `v0.2` | 18 nov. | Capas, base de datos, modos mirror y ambos, pruebas automáticas en cada PR |
+| `v1.0` | 20 nov. | Panel de resultados, análisis final, artículo con resultados |
 
 ## Estructura
 
-| Carpeta | Contenido | Sesión |
-|---|---|---|
-| `docs/sesion-01` | Contexto, brecha y pregunta de investigación | 1 |
-| `docs/sesion-02` | Variables, objetivos, hipótesis y operacionalización | 2 |
-| `docs/sesion-03` | Protocolo de búsqueda, registro, criterios, embudo, tabla de extracción, matriz de literatura, referencias | 3 |
-| `docs/auditoria-matriz-original.md` | Hallazgos al comparar la matriz original con las listas de chequeo de las clases 02 y 03 | — |
-| `paper/` | Artículo en formato IMRyD (`articulo.md` y `Articulo_IMRyD.docx`) | 1-3 |
+| Carpeta | Contenido |
+|---|---|
+| `api/`, `public/` | Demostrador: servicio con modo directo y con caché, y su página |
+| `scripts/` | `medir.py` (runner, CSV crudo) y `analizar.py` (mediana y p95) |
+| `tests/` | Pruebas automáticas del servicio |
+| `docs/` | `PLAN_ESTRUCTURA.md`, `PLAN_BASE_DE_DATOS.md`, `PLAN_MEDICION.md`, ADR y documentos por sesión |
+| `paper/` | Artículo (`articulo.md`, `Articulo_IMRyD.docx`) y figuras |
+| `experimento/` | Ensayo con Docker Compose (sin probar) |
+
+## Ejecutar en local
+
+```
+python -m venv .venv
+.venv\Scripts\activate            # Windows; en Linux o macOS: source .venv/bin/activate
+pip install -r requirements-dev.txt
+python -m pytest
+python -m uvicorn api.index:app --port 8000
+```
+
+Abrir http://127.0.0.1:8000. Para medir, ver `docs/PLAN_MEDICION.md`.
+
+## Qué es dato real y qué no
+
+El demostrador y el ensayo usan un origen simulado: validan el procedimiento. Los resultados del artículo salen de la medición en el laboratorio.
 
 ## Convención de commits
 
-`docs(sesion-0X): ...` para documentos de cada sesión, `docs(paper): ...` para el artículo, `fix(...)` para correcciones.
+`feat`, `fix`, `test`, `chore`, y `docs(sesion-0X)` o `docs(paper)` para documentos.
 
 ## Pendiente (no se inventa)
 
-- Ejecutar las cadenas de `docs/sesion-03/registro-busqueda.csv` en IEEE Xplore, Scopus, ACM DL y Google Scholar y anotar los números reales. Con ellos se completa el embudo.
-- Leer a texto completo (pasada 2) las 10 referencias antes de entregar.
-- Medir la línea base en el laboratorio (sesiones 5 y 6). Los valores de 6 min y 90 % del enlace son observaciones preliminares por validar.
-- Resultados: sesión 7.
-
-- `docs/sesion-05/`: ADR-001 y autochequeo de las clases 04 y 05.
+- Números reales de búsqueda y fecha (Tablas II y III del artículo).
+- Lectura a texto completo de las 10 referencias y confirmación de la matriz.
+- Versiones reales de SO, paquetes y hardware.
+- Probar el ensayo de `experimento/`.
+- Medición en el laboratorio y sección de resultados.
