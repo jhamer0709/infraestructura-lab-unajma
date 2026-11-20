@@ -193,7 +193,7 @@ TABLA III
 | Identificados en las cinco bases   | 298          |
 | Tras eliminar duplicados           | 285          |
 | Pasan cribado por título           | 80           |
-| Pasan cribado por resumen          | \[pendiente\]|
+| Pasan cribado por resumen          | 2            |
 | Leídos a texto completo            | \[pendiente\]|
 | Incluidos en la revisión           | 10           |
 
@@ -203,9 +203,22 @@ títulos temáticamente plausibles para el dominio del artículo tras
 descartar el ruido dominante de "mirror symmetry" (física y matemáticas)
 y de caché de hardware, que domina los resultados de Scopus y ACM por la
 ambigüedad de los términos "mirror" y "cache". El cribado por resumen de
-esos 80 y la lectura a texto completo quedan pendientes. Las diez
-referencias incluidas en la revisión (Tabla IV) se identificaron por
-bola de nieve, no por esta cadena, según se explica en II.A.
+esos 80 (ejecutado el 20/11/2026) dejó solo 2: la mayoría de los 78
+descartados resultó, al leer el resumen, tratarse de caché de páginas
+web, video/streaming, CDN, IoT o sistemas de archivos de HPC genéricos
+— el mismo ruido léxico de "cache"/"proxy" que el cribado por título no
+podía distinguir —, y el resto se excluyó por año anterior a 2016, por
+no ser revista o congreso con revisión por pares (un libro técnico, una
+tesis de maestría), o por no reportar mediciones de caché pese a un
+tema adyacente. Pasan Priedhorsky et al. (SC'23 Workshops, ACM —
+caché de build de contenedores basada en Git, mide tiempo de build y
+uso de disco) y Funasaka (IEEE DASC 2025 — integra una red de
+contenido por nombre en el gestor de paquetes apt de Ubuntu, con
+evaluación preliminar de rendimiento). Detalle fila por fila en
+`docs/sesion-03/cribado-titulo.csv`. Falta la lectura a texto completo
+de estos dos. Las diez referencias incluidas en la revisión (Tabla IV)
+se identificaron por bola de nieve, no por esta cadena, según se
+explica en II.A.
 
 Los descartes por título y resumen se registran con su motivo. Se leyó y
 descartó a Weeraddana et al. (FSE 2024) por no medir el tiempo de
