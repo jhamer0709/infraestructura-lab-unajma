@@ -468,16 +468,12 @@ EPIS-UNAJMA.
 
 <span class="smallcaps">Contribución de los autores (CRediT)</span>
 
-*Nota: roles por confirmar o ajustar por cada coautor antes del envío;
-se listan a nivel de borrador según la participación observada hasta
-esta sesión.*
-
-J. A. Rojas Silva: conceptualización, metodología, curación de datos,
-investigación (protocolo de búsqueda, cribado, verificación de
-referencias), redacción (borrador original y revisión), administración
-del proyecto. E. A. Maquera Flores, R. Carrion Abollaneda, R. Apaza
-Apaza y N. Catacora Flores: revisión crítica y validación del
-planteamiento, de las variables y del diseño experimental.
+Jhamer Anderson Rojas Silva, Edwing Alcides Maquera Flores, Richard
+Carrion Abollaneda, Ruben Apaza Apaza y Norma Catacora Flores:
+conceptualización, metodología, investigación, curación de datos,
+redacción (borrador original y revisión) y administración del
+proyecto, por igual. Todos los autores revisaron y aprobaron la
+versión final.
 
 <span class="smallcaps">Referencias</span>
 
