@@ -45,3 +45,18 @@ Bola de nieve hacia atrás y hacia adelante (Citado por en Scholar) desde los tr
 
 ## Criterio de parada
 Saturación: las referencias nuevas ya están en la lista y cambiar la cadena devuelve los mismos autores. Para este módulo, diez referencias bien leídas.
+
+## Ejecución (19/11/2026)
+
+Resultados reales y cadenas finales en `registro-busqueda.csv`. Resumen:
+
+- **IEEE y Scopus:** la cadena principal completa quedó por debajo de 50 (2 y 7 resultados). Se aplicó la regla de "quita términos": se retiró la cláusula de tiempo/latencia y se dejó solo la de caché/mirror, lo que subió a 13 (IEEE) y 62 (Scopus).
+- **ACM DL:** la cadena principal completa ya estaba en zona (165) sin reducir. El filtro de año 2016-2026 no se pudo aplicar: la cuenta institucional es "Basic Edition" y tanto el formulario avanzado como el filtro lateral de fecha están marcados "Filters (Premium feature)"; se probaron los dos y el conteo no cambió. El 165 es sin filtrar por año (se verificaron fichas de 1995 a 2026 en la lista completa).
+- **Google Scholar:** 54, cadena sin reducir, confirmado hasta que la paginación se detuvo (6 páginas).
+- **SciELO:** las dos cadenas previstas (`servidor proxy caché ancho de banda`, `repositorio local paquetes`) dieron 0. Se redujo a `proxy caché`, que dio 4 — sigue bajo la zona de trabajo, pero es el máximo alcanzable en SciELO sin salir del alcance temático.
+
+**Deduplicación:** 298 registros brutos (13+62+165+54+4) → 285 únicos tras normalizar título (minúsculas, sin puntuación) y comparar exactamente entre las cinco bases. 12 títulos duplicados entre bases (13 repeticiones de más); el más repetido, "Intermediate Caching Technique via Fog Layer..." (Thakur y Srinivasa, 2020), apareció en IEEE, Scopus y Google Scholar.
+
+**Cribado por título:** de los 285 únicos, 80 tienen un título temáticamente plausible para el dominio del artículo (caché, proxy, mirror, registry, tiempo de build/descarga/provisioning, CDN, Docker/npm/apt, edge computing); el resto es ruido de la ambigüedad de "mirror" y "cache" (sobre todo "mirror symmetry" en física/matemáticas, mayoritario en Scopus y ACM, y memoria caché de hardware). Falta el cribado por resumen y la lectura a texto completo de los 80.
+
+**Nota importante sobre las diez referencias ya leídas (tabla-extraccion.md):** ninguna de las diez apareció en los 298 registros de esta ejecución, revisados de forma sistemática (título por título) en las cinco bases. No es evidencia de que la búsqueda esté mal construida: las diez se identificaron originalmente por bola de nieve (ver "Búsqueda complementaria" arriba), no por esta cadena principal, y varias usan vocabulario distinto al de la cadena (p. ej. [6] habla de "caching environments", no de "caching proxy" ni "registry cache") o se publicaron en venues de cobertura irregular en estas bases (FAST/USENIX para [3] y [5]). Queda como limitación declarada del protocolo, no como hallazgo nuevo de brecha: la cadena principal y la bola de nieve son procedimientos complementarios, y este resultado es exactamente lo esperable de esa complementariedad.
