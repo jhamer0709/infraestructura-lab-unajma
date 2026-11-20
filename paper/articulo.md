@@ -336,7 +336,11 @@ número de estaciones concurrentes, importa porque el beneficio del caché
 depende de cuántas estaciones piden lo mismo \[8\]. Las variables de
 control (caja gris) se mantienen fijas entre configuraciones.
 
-*B. Trazabilidad con los objetivos*
+*B. Variables del modelo*
+
+Dos variables independientes nominales, cada una con dos niveles (con/sin), definen cuatro configuraciones: línea base, caché, mirror y ambos (Tabla I). El diseño experimental (V.A) decide cuáles de ellas se miden y con cuántas sesiones.
+
+*C. Trazabilidad con los objetivos*
 
 TABLA V
 
@@ -352,14 +356,14 @@ TABLA V
 Toda flecha del modelo tiene objetivo asignado. El último objetivo es el
 método con que se miden las demás.
 
-*C. Arquitectura propuesta*
+<span class="smallcaps">IV. Arquitectura de la solución</span>
+
+*A. Arquitectura de despliegue*
 
 Se adopta un nodo único en la LAN del laboratorio porque el diagnóstico
 preliminar localiza el cuello de botella en el enlace de salida
 compartido (cerca del 90 % de saturación, por validar en OE1) y no en
-las estaciones. Se evaluaron además un mirror alojado en la nube y un
-caché distribuido entre las estaciones, descartados por los criterios de
-la Tabla VI. La decisión mantiene fijos el hardware, la lista de
+las estaciones. La decisión mantiene fijos el hardware, la lista de
 paquetes y el enlace, lo que permite atribuir las variaciones del tiempo
 y del tráfico a las dos intervenciones. El registro completo de la
 decisión (ADR-001) está en el repositorio.
@@ -376,21 +380,17 @@ la frontera y declarados). El nodo debe estar dentro de la LAN: un
 mirror en la nube no reduce el uso del enlace de salida, que es el
 cuello de botella.
 
-![Fig. 3. Vista de componentes.](media/image4.png){width=3in height=2.70336in}
+*B. Decisión arquitectónica y alternativas*
 
-Fig. 3. Vista de componentes del nodo en la LAN.
-
-La Fig. 3 muestra dónde vive la lógica que se cambia: un enrutador envía
-los repositorios espejados al mirror y el resto al proxy de caché, que
-consulta a los repositorios oficiales solo si no tiene el paquete. El
-mirror se sincroniza fuera de la sesión de medición.
+Se evaluaron además un mirror alojado en la nube y un caché distribuido
+entre las estaciones, descartados por los criterios de la Tabla VI.
 
 TABLA VI
 
 <span class="smallcaps">Decisión de arquitectura</span>
 
 | **Criterio**                     | **A. Nodo en la LAN**              | **B. Mirror en la nube**                         | **C. Caché entre estaciones**                  |
-|----------------------------------|------------------------------------|--------------------------------------------------|------------------------------------------------|
+|----------------------------------|------------------------------------|----------------------------------------------------|------------------------------------------------|
 | Control del entorno              | Total: hardware propio             | Parcial: red y proveedor ajenos                  | Total, pero depende de estaciones encendidas   |
 | ¿Aísla caché y mirror?           | Sí, se activan por separado        | Solo el mirror                                   | Solo el caché                                  |
 | Efecto sobre el enlace de salida | Solo salen fallos y sincronización | No alivia: la descarga sigue saliendo del campus | Reduce repeticiones, con coordinación compleja |
@@ -400,7 +400,29 @@ TABLA VI
 Los valores de esfuerzo son una estimación cualitativa de los autores. La
 alternativa C se apoya en la línea de \[8\].
 
-*D. Diseño experimental*
+*C. Vista de componentes*
+
+![Fig. 3. Vista de componentes.](media/image4.png){width=3in height=2.70336in}
+
+Fig. 3. Vista de componentes del nodo en la LAN.
+
+La Fig. 3 muestra dónde vive la lógica que se cambia: un enrutador envía
+los repositorios espejados al mirror y el resto al proxy de caché, que
+consulta a los repositorios oficiales solo si no tiene el paquete. El
+mirror se sincroniza fuera de la sesión de medición.
+
+*D. Punto de medición*
+
+El tiempo se toma en cada estación con un script y reloj monotónico,
+desde el inicio de la preparación hasta que el entorno queda listo. No
+se mide en el nodo: este no ve el tiempo de instalación local. El
+tráfico de salida se toma con un contador en el router, de modo que
+ambas métricas capturan el efecto de principio a fin de la intervención,
+no solo lo que ocurre dentro del nodo.
+
+<span class="smallcaps">V. Evaluación experimental</span>
+
+*A. Plan de pruebas*
 
 TABLA VII
 
@@ -421,14 +443,27 @@ TABLA VII
 Las configuraciones se miden en orden aleatorio y, cuando es posible, el
 mismo día, para que la hora no se confunda con el tratamiento.
 
-*E. Instrumentación y protocolo*
+*B. Instrumentación y automatización*
 
-El tiempo se toma en cada estación con un script y reloj monotónico,
-desde el inicio de la preparación hasta que el entorno queda listo. No
-se mide en el nodo: este no ve el tiempo de instalación local. El
-tráfico de salida se toma con un contador en el router, y los aciertos y fallos del proxy se registran, en orden de llegada, como medida auxiliar que describe la transición del caché de frío a tibio dentro de la sesión. Toda sesión medida parte de caché frío. El mirror se sincroniza fuera de la sesión y su tráfico de sincronización se reporta aparte. Cada sesión sigue seis pasos: (1) reconstruir el entorno desde la lista versionada y verificar que solo está activa la configuración a medir; (2) hacer una sesión previa de calentamiento, que se descarta y se anota; (3) vaciar el caché; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con fecha y versión de la lista; (6) calcular los percentiles al final, desde el CSV.
+Los aciertos y fallos del proxy se registran, en orden de llegada, como medida auxiliar que describe la transición del caché de frío a tibio dentro de la sesión. Toda sesión medida parte de caché frío. El mirror se sincroniza fuera de la sesión y su tráfico de sincronización se reporta aparte.
 
-<span class="smallcaps">IV. Amenazas a la validez</span>
+*C. Protocolo de medición*
+
+Cada sesión sigue seis pasos: (1) reconstruir el entorno desde la lista versionada y verificar que solo está activa la configuración a medir; (2) hacer una sesión previa de calentamiento, que se descarta y se anota; (3) vaciar el caché; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con fecha y versión de la lista; (6) calcular los percentiles al final, desde el CSV.
+
+*D. Análisis previsto*
+
+Se reportan mediana, p95 y dispersión, por sesión y agrupados, con una prueba no paramétrica entre configuraciones usando la sesión como unidad de análisis. Con cinco sesiones por configuración el contraste es posible; con tres, el resultado se reporta como descriptivo. El criterio de éxito es p95 y tráfico reducidos en al menos 90 % (H1a, H1b).
+
+*E. Resultados*
+
+\[Pendiente: sesión 7. Esta subsección se completará con las mediciones de las cuatro configuraciones (línea base, caché, mirror y ambos) una vez ejecutadas las sesiones declaradas en V.A.\]
+
+*F. Significancia y tamaño del efecto*
+
+\[Pendiente: sesión 7. Se reportará la prueba no paramétrica, el tamaño del efecto y el intervalo de confianza para la diferencia de medianas, junto con el cruce o no de los umbrales declarados en H1a y H1b.\]
+
+<span class="smallcaps">VI. Amenazas a la validez</span>
 
 TABLA VIII
 
@@ -444,6 +479,22 @@ TABLA VIII
 
 Declarar estas amenazas no debilita el trabajo: indica qué se controló y
 qué queda como límite.
+
+<span class="smallcaps">VII. Discusión</span>
+
+\[Pendiente: sesión 7. Esta sección interpretará los resultados de la
+Sección V a la luz de la brecha identificada en II.D, discutirá la
+contribución de cada intervención por separado y de su combinación
+frente a los umbrales de H1a y H1b, y situará los hallazgos frente a la
+literatura revisada en el Estado del arte (Tabla IV).\]
+
+<span class="smallcaps">VIII. Conclusiones y trabajo futuro</span>
+
+\[Pendiente: sesión 7. Esta sección resumirá si se cumplieron H1a y
+H1b, recogerá las limitaciones ya declaradas en el texto (cribado por un
+solo revisor, alcance de un único laboratorio, mayoría de las
+referencias identificadas por bola de nieve) y propondrá líneas de
+trabajo futuro.\]
 
 <span class="smallcaps">Disponibilidad de datos y código</span>
 
