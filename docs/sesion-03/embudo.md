@@ -4,12 +4,13 @@ Los números salen del registro de búsqueda. No se estiman ni se copian del eje
 
 | Etapa | N |
 |---|---|
-| Identificados por la cadena, en todas las bases | [completar] |
-| Tras quitar duplicados entre bases | [completar] |
-| Pasan el cribado por título y resumen | [completar] |
-| Leídos a texto completo | [completar] |
-| Incluidos en la revisión | 10 (meta) |
+| Identificados por la cadena, en todas las bases | 298 |
+| Tras quitar duplicados entre bases | 285 |
+| Pasan el cribado por título | 80 |
+| Pasan el cribado por resumen | 2 |
+| Leídos a texto completo (de los 2) | 1 (Priedhorsky et al.; Funasaka bloqueado por paywall de IEEE Xplore) |
+| Incluidos en la revisión | 11 |
 
 Cribado de primera pasada: 30 segundos por paper, respuestas Sí / Quizá / No, anotando en dos palabras el motivo de cada No.
 
-Nota: los diez candidatos de `tabla-extraccion.md` se localizaron con búsquedas exploratorias en la web, no en las bases. Hay que reencontrarlos con las cadenas anteriores para que el registro los respalde.
+Nota: diez de los once candidatos de `tabla-extraccion.md` se localizaron originalmente con búsquedas exploratorias (bola de nieve), no por esta cadena; el undécimo ([11], Priedhorsky et al.) sí se encontró y confirmó por la cadena principal (ACM DL) en la ejecución del 19/11/2026, registrada en `registro-busqueda.csv`.

@@ -10,6 +10,7 @@
 | [8] Becker 2021 | Variante (P2P) | Sí (aprovisionamiento) | Sí | Parcial (enlace limitado, no académico) | Emulados |
 | [9] Zhao 2019 | No (implicaciones) | No | No | No | Reales |
 | [10] PyPA | Sí (guía) | No | No | No | Ninguno |
+| [11] Priedhorsky et al. (Charliecloud), SC'23 Workshops 2023 | Variante (caché de build sin capas, basada en Git) | Sí (build) | Sí (frío/tibio/caliente) | No (clúster HPC con InfiniBand) | Reales (24 repeticiones por condición) |
 | [1], [2] | Conceptual | No | No | No | — |
 
-Lectura: en la columna «laboratorio académico o enlace limitado» no hay un solo «Sí», y ningún estudio combina mirror o caché local, tiempo de preparación, línea base y datos de un laboratorio universitario. Brecha de **contexto** y de **combinación**, limitada a los diez estudios revisados. Revisar al leer el texto completo.
+Lectura: en la columna «laboratorio académico o enlace limitado» no hay un solo «Sí», y ningún estudio combina mirror o caché local, tiempo de preparación, línea base y datos de un laboratorio universitario. Brecha de **contexto** y de **combinación**, limitada a los once estudios revisados (diez identificados por bola de nieve y [11] por la cadena principal de la sesión 3; ver `protocolo-busqueda.md`). Texto completo leído solo para [11]; para el resto, revisar al leer el texto completo.
