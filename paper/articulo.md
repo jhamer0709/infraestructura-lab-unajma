@@ -176,7 +176,14 @@ los 298 registros de las cinco bases (revisados título por título), lo que se 
 vocabulario distinto en el resumen original (p. ej. "caching
 environments" en \[6\] en vez de "caching proxy") y por venues de
 cobertura irregular en estas bases (USENIX FAST para \[3\] y \[5\]); se
-declara como límite del protocolo, no como hallazgo. La excepción es
+declara como límite del protocolo, no como hallazgo. Una prueba posterior
+confirmó que la cadena de IEEE Xplore es, en efecto, sub-sensibilizada
+para ese vocabulario: agregar la cláusula `OR "caching environment"`
+sube el conteo de 13 a 86 (dentro de la zona de trabajo) y sí cubre el
+título de \[6\]; no se re-ejecutó el cribado completo con la cadena
+ampliada por alcance de esta sesión (detalle en
+`docs/sesion-03/protocolo-busqueda.md`), y queda como mejora pendiente
+antes de apuntar a una revista de mayor exigencia. La excepción es
 \[11\] (Priedhorsky et al., Charliecloud), identificada por la propia
 cadena principal en ACM DL y que pasó el cribado por título y por
 resumen (ver II.B); el alcance declarado de diez referencias (ver
@@ -184,9 +191,14 @@ resumen (ver II.B); el alcance declarado de diez referencias (ver
 incorporarla, por ser la comparación con/sin caché mejor instrumentada
 entre los 80 candidatos del cribado. Se utilizó una
 herramienta de IA generativa para ampliar sinónimos, traducir términos,
-armar las cadenas, ejecutar las búsquedas y apoyar la redacción; la
-selección de fuentes y la verificación de cada referencia incluida
-fueron realizadas por los autores.
+armar las cadenas, ejecutar las búsquedas, ejecutar el cribado por título
+y por resumen de los 285 y 80 registros, y apoyar la redacción. El autor
+principal supervisó el proceso, resolvió los casos límite que quedaron
+ambiguos tras el cribado automático (verificación dirigida en Google
+Scholar) y tomó la decisión editorial de incorporar \[11\], ampliando el
+alcance declarado; la verificación bibliográfica de cada referencia
+incluida (autoría, medio, año, DOI) se hizo contra fuentes vivas y se
+reporta en esta nota y en la de Referencias.
 
 *B. Selección*
 
@@ -237,7 +249,14 @@ por la cadena principal, según se explica en II.A.
 
 Los descartes por título y resumen se registran con su motivo. Se leyó y
 descartó a Weeraddana et al. (FSE 2024) por no medir el tiempo de
-descarga. De las once referencias, ocho están indexadas: \[3\]–\[5\] y
+descarga. **Limitación declarada:** el cribado por título y por resumen de
+los 285 y 80 registros lo ejecutó un único revisor (herramienta de IA
+bajo supervisión del autor principal), sin segundo revisor humano
+independiente ni cálculo de concordancia (kappa); el autor resolvió
+personalmente los dos casos límite que quedaron ambiguos tras el cribado
+automático y tomó la decisión editorial de incorporar \[11\]. Se declara
+como amenaza al proceso de selección, no se subsana en este trabajo. De
+las once referencias, ocho están indexadas: \[3\]–\[5\] y
 \[9\] figuran como documentos en Scopus, \[1\], \[2\] y \[6\] se
 publicaron en revistas Q1 de Scimago en su año de publicación (2016,
 2018 y 2022), y \[11\] figura en ACM Digital Library (SC'23 Workshops,
@@ -395,7 +414,7 @@ TABLA VII
 | Moderadora         | Estaciones concurrentes N = 1, 10, 30                                                                                                       |
 | Control            | Hardware, lista de paquetes versionada, SO y versiones, horario, enlace, caché vaciado al inicio                                            |
 | Unidad de análisis | Una estación en una sesión de preparación                                                                                                   |
-| Muestra            | Por configuración: N = 30, cinco sesiones como objetivo y tres como mínimo (150 o 90 observaciones por estación); N = 10, tres sesiones (30); N = 1, cinco sesiones (5). Total: 52 sesiones. Las hipótesis se contrastan solo en N = 30; N = 1 y N = 10 son descriptivos |
+| Muestra            | Por configuración: N = 30, cinco sesiones como objetivo y tres como mínimo (150 o 90 observaciones en total para esa cohorte, no por estación); N = 10, tres sesiones (30 observaciones en total); N = 1, cinco sesiones (5 observaciones). Total de sesiones (cuatro configuraciones): 44 en el escenario mínimo, 52 en el escenario objetivo (la diferencia está solo en N = 30: 3 vs. 5 sesiones por configuración). Las hipótesis se contrastan solo en N = 30; N = 1 y N = 10 son descriptivos |
 | Estadísticos       | Mediana, p95 y dispersión, por sesión y agrupados; prueba no paramétrica entre configuraciones con la sesión como unidad. Con cinco sesiones por configuración el contraste es posible; con tres, el resultado se reporta como descriptivo                                                                 |
 | Criterio de éxito  | p95 y tráfico reducidos en al menos 90 % (H1a, H1b)                                                                                         |
 
@@ -426,12 +445,47 @@ TABLA VIII
 Declarar estas amenazas no debilita el trabajo: indica qué se controló y
 qué queda como límite.
 
+<span class="smallcaps">Disponibilidad de datos y código</span>
+
+El protocolo, los registros de búsqueda y cribado (CSV), los scripts de
+medición y análisis, y el código del demostrador están en el
+repositorio público
+https://github.com/jhamer0709/infraestructura-lab-unajma. Los datos
+crudos de la línea base y de las configuraciones con caché o mirror se
+publicarán en el mismo repositorio al concluir la sesión 7.
+
+<span class="smallcaps">Conflictos de interés</span>
+
+Los autores declaran no tener conflictos de interés relacionados con
+este trabajo.
+
+<span class="smallcaps">Financiamiento</span>
+
+Este trabajo no recibió financiamiento externo; se desarrolló como parte
+del Diplomado en Metodología Científica en Ingeniería de Sistemas
+(ITEC–UNAJMA) con recursos propios de los autores y de la
+EPIS-UNAJMA.
+
+<span class="smallcaps">Contribución de los autores (CRediT)</span>
+
+*Nota: roles por confirmar o ajustar por cada coautor antes del envío;
+se listan a nivel de borrador según la participación observada hasta
+esta sesión.*
+
+J. A. Rojas Silva: conceptualización, metodología, curación de datos,
+investigación (protocolo de búsqueda, cribado, verificación de
+referencias), redacción (borrador original y revisión), administración
+del proyecto. E. A. Maquera Flores, R. Carrion Abollaneda, R. Apaza
+Apaza y N. Catacora Flores: revisión crítica y validación del
+planteamiento, de las variables y del diseño experimental.
+
 <span class="smallcaps">Referencias</span>
 
 *Nota: las referencias \[1\]–\[6\], \[8\] y \[9\] se verificaron contra
 el texto del propio artículo (autores, medio, año y, cuando existe,
-DOI); el volumen y el número de \[6\] provienen de la página del grupo
-autor. \[7\] y \[10\] se comprobaron en arXiv y en la página web,
+DOI); el volumen y el número de \[6\] se verificaron directamente en IEEE
+Xplore (documento 9311876: vol. 48, n.º 6, pp. 2040–2052, publicado el
+01/06/2022; la página del grupo autor decía n.º 8, dato corregido). \[7\] y \[10\] se comprobaron en arXiv y en la página web,
 respectivamente; \[9\] se confirmó en la ficha de IEEE Xplore (documento
 8891000). \[11\] se verificó en las actas de SC'23 Workshops
 (sc23.supercomputing.org), en DBLP y, a texto completo, en
@@ -464,8 +518,8 @@ Storage Technologies (FAST ’18), Oakland, CA, 2018, pp. 265–278.
 
 \[6\] K. Gallaba, J. Ewart, Y. Junqueira y S. McIntosh, «Accelerating
 continuous integration by caching environments and inferring
-dependencies», IEEE Trans. Softw. Eng., vol. 48, n.º 8, pp. 2040–2052,
-2022. doi: 10.1109/TSE.2020.3048335
+dependencies», IEEE Trans. Softw. Eng., vol. 48, n.º 6, pp. 2040–2052,
+jun. 2022. doi: 10.1109/TSE.2020.3048335
 
 \[7\] T. A. Ghaleb, D. A. da Costa y Y. Zou, «The promise and reality of
 continuous integration caching: An empirical study of Travis CI builds»,
@@ -485,7 +539,7 @@ Python Packaging User Guide. \[En línea\]. Disponible en:
 https://packaging.python.org/en/latest/guides/index-mirrors-and-caches/
 (consultado el 7 de nov. de 2026).
 
-\[11\] R. Priedhorsky, J. Ogas, C. H. (Rusty) Davis IV, Z. N. Hounshel,
+\[11\] R. Priedhorsky, J. Ogas, C. H. Davis IV, Z. N. Hounshel,
 A. Lee, B. Stormer y R. S. Goff, «Charliecloud's layer-free, Git-based
 container build cache», en Proc. SC '23 Workshops (Int. Conf. for High
 Performance Computing, Networking, Storage and Analysis), Denver, CO,

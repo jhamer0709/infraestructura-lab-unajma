@@ -10,7 +10,7 @@
 
 [5] A. Anwar *et al.*, "Improving Docker registry design based on production workload analysis," in *Proc. 16th USENIX Conf. File and Storage Technologies (FAST '18)*, Oakland, CA, USA, Feb. 2018, pp. 265–278.
 
-[6] K. Gallaba, J. Ewart, Y. Junqueira, and S. McIntosh, "Accelerating continuous integration by caching environments and inferring dependencies," *IEEE Trans. Softw. Eng.*, vol. 48, no. 8, pp. 2040–2052, 2022. [DOI y número por confirmar en IEEE Xplore.]
+[6] K. Gallaba, J. Ewart, Y. Junqueira, and S. McIntosh, "Accelerating continuous integration by caching environments and inferring dependencies," *IEEE Trans. Softw. Eng.*, vol. 48, no. 6, pp. 2040–2052, Jun. 2022, doi: 10.1109/TSE.2020.3048335. [Verificado en IEEE Xplore, documento 9311876, sesión 19/11/2026; la cifra "no. 8" de versiones anteriores de esta lista era incorrecta.]
 
 [7] T. A. Ghaleb, D. A. da Costa, and Y. Zou, "The promise and reality of continuous integration caching: An empirical study of Travis CI builds," arXiv:2601.19146, Jan. 2026. (Preprint.)
 

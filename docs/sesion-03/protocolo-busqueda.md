@@ -83,3 +83,30 @@ declaradas (máximo cuatro preprints o documentación técnica, mínimo
 seis indexadas) se cumplen igual con once: [11] está indexado en ACM DL
 y no es preprint ni documentación técnica. Afecta `paper/articulo.md`
 (Tabla III, Tabla IV, lista de referencias) y `tabla-extraccion.md`.
+
+## Prueba de validación de la cadena (auditoría, 19/11/2026)
+
+La auditoría estricta de esta sesión señaló que la cadena principal no
+recupera 10 de las 11 referencias incluidas (ver "Nota importante" más
+arriba), lo que indica una cadena sub-sensibilizada según la práctica
+PRESS (probar la cadena contra estudios ya conocidos). Se probó en vivo
+agregar la cláusula `OR "caching environment"` a la cadena de IEEE
+Xplore: el conteo subió de 13 a 86 resultados (sigue dentro de la zona
+de trabajo 50–300), y se confirmó por separado que el título exacto de
+[6] ("Accelerating Continuous Integration by Caching Environments and
+Inferring Dependencies") está indexado en IEEE Xplore (documento
+9311876) y es recuperable con ese vocabulario. Esto confirma que la
+cadena original puede fortalecerse agregando variantes de "environment"
+junto a "cache"/"proxy"/"mirror". **No se re-ejecutó el cribado
+completo con la cadena ampliada** (deduplicación, cribado por título y
+por resumen de los ~73 registros adicionales) por alcance de esta
+sesión de auditoría; queda documentado como mejora pendiente antes de
+intentar una revista Q2 o Q1. Para el nivel actual (entrega de
+diplomado / revista Q3 regional) la limitación ya declarada en el
+artículo es información suficiente para que un lector evalúe el
+riesgo.
+
+De paso, esta verificación en IEEE Xplore corrigió un dato: la ficha
+oficial del documento 9311876 muestra **Volumen 48, Número 6** (no
+Número 8, como indicaba la página del grupo autor usada antes). Se
+corrigió en `paper/articulo.md` y en `referencias-ieee.md`.
