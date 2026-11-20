@@ -131,9 +131,9 @@ enlace limitado, en entorno emulado.
 
 *A. Protocolo de búsqueda*
 
-La búsqueda se realizó el \[fecha\] en IEEE Xplore, Scopus, ACM Digital
-Library, Google Scholar y SciELO, con el periodo 2016–2026. Los
-criterios se declararon antes de filtrar.
+La búsqueda se realizó el 19 de noviembre de 2026 en IEEE Xplore,
+Scopus, ACM Digital Library, Google Scholar y SciELO, con el periodo
+2016–2026. Los criterios se declararon antes de filtrar.
 
 *Inclusión.* Publicado entre 2016 y 2026; en revista o congreso con
 revisión por pares; reporta mediciones de tiempo, tráfico o tasa de
@@ -148,21 +148,39 @@ TABLA II
 
 <span class="smallcaps">Registro de búsqueda</span>
 
-| **Base**    | **Cadena**                                      | **Filtros** | **Result.** |
-|-------------|-------------------------------------------------|-------------|-------------|
-| IEEE Xplore | Cadena de tres conceptos con OR entre sinónimos | 2016–2026   | \[n\]       |
-| Scopus      | TITLE-ABS-KEY, misma cadena                     | 2016–2026   | \[n\]       |
-| ACM DL      | La misma cadena                                 | 2016–2026   | \[n\]       |
-| Scholar     | La misma, un nivel de paréntesis                | desde 2016  | \[n\]       |
-| SciELO      | servidor proxy caché ancho de banda             | sin filtro  | \[n\]       |
+| **Base**    | **Cadena**                                                  | **Filtros**                 | **Result.** |
+|-------------|--------------------------------------------------------------|------------------------------|-------------|
+| IEEE Xplore | Solo la cláusula de caché/mirror (reducida; ver nota)        | 2016–2026                    | 13          |
+| Scopus      | TITLE-ABS-KEY, solo la cláusula de caché/mirror (reducida)   | 2016–2026, artículo o congreso | 62        |
+| ACM DL      | Cadena de tres conceptos completa, sin reducir                | sin filtro de año (ver nota) | 165         |
+| Scholar     | La misma, un nivel de paréntesis, sin reducir                 | desde 2016                   | 54          |
+| SciELO      | proxy caché (reducida; ver nota)                              | sin filtro                   | 4           |
 
-Cadenas completas en el repositorio. Agregar aquí, como filas, las
-búsquedas que no funcionaron: explican por qué la cadena final quedó
-como quedó. La búsqueda se complementa con bola de nieve hacia atrás y
-hacia adelante desde los estudios más relevantes. Se utilizó una
+**Intentos fallidos.** IEEE y Scopus con la cadena completa (caché/mirror
+AND tiempo/latencia): 2 y 7 resultados, por debajo de la zona 50–300; se
+retiró la cláusula de tiempo para llegar a 13 y 62. SciELO con
+*servidor proxy caché ancho de banda* y con *repositorio local paquetes*:
+0 en ambas; se redujo a *proxy caché* (4), el máximo alcanzable en esa
+base sin salir del alcance temático. En ACM DL el filtro de año no se
+pudo aplicar: la cuenta institucional es *Basic Edition* y tanto el
+formulario de búsqueda avanzada como el filtro lateral de fecha están
+marcados "Filters (Premium feature)"; el conteo de 165 no cambió al
+intentarlo por ambas vías y queda sin filtrar por año (se verificó
+manualmente que incluye resultados de 1995 a 2026). Cadenas completas y
+el registro ejecutado, con fecha, están en
+`docs/sesion-03/registro-busqueda.csv`. La búsqueda se complementa con
+bola de nieve hacia atrás y hacia adelante desde los estudios más
+relevantes; las diez referencias de la Tabla IV se identificaron por esa
+vía, no por la cadena principal — ninguna aparece en los 298 registros
+de las cinco bases (revisados título por título), lo que se explica por
+vocabulario distinto en el resumen original (p. ej. "caching
+environments" en \[6\] en vez de "caching proxy") y por venues de
+cobertura irregular en estas bases (USENIX FAST para \[3\] y \[5\]); se
+declara como límite del protocolo, no como hallazgo. Se utilizó una
 herramienta de IA generativa para ampliar sinónimos, traducir términos,
-armar las cadenas y apoyar la redacción; la búsqueda, la selección de
-fuentes y la verificación de cada referencia fueron realizadas por los autores.
+armar las cadenas, ejecutar las búsquedas y apoyar la redacción; la
+selección de fuentes y la verificación de cada referencia incluida
+fueron realizadas por los autores.
 
 *B. Selección*
 
@@ -172,11 +190,22 @@ TABLA III
 
 | **Etapa**                          | **Estudios** |
 |------------------------------------|--------------|
-| Identificados en las cinco bases   | \[n\]        |
-| Tras eliminar duplicados           | \[n\]        |
-| Pasan cribado por título y resumen | \[n\]        |
-| Leídos a texto completo            | \[n\]        |
+| Identificados en las cinco bases   | 298          |
+| Tras eliminar duplicados           | 285          |
+| Pasan cribado por título           | 80           |
+| Pasan cribado por resumen          | \[pendiente\]|
+| Leídos a texto completo            | \[pendiente\]|
 | Incluidos en la revisión           | 10           |
+
+El cribado por título (298 → 285 → 80) ya se ejecutó: 285 es tras
+deduplicar por título normalizado entre las cinco bases, y 80 son los
+títulos temáticamente plausibles para el dominio del artículo tras
+descartar el ruido dominante de "mirror symmetry" (física y matemáticas)
+y de caché de hardware, que domina los resultados de Scopus y ACM por la
+ambigüedad de los términos "mirror" y "cache". El cribado por resumen de
+esos 80 y la lectura a texto completo quedan pendientes. Las diez
+referencias incluidas en la revisión (Tabla IV) se identificaron por
+bola de nieve, no por esta cadena, según se explica en II.A.
 
 Los descartes por título y resumen se registran con su motivo. Se leyó y
 descartó a Weeraddana et al. (FSE 2024) por no medir el tiempo de
