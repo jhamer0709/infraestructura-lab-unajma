@@ -323,7 +323,7 @@ mirror y ambos. Medir por intervención es lo que permite atribuir una
 reducción de 360 s a 40 s a una de ellas, y no a un conjunto. La Fig. 1
 muestra el modelo.
 
-<img src="media/image2.png" style="width:3.3in;height:1.98366in" />
+![Fig. 1. Modelo conceptual.](media/image2.png){width=3.3in height=1.98366in}
 
 Fig. 1. Modelo conceptual: dos variables independientes, dos
 dependientes, una moderadora y los controles fijos.
@@ -364,7 +364,7 @@ paquetes y el enlace, lo que permite atribuir las variaciones del tiempo
 y del tráfico a las dos intervenciones. El registro completo de la
 decisión (ADR-001) está en el repositorio.
 
-<img src="media/image3.png" style="width:3in;height:2.32424in" />
+![Fig. 2. Vista de despliegue.](media/image3.png){width=3in height=2.32424in}
 
 Fig. 2. Vista de despliegue, actual y propuesta. Azul: lo que se
 interviene; ámbar: dónde se mide; línea punteada: frontera del sistema.
@@ -376,7 +376,7 @@ la frontera y declarados). El nodo debe estar dentro de la LAN: un
 mirror en la nube no reduce el uso del enlace de salida, que es el
 cuello de botella.
 
-<img src="media/image4.png" style="width:3in;height:2.70336in" />
+![Fig. 3. Vista de componentes.](media/image4.png){width=3in height=2.70336in}
 
 Fig. 3. Vista de componentes del nodo en la LAN.
 
