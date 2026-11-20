@@ -194,7 +194,7 @@ TABLA III
 | Tras eliminar duplicados           | 285          |
 | Pasan cribado por título           | 80           |
 | Pasan cribado por resumen          | 2            |
-| Leídos a texto completo            | \[pendiente\]|
+| Leídos a texto completo            | 1 de 2       |
 | Incluidos en la revisión           | 10           |
 
 El cribado por título (298 → 285 → 80) ya se ejecutó: 285 es tras
@@ -215,10 +215,18 @@ caché de build de contenedores basada en Git, mide tiempo de build y
 uso de disco) y Funasaka (IEEE DASC 2025 — integra una red de
 contenido por nombre en el gestor de paquetes apt de Ubuntu, con
 evaluación preliminar de rendimiento). Detalle fila por fila en
-`docs/sesion-03/cribado-titulo.csv`. Falta la lectura a texto completo
-de estos dos. Las diez referencias incluidas en la revisión (Tabla IV)
-se identificaron por bola de nieve, no por esta cadena, según se
-explica en II.A.
+`docs/sesion-03/cribado-titulo.csv`. De estos dos, se leyó a texto
+completo el de Priedhorsky et al. (acceso abierto en arXiv): no cierra
+la brecha de contexto (clúster HPC con InfiniBand, no laboratorio con
+ancho de banda limitado), pero es la comparación con/sin caché más
+directa y mejor instrumentada entre los 80 candidatos; queda como
+candidato a referencia \[11\], pendiente de decisión editorial (ver
+`docs/sesion-03/tabla-extraccion.md`). El de Funasaka está bloqueado
+por el muro de pago de IEEE Xplore ("you do not have access to this
+PDF"); siguiendo la instrucción de no sortear accesos institucionales,
+queda pendiente de que el autor lo lea con su propio acceso. Las diez
+referencias incluidas en la revisión (Tabla IV) se identificaron por
+bola de nieve, no por esta cadena, según se explica en II.A.
 
 Los descartes por título y resumen se registran con su motivo. Se leyó y
 descartó a Weeraddana et al. (FSE 2024) por no medir el tiempo de
