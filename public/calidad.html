@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rendimiento y calidad · demostrador</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 980px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; background: #faf8f3; }
+  h1 { font-weight: normal; border-bottom: 2px solid #1c1c1c; padding-bottom: .4rem; }
+  h3 { font-weight: normal; margin: 0 0 .6rem; }
+  .aviso { background: #fbf0dc; border-left: 4px solid #c77d00; padding: .6rem .9rem; font-size: .95rem; }
+  .error { background: #fbe0dc; border-left: 4px solid #b83a2b; padding: .6rem .9rem; font-size: .95rem; }
+  fieldset { margin: 1.2rem 0; border: 1px solid #999; padding: .8rem 1rem; }
+  .rejilla { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem 1.4rem; align-items: end; }
+  .campo label { display: block; font-size: .85rem; color: #333; margin-bottom: .2rem; }
+  .campo input { width: 100%; font: inherit; padding: .3rem; box-sizing: border-box; }
+  button { font: inherit; padding: .5rem 1.2rem; background: #2b5db8; color: #fff; border: 0; cursor: pointer; }
+  button:disabled { background: #999; cursor: wait; }
+  button.secundario { background: #fff; color: #2b5db8; border: 1px solid #2b5db8; padding: .35rem .9rem; margin: 0 .3rem .3rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .6rem 0 0; font-family: monospace; font-size: .86rem; }
+  td, th { border-bottom: 1px dotted #999; padding: .3rem .5rem; text-align: right; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  .tarjeta { background: #fff; border: 1px solid #ddd; padding: 1rem 1.2rem; margin: 1rem 0; overflow-x: auto; }
+  .nota { font-size: .87rem; color: #555; }
+  .pill { background: #e6edfb; color: #2b5db8; border-radius: 4px; padding: .05rem .4rem; font-size: .82rem; }
+  .estado-medido { color: #1f6b3a; font-weight: bold; }
+  .estado-parcial { color: #c77d00; font-weight: bold; }
+  .estado-no_medido { color: #b83a2b; font-weight: bold; }
+  nav.principal { display: flex; gap: 1.4rem; font-size: .95rem; margin-bottom: .6rem; }
+  nav.principal a { color: #2b5db8; text-decoration: none; }
+  nav.principal a.activo { color: #1c1c1c; font-weight: bold; border-bottom: 2px solid #2b5db8; }
+  nav.subtabs { display: flex; gap: .6rem; margin: 1rem 0; }
+  nav.subtabs button { background: #fff; color: #2b5db8; border: 1px solid #2b5db8; }
+  nav.subtabs button.activo { background: #2b5db8; color: #fff; }
+</style>
+</head>
+<body>
+<nav class="principal">
+  <a href="/">Sesiones</a>
+  <a href="/experimentos.html">Experimentos</a>
+  <a href="/estadistica.html">Estadística</a>
+  <a class="activo" href="/calidad.html">Rendimiento y calidad</a>
+</nav>
+<h1>Rendimiento y calidad</h1>
+<p class="aviso">Evaluación del rendimiento y de la calidad del software según ISO/IEC 25010, calculada sobre el
+  propio código y el propio demostrador: no es una medición del laboratorio.</p>
+
+<nav class="subtabs">
+  <button id="tab-rendimiento" class="activo">Rendimiento</button>
+  <button id="tab-calidad">Calidad</button>
+</nav>
+
+<section id="seccion-rendimiento">
+  <fieldset>
+    <legend>Prueba de escalado y rendimiento (benchmark)</legend>
+    <p class="nota">Mide tiempo de CPU y estaciones por segundo al crecer N, y estima el exponente de complejidad
+      empírica (pendiente log-log: ≈1 lineal, ≈2 cuadrático). Tiempo de CPU, no de reloj de pared: no se reparte
+      entre corridas concurrentes.</p>
+    <div class="rejilla">
+      <div class="campo"><label>Tamaños (N estaciones)</label><input id="b-tamanos" value="5, 10, 20, 30"></div>
+      <div class="campo"><label>Repeticiones</label><input id="b-repeticiones" type="number" value="10" min="1" max="100"></div>
+      <div class="campo"><label>Retardo del origen (ms)</label><input id="b-retardo" type="number" value="1" min="0.1" step="0.1"></div>
+      <div class="campo"><button id="b-ir">Ejecutar benchmark</button></div>
+    </div>
+  </fieldset>
+  <div id="b-mensaje"></div>
+  <div class="tarjeta" id="b-resultado" style="display:none">
+    <h3>Resultados del benchmark</h3>
+    <div id="b-tabla"></div>
+    <p class="nota" id="b-exponentes"></p>
+    <button class="secundario" id="b-csv">Benchmark (CSV)</button>
+  </div>
+</section>
+
+<section id="seccion-calidad" style="display:none">
+  <fieldset>
+    <legend>Corrección funcional</legend>
+    <p class="nota">Compara, para cada una de las cuatro configuraciones, lo que entrega contra lo que el modelo
+      dice que debe entregar (aciertos y salidas al origen son deterministas con un catálogo fijo). Cualquier
+      diferencia es un defecto, no ruido de medición.</p>
+    <div class="rejilla">
+      <div class="campo"><label>Estaciones</label><input id="c-n" type="number" value="20" min="1" max="30"></div>
+      <div class="campo"><label>Repeticiones por configuración</label><input id="c-repeticiones" type="number" value="10" min="1" max="200"></div>
+      <div class="campo"><button id="c-ir">Verificar</button></div>
+    </div>
+  </fieldset>
+  <div id="c-mensaje"></div>
+  <div class="tarjeta" id="c-resultado" style="display:none">
+    <h3>Corrección funcional</h3>
+    <div id="c-tabla"></div>
+  </div>
+
+  <div class="tarjeta">
+    <h3>Mantenibilidad: métricas estáticas</h3>
+    <p class="nota">Complejidad ciclomática (McCabe) y anidamiento por grupo de archivos, calculados sobre el
+      propio código. Útil para declarar si una optimización cambió el costo de mantener el código.</p>
+    <div id="m-tabla"><p class="nota">cargando…</p></div>
+    <button class="secundario" id="m-csv">Métricas (CSV)</button>
+  </div>
+
+  <div class="tarjeta">
+    <h3>Características de calidad (ISO/IEC 25010)</h3>
+    <p class="nota">Declarar qué se evaluó y qué quedó fuera delimita lo que el resultado permite afirmar.</p>
+    <div id="iso-tabla"><p class="nota">cargando…</p></div>
+  </div>
+</section>
+
+<script src="panel.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+
+$("#tab-rendimiento").addEventListener("click", () => mostrar("rendimiento"));
+$("#tab-calidad").addEventListener("click", () => mostrar("calidad"));
+function mostrar(cual) {
+  $("#seccion-rendimiento").style.display = cual === "rendimiento" ? "block" : "none";
+  $("#seccion-calidad").style.display = cual === "calidad" ? "block" : "none";
+  $("#tab-rendimiento").classList.toggle("activo", cual === "rendimiento");
+  $("#tab-calidad").classList.toggle("activo", cual === "calidad");
+}
+
+let ultimoBenchmark = null;
+
+$("#b-ir").addEventListener("click", async () => {
+  const cuerpo = {
+    tamanos: $("#b-tamanos").value.split(",").map((v) => +v.trim()).filter(Boolean),
+    repeticiones: +$("#b-repeticiones").value, retardo_origen_ms: +$("#b-retardo").value,
+  };
+  $("#b-ir").disabled = true;
+  $("#b-mensaje").innerHTML = "<p class=\"nota\">ejecutando…</p>";
+  try {
+    const r = await fetch("/api/calidad/benchmark", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+    const datos = await r.json();
+    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
+    ultimoBenchmark = datos;
+    $("#b-mensaje").innerHTML = "";
+    $("#b-resultado").style.display = "block";
+    $("#b-tabla").innerHTML = tabla(
+      ["Configuración", "N", "Repeticiones", "CPU mediana (s)", "Estaciones/s", "Pico mem. (KB)"],
+      datos.filas.map((f) => `<tr><td><span class="pill">${f.configuracion}</span></td><td>${f.n}</td>
+        <td>${f.repeticiones}</td><td>${fmt(f.cpu_mediana_s, 6)}</td><td>${fmt(f.estaciones_por_s, 1)}</td>
+        <td>${fmt(f.pico_memoria_kb, 1)}</td></tr>`));
+    $("#b-exponentes").textContent = "Exponente de complejidad empírica (pendiente log-log, tiempo de CPU ~ N): " +
+      Object.entries(datos.exponente_complejidad).map(([c, e]) => `${c}=${e}`).join(" · ");
+  } catch (e) {
+    $("#b-mensaje").innerHTML = `<p class="error">${e.message}</p>`;
+  }
+  $("#b-ir").disabled = false;
+});
+$("#b-csv").addEventListener("click", () => ultimoBenchmark && descargarCSV("benchmark.csv", ultimoBenchmark.filas,
+  ["configuracion", "n", "repeticiones", "cpu_mediana_s", "estaciones_por_s", "pico_memoria_kb"]));
+
+$("#c-ir").addEventListener("click", async () => {
+  const cuerpo = { n_estaciones: +$("#c-n").value, repeticiones: +$("#c-repeticiones").value };
+  $("#c-ir").disabled = true;
+  $("#c-mensaje").innerHTML = "<p class=\"nota\">verificando…</p>";
+  try {
+    const r = await fetch("/api/calidad/correccion", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+    const datos = await r.json();
+    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
+    $("#c-mensaje").innerHTML = "";
+    $("#c-resultado").style.display = "block";
+    $("#c-tabla").innerHTML = `<p class="nota">${datos.total_coinciden} / ${datos.total_corridas} corridas
+      coinciden con lo esperado (${datos.n_estaciones} estaciones) ·
+      <strong>${datos.todo_correcto ? "sin discrepancias" : datos.discrepancias.length + " discrepancias"}</strong></p>` +
+      tabla(["Configuración", "Corridas", "Coinciden", "Proporción"],
+        datos.por_configuracion.map((f) => `<tr><td><span class="pill">${f.configuracion}</span></td>
+          <td>${f.corridas}</td><td>${f.coinciden}</td><td>${pct(f.proporcion)}</td></tr>`));
+  } catch (e) {
+    $("#c-mensaje").innerHTML = `<p class="error">${e.message}</p>`;
+  }
+  $("#c-ir").disabled = false;
+});
+
+let ultimasMetricas = null;
+async function cargarMetricas() {
+  const datos = await (await fetch("/api/calidad/metricas-estaticas")).json();
+  ultimasMetricas = datos.por_archivo;
+  $("#m-tabla").innerHTML = tabla(
+    ["Grupo", "Archivos", "Líneas de código", "Funciones", "Complej. total", "Complej. media", "Complej. máx.", "Anidamiento máx."],
+    datos.por_grupo.map((g) => `<tr><td>${g.grupo}</td><td>${g.archivos.length}</td><td>${g.lineas_codigo}</td>
+      <td>${g.funciones}</td><td>${g.complejidad_total}</td><td>${fmt(g.complejidad_media, 2)}</td>
+      <td>${g.complejidad_max}</td><td>${g.anidamiento_max}</td></tr>`));
+}
+$("#m-csv").addEventListener("click", () => ultimasMetricas && descargarCSV("metricas_estaticas.csv", ultimasMetricas,
+  ["archivo", "lineas_codigo", "funciones", "complejidad_total", "complejidad_media", "complejidad_max", "anidamiento_max"]));
+
+async function cargarISO() {
+  const datos = await (await fetch("/api/calidad/iso25010")).json();
+  $("#iso-tabla").innerHTML = tabla(
+    ["Característica", "Subcaracterística", "Estado", "Evidencia"],
+    datos.filas.map((f) => `<tr><td>${f.caracteristica}</td><td>${f.subcaracteristica}</td>
+      <td class="estado-${f.estado.replace(" ", "_")}">${f.estado}</td><td style="text-align:left">${f.evidencia}</td></tr>`));
+}
+
+cargarMetricas().catch((e) => { $("#m-tabla").innerHTML = `<p class="error">${e.message}</p>`; });
+cargarISO().catch((e) => { $("#iso-tabla").innerHTML = `<p class="error">${e.message}</p>`; });
+</script>
+</body>
+</html>
