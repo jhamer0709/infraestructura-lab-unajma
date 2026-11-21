@@ -16,13 +16,16 @@ rutas = APIRouter(prefix="/api/experimentos")
 
 class DisenoExperimento(BaseModel):
     tamanos: list[int] = Field(min_length=1, max_length=10)
-    corridas_por_celda: int = 30
-    corridas_calentamiento: int = 5
+    corridas_por_celda: int = 10
+    corridas_calentamiento: int = 2
     semilla: int = 2026
     nivel_significancia: float = 0.05
     umbral_p95_s: float = 20.0
     replicas_bootstrap: int = 10000
-    retardo_origen_ms: float = 50.0
+    # Bajo a propósito: con muchas corridas y la línea base (la más lenta de
+    # las cuatro configuraciones), el tiempo total crece como N × corridas ×
+    # retardo y puede acercarse al límite de la función en Vercel.
+    retardo_origen_ms: float = 5.0
     configuraciones: list[str] = Field(default_factory=lambda: list(config.CONFIGURACIONES))
 
 

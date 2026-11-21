@@ -65,9 +65,7 @@ async function calcular() {
   $("#calcular").disabled = true;
   $("#mensaje").innerHTML = "<p class=\"nota\">calculando…</p>";
   try {
-    const r = await fetch("/api/estadistica?" + params.toString());
-    const datos = await r.json();
-    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
+    const datos = await fetchJSON("/api/estadistica?" + params.toString());
     $("#mensaje").innerHTML = "";
     renderPanel("panel", datos);
   } catch (e) {

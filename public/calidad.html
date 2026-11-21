@@ -128,9 +128,7 @@ $("#b-ir").addEventListener("click", async () => {
   $("#b-ir").disabled = true;
   $("#b-mensaje").innerHTML = "<p class=\"nota\">ejecutando…</p>";
   try {
-    const r = await fetch("/api/calidad/benchmark", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
-    const datos = await r.json();
-    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
+    const datos = await fetchJSON("/api/calidad/benchmark", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
     ultimoBenchmark = datos;
     $("#b-mensaje").innerHTML = "";
     $("#b-resultado").style.display = "block";
@@ -154,9 +152,7 @@ $("#c-ir").addEventListener("click", async () => {
   $("#c-ir").disabled = true;
   $("#c-mensaje").innerHTML = "<p class=\"nota\">verificando…</p>";
   try {
-    const r = await fetch("/api/calidad/correccion", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
-    const datos = await r.json();
-    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
+    const datos = await fetchJSON("/api/calidad/correccion", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
     $("#c-mensaje").innerHTML = "";
     $("#c-resultado").style.display = "block";
     $("#c-tabla").innerHTML = `<p class="nota">${datos.total_coinciden} / ${datos.total_corridas} corridas
@@ -173,7 +169,7 @@ $("#c-ir").addEventListener("click", async () => {
 
 let ultimasMetricas = null;
 async function cargarMetricas() {
-  const datos = await (await fetch("/api/calidad/metricas-estaticas")).json();
+  const datos = await fetchJSON("/api/calidad/metricas-estaticas");
   ultimasMetricas = datos.por_archivo;
   $("#m-tabla").innerHTML = tabla(
     ["Grupo", "Archivos", "Líneas de código", "Funciones", "Complej. total", "Complej. media", "Complej. máx.", "Anidamiento máx."],
@@ -185,7 +181,7 @@ $("#m-csv").addEventListener("click", () => ultimasMetricas && descargarCSV("met
   ["archivo", "lineas_codigo", "funciones", "complejidad_total", "complejidad_media", "complejidad_max", "anidamiento_max"]));
 
 async function cargarISO() {
-  const datos = await (await fetch("/api/calidad/iso25010")).json();
+  const datos = await fetchJSON("/api/calidad/iso25010");
   $("#iso-tabla").innerHTML = tabla(
     ["Característica", "Subcaracterística", "Estado", "Evidencia"],
     datos.filas.map((f) => `<tr><td>${f.caracteristica}</td><td>${f.subcaracteristica}</td>

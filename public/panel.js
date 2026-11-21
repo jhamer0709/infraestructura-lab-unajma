@@ -2,6 +2,25 @@
  * Compartido entre experimentos.html y estadistica.html: el objeto `panel`
  * tiene la misma forma venga de donde venga (ver demostrador/services/estadistica.py:bateria). */
 
+/* fetch que espera JSON y da un mensaje legible si el servidor devolvió otra
+ * cosa (por ejemplo la página de error de Vercel cuando la función se pasó
+ * del tiempo límite, que no es JSON). */
+async function fetchJSON(url, opciones) {
+  const r = await fetch(url, opciones);
+  const texto = await r.text();
+  let datos;
+  try {
+    datos = JSON.parse(texto);
+  } catch {
+    throw new Error(r.ok
+      ? "La respuesta no es JSON (" + texto.slice(0, 120) + ")"
+      : `HTTP ${r.status}: la función tardó demasiado o falló antes de responder. ` +
+        "Prueba con menos corridas, tamaños más chicos o un retardo de origen menor.");
+  }
+  if (!r.ok) throw new Error(datos.detail || `HTTP ${r.status}`);
+  return datos;
+}
+
 const fmt = (v, d = 3) => (v === null || v === undefined ? "–" : Number(v).toFixed(d));
 const pct = (v) => (v === null || v === undefined ? "–" : Number(v).toFixed(1) + " %");
 const sino = (v) => (v === null || v === undefined ? "–" : v ? "✓" : "✗");

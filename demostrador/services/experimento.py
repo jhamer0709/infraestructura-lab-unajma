@@ -43,9 +43,9 @@ def _validar(tamanos, corridas_por_celda, corridas_calentamiento, replicas_boots
         raise ParametrosInvalidos("intensidad (retardo de origen) debe ser positiva")
 
 
-async def ejecutar(*, tamanos: list[int], corridas_por_celda: int = 30, corridas_calentamiento: int = 5,
+async def ejecutar(*, tamanos: list[int], corridas_por_celda: int = 10, corridas_calentamiento: int = 2,
                     semilla: int = 2026, nivel_significancia: float = 0.05, umbral_p95_s: float = 20.0,
-                    replicas_bootstrap: int = 10000, retardo_origen_ms: float = 50.0,
+                    replicas_bootstrap: int = 10000, retardo_origen_ms: float = 5.0,
                     configuraciones: tuple = config.CONFIGURACIONES) -> dict:
     _validar(tamanos, corridas_por_celda, corridas_calentamiento, replicas_bootstrap,
              nivel_significancia, umbral_p95_s, retardo_origen_ms, configuraciones)

@@ -48,14 +48,15 @@
     <div class="campo"><label>Tamaños (N estaciones)</label>
       <input id="p-tamanos" value="10, 20"><span class="ayuda">Separados por coma. 1–30 cada uno.</span></div>
     <div class="campo"><label>Corridas medidas por celda</label>
-      <input id="p-corridas" type="number" value="20" min="1" max="200">
+      <input id="p-corridas" type="number" value="10" min="1" max="200">
       <span class="ayuda">Sesiones por configuración y tamaño</span></div>
     <div class="campo"><label>Corridas de calentamiento</label>
-      <input id="p-calentamiento" type="number" value="3" min="0" max="50">
+      <input id="p-calentamiento" type="number" value="2" min="0" max="50">
       <span class="ayuda">Se descartan y se reportan aparte</span></div>
     <div class="campo"><label>Retardo del origen (ms)</label>
-      <input id="p-retardo" type="number" value="50" min="1">
-      <span class="ayuda">Intensidad de la descarga simulada</span></div>
+      <input id="p-retardo" type="number" value="5" min="1">
+      <span class="ayuda">Intensidad de la descarga simulada. Con la línea base, el tiempo total crece
+        rápido con N × corridas × retardo: súbelo con cuidado, la función tiene un límite de tiempo.</span></div>
     <div class="campo"><label>Configuraciones</label>
       <input id="p-configuraciones" value="base, cache, mirror, ambos">
       <span class="ayuda">Subconjunto de las cuatro del artículo</span></div>
@@ -116,10 +117,8 @@ $("#ir").addEventListener("click", async () => {
   $("#panel").innerHTML = "";
   $("#descarga").style.display = "none";
   try {
-    const r = await fetch("/api/experimentos", {
+    const datos = await fetchJSON("/api/experimentos", {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
-    const datos = await r.json();
-    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
     ultimo = datos;
     $("#mensaje").innerHTML = "";
     $("#resumen-corrida").innerHTML = `<p class="nota">${datos.corridas.length} corridas medidas,
