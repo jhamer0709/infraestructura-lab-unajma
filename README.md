@@ -6,6 +6,12 @@ Diplomado en Metodología Científica en Ingeniería de Sistemas · Módulo IV (
 
 Repositorio del artículo y de su prototipo. El historial es la bitácora de la investigación: un commit por cambio, y nada entra a `main` sin PR.
 
+## Despliegue
+
+- Demostrador en vivo: https://infraestructura-lab-unajma.vercel.app
+- Panel de Vercel: https://vercel.com/proy-unajma/infraestructura-lab-unajma
+- Panel de Supabase (base de datos de producción): https://supabase.com/dashboard/project/nuhunwqwvymihwbdaxst
+
 ## Entregas
 
 | Etiqueta | Fecha | Contenido |
