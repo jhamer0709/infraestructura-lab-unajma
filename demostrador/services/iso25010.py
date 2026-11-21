@@ -4,17 +4,19 @@ Declara qué se evaluó y qué quedó fuera: eso es lo único que el resultado
 permite afirmar.
 """
 import ast
+import json
 from pathlib import Path
 
 from demostrador import config
 
 RAIZ = Path(__file__).resolve().parent.parent.parent
+SNAPSHOT_PRUEBAS = Path(__file__).resolve().parent / "evidencia_pruebas.json"
 
 
-def _contar_pruebas() -> tuple[int, int]:
+def _contar_pruebas_en(carpeta: Path) -> tuple[int, int]:
     """(funciones de prueba, casos ejecutados contando @pytest.mark.parametrize)."""
     funciones, casos = 0, 0
-    for archivo in (RAIZ / "tests").glob("test_*.py"):
+    for archivo in sorted(carpeta.glob("test_*.py")):
         arbol = ast.parse(archivo.read_text(encoding="utf-8"), filename=archivo.name)
         for nodo in ast.walk(arbol):
             if isinstance(nodo, ast.FunctionDef) and nodo.name.startswith("test_"):
@@ -28,13 +30,39 @@ def _contar_pruebas() -> tuple[int, int]:
     return funciones, casos
 
 
+def _contar_pruebas() -> tuple[int, int, str]:
+    """(funciones, casos, procedencia de la evidencia).
+
+    tests/ está en .vercelignore: no se despliega a producción (allí no debería ir
+    código de prueba). Por eso, si la carpeta existe aquí, se cuenta en vivo; si no
+    (como en la función de Vercel), se usa el snapshot versionado que scripts/
+    actualizar_evidencia_pruebas.py genera a partir de tests/ y que CI mantiene
+    sincronizado. Esto evita que la tabla reporte "0 pruebas" en producción cuando en
+    realidad el repositorio tiene decenas: el número es real, solo que no se recalculó
+    en esta misma máquina.
+    """
+    carpeta_tests = RAIZ / "tests"
+    if carpeta_tests.is_dir():
+        funciones, casos = _contar_pruebas_en(carpeta_tests)
+        return funciones, casos, "medido en este entorno (carpeta tests/ presente)"
+    if SNAPSHOT_PRUEBAS.is_file():
+        datos = json.loads(SNAPSHOT_PRUEBAS.read_text(encoding="utf-8"))
+        procedencia = (
+            f"tomado del snapshot generado en commit {datos.get('generado_en_commit', '?')} "
+            f"({datos.get('generado_en_utc', 'fecha desconocida')}); tests/ no se despliega a "
+            "producción (ver .vercelignore)"
+        )
+        return datos.get("funciones", 0), datos.get("casos", 0), procedencia
+    return 0, 0, "no se encontró tests/ ni el snapshot de evidencia_pruebas.json"
+
+
 def _workflows() -> list[str]:
     carpeta = RAIZ / ".github" / "workflows"
     return sorted(p.name for p in carpeta.glob("*.yml")) if carpeta.is_dir() else []
 
 
 def tabla() -> list[dict]:
-    funciones, casos = _contar_pruebas()
+    funciones, casos, procedencia_pruebas = _contar_pruebas()
     workflows = _workflows()
     tiene_ci = bool(workflows)
     tiene_seguridad_ci = any("codeql" in w or "seguridad" in w or "security" in w for w in workflows)
@@ -57,7 +85,7 @@ def tabla() -> list[dict]:
          "evidencia": "Complejidad ciclomática (McCabe) y anidamiento máximo por archivo, calculados con `ast` "
                       "sobre el propio código. Ver /api/calidad/metricas-estaticas."},
         {"caracteristica": "Mantenibilidad", "subcaracteristica": "Capacidad de ser probada", "estado": "medido",
-         "evidencia": f"{funciones} funciones de prueba ({casos} casos, con parametrize); "
+         "evidencia": f"{funciones} funciones de prueba ({casos} casos, con parametrize), {procedencia_pruebas}; "
                       f"CI: {', '.join(workflows) if workflows else 'ningún workflow configurado'}."},
         {"caracteristica": "Fiabilidad", "subcaracteristica": "Madurez / Tolerancia a fallos", "estado": "no medido",
          "evidencia": "No se evaluó tasa de fallos ni recuperación: el origen y el enlace simulados no modelan errores."},

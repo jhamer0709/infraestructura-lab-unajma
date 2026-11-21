@@ -42,6 +42,37 @@ def test_iso25010_declara_nueve_filas_con_estado_valido():
     assert {f["estado"] for f in filas} <= {"medido", "parcial", "no medido"}
 
 
+def test_iso25010_cuenta_pruebas_en_vivo_cuando_existe_tests():
+    # tests/ existe en este entorno (es el que se está ejecutando ahora mismo), así
+    # que debe contarse en vivo y no caer al snapshot.
+    funciones, casos, procedencia = iso25010._contar_pruebas()
+    assert funciones > 0 and casos >= funciones
+    assert "medido en este entorno" in procedencia
+
+
+def test_iso25010_usa_snapshot_cuando_no_hay_carpeta_tests(tmp_path, monkeypatch):
+    # Simula el entorno de producción (Vercel), donde tests/ no se despliega
+    # (.vercelignore): debe caer al snapshot versionado en vez de reportar 0.
+    snapshot = tmp_path / "evidencia_pruebas.json"
+    snapshot.write_text(
+        '{"funciones": 29, "casos": 38, "generado_en_utc": "2026-01-01T00:00:00Z", '
+        '"generado_en_commit": "abc123"}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(iso25010, "RAIZ", tmp_path / "no-existe-tests-aqui")
+    monkeypatch.setattr(iso25010, "SNAPSHOT_PRUEBAS", snapshot)
+    funciones, casos, procedencia = iso25010._contar_pruebas()
+    assert (funciones, casos) == (29, 38)
+    assert "snapshot generado en commit abc123" in procedencia
+    assert "no se despliega a producción" in procedencia
+
+    # Y esa procedencia debe quedar visible en la fila de la tabla, no solo en la cifra.
+    monkeypatch.setattr(iso25010.config, "MAX_ESTACIONES", iso25010.config.MAX_ESTACIONES)
+    fila = next(f for f in iso25010.tabla() if f["subcaracteristica"] == "Capacidad de ser probada")
+    assert "29 funciones de prueba (38 casos" in fila["evidencia"]
+    assert "snapshot generado en commit abc123" in fila["evidencia"]
+
+
 def test_endpoint_correccion():
     r = cliente.post("/api/calidad/correccion", json={"n_estaciones": 8, "repeticiones": 3})
     assert r.status_code == 200

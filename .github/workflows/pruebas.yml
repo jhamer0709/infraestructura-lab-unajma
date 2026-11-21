@@ -16,3 +16,5 @@ jobs:
           cache: pip
       - run: pip install -r requirements-dev.txt
       - run: python -m pytest -q
+      - name: Evidencia de pruebas (ISO 25010) actualizada
+        run: python scripts/verificar_evidencia_pruebas.py
