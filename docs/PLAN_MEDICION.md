@@ -55,7 +55,14 @@ El resumen también se ve en la página y en `GET /api/resumen`.
 
 ## 7. Qué falta para el laboratorio
 
-- Script cronometrado por estación con reloj monotónico, que escriba en el mismo formato.
-- Contador de tráfico en el router, en GB por sesión.
-- Versiones reales de SO, paquetes y hardware.
-- Confirmar cuántas sesiones con N = 30 permite el laboratorio.
+- ~~Script cronometrado por estación con reloj monotónico, que escriba en el mismo formato.~~
+  Hecho: `scripts/estacion_laboratorio.py` (por estación) y
+  `scripts/consolidar_sesion_laboratorio.py` (por sesión). Ver `laboratorio/README.md`.
+  Probado con servidores HTTP locales, no contra hardware real del laboratorio todavía.
+- ~~Versiones reales de SO, paquetes y hardware.~~ Hecho: `scripts/inventario_estacion.py`
+  (Ubuntu/Debian, usa apt/dpkg). Falta correrlo en cada estación real.
+- Contador de tráfico en el router, en GB por sesión. Sigue pendiente: es una lectura
+  manual o del propio router, no lo cubre ningún script.
+- Confirmar cuántas sesiones con N = 30 permite el laboratorio. Sigue pendiente.
+- Desplegar de verdad el proxy de caché y el mirror en la LAN del laboratorio
+  (`laboratorio/cache.conf`, `laboratorio/mirror.conf`) y confirmar el origen real.
