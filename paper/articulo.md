@@ -19,7 +19,7 @@ saturación cercana al 90 % del enlace, cifras que se validarán en la
 línea base. La literatura revisada coincide en que descargar paquetes
 pesa en el arranque y en el build, y en que el caché reduce latencia o
 duración en centros de datos e integración continua, pero ninguno de los
-diez estudios incluidos lo mide en un laboratorio académico con enlace
+once estudios incluidos lo mide en un laboratorio académico con enlace
 limitado. Este trabajo mide el efecto de dos intervenciones separables,
 un caché bajo demanda y un mirror sincronizado, con 30 estaciones concurrentes, cinco sesiones por configuración como objetivo (tres como mínimo) y condiciones controladas, y
 declara de antemano los umbrales de reducción. \[Resultados pendientes:
@@ -125,7 +125,7 @@ y 90 % del enlace por validar en OE1.
 
 <span class="smallcaps">II. Estado del arte</span>
 
-De diez estudios incluidos, ninguno evalúa un caché o mirror local de
+De once estudios incluidos, ninguno evalúa un caché o mirror local de
 paquetes en un laboratorio académico, y solo uno \[8\] considera un
 enlace limitado, en entorno emulado.
 
@@ -138,7 +138,7 @@ Scopus, ACM Digital Library, Google Scholar y SciELO, con el periodo
 *Inclusión.* Publicado entre 2016 y 2026; en revista o congreso con
 revisión por pares; reporta mediciones de tiempo, tráfico o tasa de
 aciertos; en inglés, español o portugués; texto completo disponible.
-Hasta cuatro de las diez referencias pueden ser preprints, documentación
+Hasta cuatro de las once referencias pueden ser preprints, documentación
 técnica o textos de contexto, declarados como tales.
 
 *Exclusión.* Nota de blog o documento comercial; no describe cómo midió;
@@ -170,17 +170,35 @@ manualmente que incluye resultados de 1995 a 2026). Cadenas completas y
 el registro ejecutado, con fecha, están en
 `docs/sesion-03/registro-busqueda.csv`. La búsqueda se complementa con
 bola de nieve hacia atrás y hacia adelante desde los estudios más
-relevantes; las diez referencias de la Tabla IV se identificaron por esa
-vía, no por la cadena principal — ninguna aparece en los 298 registros
-de las cinco bases (revisados título por título), lo que se explica por
+relevantes; diez de las once referencias de la Tabla IV se identificaron
+por esa vía, no por la cadena principal — ninguna de esas diez aparece en
+los 298 registros de las cinco bases (revisados título por título), lo que se explica por
 vocabulario distinto en el resumen original (p. ej. "caching
 environments" en \[6\] en vez de "caching proxy") y por venues de
 cobertura irregular en estas bases (USENIX FAST para \[3\] y \[5\]); se
-declara como límite del protocolo, no como hallazgo. Se utilizó una
+declara como límite del protocolo, no como hallazgo. Una prueba posterior
+confirmó que la cadena de IEEE Xplore es, en efecto, sub-sensibilizada
+para ese vocabulario: agregar la cláusula `OR "caching environment"`
+sube el conteo de 13 a 86 (dentro de la zona de trabajo) y sí cubre el
+título de \[6\]; no se re-ejecutó el cribado completo con la cadena
+ampliada por alcance de esta sesión (detalle en
+`docs/sesion-03/protocolo-busqueda.md`), y queda como mejora pendiente
+antes de apuntar a una revista de mayor exigencia. La excepción es
+\[11\] (Priedhorsky et al., Charliecloud), identificada por la propia
+cadena principal en ACM DL y que pasó el cribado por título y por
+resumen (ver II.B); el alcance declarado de diez referencias (ver
+`docs/sesion-03/protocolo-busqueda.md`) se amplía a once para
+incorporarla, por ser la comparación con/sin caché mejor instrumentada
+entre los 80 candidatos del cribado. Se utilizó una
 herramienta de IA generativa para ampliar sinónimos, traducir términos,
-armar las cadenas, ejecutar las búsquedas y apoyar la redacción; la
-selección de fuentes y la verificación de cada referencia incluida
-fueron realizadas por los autores.
+armar las cadenas, ejecutar las búsquedas, ejecutar el cribado por título
+y por resumen de los 285 y 80 registros, y apoyar la redacción. El autor
+principal supervisó el proceso, resolvió los casos límite que quedaron
+ambiguos tras el cribado automático (verificación dirigida en Google
+Scholar) y tomó la decisión editorial de incorporar \[11\], ampliando el
+alcance declarado; la verificación bibliográfica de cada referencia
+incluida (autoría, medio, año, DOI) se hizo contra fuentes vivas y se
+reporta en esta nota y en la de Referencias.
 
 *B. Selección*
 
@@ -193,9 +211,9 @@ TABLA III
 | Identificados en las cinco bases   | 298          |
 | Tras eliminar duplicados           | 285          |
 | Pasan cribado por título           | 80           |
-| Pasan cribado por resumen          | \[pendiente\]|
-| Leídos a texto completo            | \[pendiente\]|
-| Incluidos en la revisión           | 10           |
+| Pasan cribado por resumen          | 2            |
+| Leídos a texto completo            | 1 de 2       |
+| Incluidos en la revisión           | 11           |
 
 El cribado por título (298 → 285 → 80) ya se ejecutó: 285 es tras
 deduplicar por título normalizado entre las cinco bases, y 80 son los
@@ -203,16 +221,46 @@ títulos temáticamente plausibles para el dominio del artículo tras
 descartar el ruido dominante de "mirror symmetry" (física y matemáticas)
 y de caché de hardware, que domina los resultados de Scopus y ACM por la
 ambigüedad de los términos "mirror" y "cache". El cribado por resumen de
-esos 80 y la lectura a texto completo quedan pendientes. Las diez
+esos 80 (ejecutado el 20/11/2026) dejó solo 2: la mayoría de los 78
+descartados resultó, al leer el resumen, tratarse de caché de páginas
+web, video/streaming, CDN, IoT o sistemas de archivos de HPC genéricos
+— el mismo ruido léxico de "cache"/"proxy" que el cribado por título no
+podía distinguir —, y el resto se excluyó por año anterior a 2016, por
+no ser revista o congreso con revisión por pares (un libro técnico, una
+tesis de maestría), o por no reportar mediciones de caché pese a un
+tema adyacente. Pasan Priedhorsky et al. (SC'23 Workshops, ACM —
+caché de build de contenedores basada en Git, mide tiempo de build y
+uso de disco) y Funasaka (IEEE DASC 2025 — integra una red de
+contenido por nombre en el gestor de paquetes apt de Ubuntu, con
+evaluación preliminar de rendimiento). Detalle fila por fila en
+`docs/sesion-03/cribado-titulo.csv`. De estos dos, se leyó a texto
+completo el de Priedhorsky et al. (acceso abierto en arXiv): no cierra
+la brecha de contexto (clúster HPC con InfiniBand, no laboratorio con
+ancho de banda limitado), pero es la comparación con/sin caché más
+directa y mejor instrumentada entre los 80 candidatos; se incorpora como referencia \[11\] (ver
+`docs/sesion-03/tabla-extraccion.md`), ampliando el alcance declarado
+de diez a once referencias. El de Funasaka está bloqueado por el muro
+de pago de IEEE Xplore ("you do not have access to this PDF");
+siguiendo la instrucción de no sortear accesos institucionales, queda
+pendiente de que el autor lo lea con su propio acceso. Diez de las once
 referencias incluidas en la revisión (Tabla IV) se identificaron por
-bola de nieve, no por esta cadena, según se explica en II.A.
+bola de nieve, no por esta cadena; \[11\] es la excepción, identificada
+por la cadena principal, según se explica en II.A.
 
 Los descartes por título y resumen se registran con su motivo. Se leyó y
 descartó a Weeraddana et al. (FSE 2024) por no medir el tiempo de
-descarga. De las diez referencias, siete están indexadas: \[3\]–\[5\] y
-\[9\] figuran como documentos en Scopus, y \[1\], \[2\] y \[6\] se
+descarga. **Limitación declarada:** el cribado por título y por resumen de
+los 285 y 80 registros lo ejecutó un único revisor (herramienta de IA
+bajo supervisión del autor principal), sin segundo revisor humano
+independiente ni cálculo de concordancia (kappa); el autor resolvió
+personalmente los dos casos límite que quedaron ambiguos tras el cribado
+automático y tomó la decisión editorial de incorporar \[11\]. Se declara
+como amenaza al proceso de selección, no se subsana en este trabajo. De
+las once referencias, ocho están indexadas: \[3\]–\[5\] y
+\[9\] figuran como documentos en Scopus, \[1\], \[2\] y \[6\] se
 publicaron en revistas Q1 de Scimago en su año de publicación (2016,
-2018 y 2022). \[7\] es un preprint, \[10\] es documentación técnica y
+2018 y 2022), y \[11\] figura en ACM Digital Library (SC'23 Workshops,
+pp. 134–146). \[7\] es un preprint, \[10\] es documentación técnica y
 \[8\] no se confirmó en Scopus.
 
 *C. Síntesis comparativa*
@@ -235,10 +283,12 @@ TABLA IV
 | \[8\]    | Variante           | Sí         | Sí       | No         | Parcial                    |
 | \[9\]    | No                 | No         | No       | Sí         | No                         |
 | \[10\]   | Sí                 | No         | No       | No         | No                         |
+| \[11\]   | Variante           | Sí         | Sí       | Sí         | No                         |
 
 Ninguna fila presenta valor afirmativo en las cinco dimensiones. Los
-estudios \[5\]–\[7\] cachean, miden y tienen línea base con datos
-reales, pero en centros de datos o integración continua. El estudio
+estudios \[5\]–\[7\], \[11\] cachean, miden y tienen línea base con
+datos reales, pero en centros de datos, integración continua o un
+clúster HPC con enlace rápido (\[11\]: InfiniBand). El estudio
 \[8\] es el único con enlace limitado, y lo emula. Los trabajos \[1\] y
 \[2\] son conceptuales y no entran en la matriz.
 
@@ -246,7 +296,10 @@ reales, pero en centros de datos o integración continua. El estudio
 
 La literatura revisada coincide en que la descarga de paquetes y
 dependencias pesa en el arranque y en el build \[3\], \[4\] y en que el
-caché reduce latencia o duración \[5\]–\[7\], \[9\]. De los diez
+caché reduce latencia o duración \[5\]–\[7\], \[9\], aunque con
+resultados mixtos según el estado del caché (\[11\]: similar en frío,
+hasta 4.8x más rápido en tibio, hasta 50x más lento en caliente sin
+optimizar). De los once
 estudios incluidos, ninguno evalúa un caché o mirror local de paquetes
 en un laboratorio académico, y el único con enlace limitado lo emula
 \[8\]. No se halló evidencia del efecto de cada intervención, y de su
@@ -270,7 +323,7 @@ mirror y ambos. Medir por intervención es lo que permite atribuir una
 reducción de 360 s a 40 s a una de ellas, y no a un conjunto. La Fig. 1
 muestra el modelo.
 
-<img src="media/image2.png" style="width:3.3in;height:1.98366in" />
+![Fig. 1. Modelo conceptual.](media/image2.png){width=3.3in height=1.98366in}
 
 Fig. 1. Modelo conceptual: dos variables independientes, dos
 dependientes, una moderadora y los controles fijos.
@@ -283,7 +336,11 @@ número de estaciones concurrentes, importa porque el beneficio del caché
 depende de cuántas estaciones piden lo mismo \[8\]. Las variables de
 control (caja gris) se mantienen fijas entre configuraciones.
 
-*B. Trazabilidad con los objetivos*
+*B. Variables del modelo*
+
+Dos variables independientes nominales, cada una con dos niveles (con/sin), definen cuatro configuraciones: línea base, caché, mirror y ambos (Tabla I). El diseño experimental (V.A) decide cuáles de ellas se miden y con cuántas sesiones.
+
+*C. Trazabilidad con los objetivos*
 
 TABLA V
 
@@ -299,19 +356,19 @@ TABLA V
 Toda flecha del modelo tiene objetivo asignado. El último objetivo es el
 método con que se miden las demás.
 
-*C. Arquitectura propuesta*
+<span class="smallcaps">IV. Arquitectura de la solución</span>
+
+*A. Arquitectura de despliegue*
 
 Se adopta un nodo único en la LAN del laboratorio porque el diagnóstico
 preliminar localiza el cuello de botella en el enlace de salida
 compartido (cerca del 90 % de saturación, por validar en OE1) y no en
-las estaciones. Se evaluaron además un mirror alojado en la nube y un
-caché distribuido entre las estaciones, descartados por los criterios de
-la Tabla VI. La decisión mantiene fijos el hardware, la lista de
+las estaciones. La decisión mantiene fijos el hardware, la lista de
 paquetes y el enlace, lo que permite atribuir las variaciones del tiempo
 y del tráfico a las dos intervenciones. El registro completo de la
 decisión (ADR-001) está en el repositorio.
 
-<img src="media/image3.png" style="width:3in;height:2.32424in" />
+![Fig. 2. Vista de despliegue.](media/image3.png){width=3in height=2.32424in}
 
 Fig. 2. Vista de despliegue, actual y propuesta. Azul: lo que se
 interviene; ámbar: dónde se mide; línea punteada: frontera del sistema.
@@ -323,21 +380,17 @@ la frontera y declarados). El nodo debe estar dentro de la LAN: un
 mirror en la nube no reduce el uso del enlace de salida, que es el
 cuello de botella.
 
-<img src="media/image4.png" style="width:3in;height:2.70336in" />
+*B. Decisión arquitectónica y alternativas*
 
-Fig. 3. Vista de componentes del nodo en la LAN.
-
-La Fig. 3 muestra dónde vive la lógica que se cambia: un enrutador envía
-los repositorios espejados al mirror y el resto al proxy de caché, que
-consulta a los repositorios oficiales solo si no tiene el paquete. El
-mirror se sincroniza fuera de la sesión de medición.
+Se evaluaron además un mirror alojado en la nube y un caché distribuido
+entre las estaciones, descartados por los criterios de la Tabla VI.
 
 TABLA VI
 
 <span class="smallcaps">Decisión de arquitectura</span>
 
 | **Criterio**                     | **A. Nodo en la LAN**              | **B. Mirror en la nube**                         | **C. Caché entre estaciones**                  |
-|----------------------------------|------------------------------------|--------------------------------------------------|------------------------------------------------|
+|----------------------------------|------------------------------------|----------------------------------------------------|------------------------------------------------|
 | Control del entorno              | Total: hardware propio             | Parcial: red y proveedor ajenos                  | Total, pero depende de estaciones encendidas   |
 | ¿Aísla caché y mirror?           | Sí, se activan por separado        | Solo el mirror                                   | Solo el caché                                  |
 | Efecto sobre el enlace de salida | Solo salen fallos y sincronización | No alivia: la descarga sigue saliendo del campus | Reduce repeticiones, con coordinación compleja |
@@ -347,7 +400,29 @@ TABLA VI
 Los valores de esfuerzo son una estimación cualitativa de los autores. La
 alternativa C se apoya en la línea de \[8\].
 
-*D. Diseño experimental*
+*C. Vista de componentes*
+
+![Fig. 3. Vista de componentes.](media/image4.png){width=3in height=2.70336in}
+
+Fig. 3. Vista de componentes del nodo en la LAN.
+
+La Fig. 3 muestra dónde vive la lógica que se cambia: un enrutador envía
+los repositorios espejados al mirror y el resto al proxy de caché, que
+consulta a los repositorios oficiales solo si no tiene el paquete. El
+mirror se sincroniza fuera de la sesión de medición.
+
+*D. Punto de medición*
+
+El tiempo se toma en cada estación con un script y reloj monotónico,
+desde el inicio de la preparación hasta que el entorno queda listo. No
+se mide en el nodo: este no ve el tiempo de instalación local. El
+tráfico de salida se toma con un contador en el router, de modo que
+ambas métricas capturan el efecto de principio a fin de la intervención,
+no solo lo que ocurre dentro del nodo.
+
+<span class="smallcaps">V. Evaluación experimental</span>
+
+*A. Plan de pruebas*
 
 TABLA VII
 
@@ -361,21 +436,34 @@ TABLA VII
 | Moderadora         | Estaciones concurrentes N = 1, 10, 30                                                                                                       |
 | Control            | Hardware, lista de paquetes versionada, SO y versiones, horario, enlace, caché vaciado al inicio                                            |
 | Unidad de análisis | Una estación en una sesión de preparación                                                                                                   |
-| Muestra            | Por configuración: N = 30, cinco sesiones como objetivo y tres como mínimo (150 o 90 observaciones por estación); N = 10, tres sesiones (30); N = 1, cinco sesiones (5). Total: 52 sesiones. Las hipótesis se contrastan solo en N = 30; N = 1 y N = 10 son descriptivos |
+| Muestra            | Por configuración: N = 30, cinco sesiones como objetivo y tres como mínimo (150 o 90 observaciones en total para esa cohorte, no por estación); N = 10, tres sesiones (30 observaciones en total); N = 1, cinco sesiones (5 observaciones). Total de sesiones (cuatro configuraciones): 44 en el escenario mínimo, 52 en el escenario objetivo (la diferencia está solo en N = 30: 3 vs. 5 sesiones por configuración). Las hipótesis se contrastan solo en N = 30; N = 1 y N = 10 son descriptivos |
 | Estadísticos       | Mediana, p95 y dispersión, por sesión y agrupados; prueba no paramétrica entre configuraciones con la sesión como unidad. Con cinco sesiones por configuración el contraste es posible; con tres, el resultado se reporta como descriptivo                                                                 |
 | Criterio de éxito  | p95 y tráfico reducidos en al menos 90 % (H1a, H1b)                                                                                         |
 
 Las configuraciones se miden en orden aleatorio y, cuando es posible, el
 mismo día, para que la hora no se confunda con el tratamiento.
 
-*E. Instrumentación y protocolo*
+*B. Instrumentación y automatización*
 
-El tiempo se toma en cada estación con un script y reloj monotónico,
-desde el inicio de la preparación hasta que el entorno queda listo. No
-se mide en el nodo: este no ve el tiempo de instalación local. El
-tráfico de salida se toma con un contador en el router, y los aciertos y fallos del proxy se registran, en orden de llegada, como medida auxiliar que describe la transición del caché de frío a tibio dentro de la sesión. Toda sesión medida parte de caché frío. El mirror se sincroniza fuera de la sesión y su tráfico de sincronización se reporta aparte. Cada sesión sigue seis pasos: (1) reconstruir el entorno desde la lista versionada y verificar que solo está activa la configuración a medir; (2) hacer una sesión previa de calentamiento, que se descarta y se anota; (3) vaciar el caché; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con fecha y versión de la lista; (6) calcular los percentiles al final, desde el CSV.
+Los aciertos y fallos del proxy se registran, en orden de llegada, como medida auxiliar que describe la transición del caché de frío a tibio dentro de la sesión. Toda sesión medida parte de caché frío. El mirror se sincroniza fuera de la sesión y su tráfico de sincronización se reporta aparte.
 
-<span class="smallcaps">IV. Amenazas a la validez</span>
+*C. Protocolo de medición*
+
+Cada sesión sigue seis pasos: (1) reconstruir el entorno desde la lista versionada y verificar que solo está activa la configuración a medir; (2) hacer una sesión previa de calentamiento, que se descarta y se anota; (3) vaciar el caché; (4) medir; (5) guardar los datos en crudo, un CSV por sesión con fecha y versión de la lista; (6) calcular los percentiles al final, desde el CSV.
+
+*D. Análisis previsto*
+
+Se reportan mediana, p95 y dispersión, por sesión y agrupados, con una prueba no paramétrica entre configuraciones usando la sesión como unidad de análisis. Con cinco sesiones por configuración el contraste es posible; con tres, el resultado se reporta como descriptivo. El criterio de éxito es p95 y tráfico reducidos en al menos 90 % (H1a, H1b).
+
+*E. Resultados*
+
+\[Pendiente: sesión 7. Esta subsección se completará con las mediciones de las cuatro configuraciones (línea base, caché, mirror y ambos) una vez ejecutadas las sesiones declaradas en V.A.\]
+
+*F. Significancia y tamaño del efecto*
+
+\[Pendiente: sesión 7. Se reportará la prueba no paramétrica, el tamaño del efecto y el intervalo de confianza para la diferencia de medianas, junto con el cruce o no de los umbrales declarados en H1a y H1b.\]
+
+<span class="smallcaps">VI. Amenazas a la validez</span>
 
 TABLA VIII
 
@@ -392,15 +480,66 @@ TABLA VIII
 Declarar estas amenazas no debilita el trabajo: indica qué se controló y
 qué queda como límite.
 
+<span class="smallcaps">VII. Discusión</span>
+
+\[Pendiente: sesión 7. Esta sección interpretará los resultados de la
+Sección V a la luz de la brecha identificada en II.D, discutirá la
+contribución de cada intervención por separado y de su combinación
+frente a los umbrales de H1a y H1b, y situará los hallazgos frente a la
+literatura revisada en el Estado del arte (Tabla IV).\]
+
+<span class="smallcaps">VIII. Conclusiones y trabajo futuro</span>
+
+\[Pendiente: sesión 7. Esta sección resumirá si se cumplieron H1a y
+H1b, recogerá las limitaciones ya declaradas en el texto (cribado por un
+solo revisor, alcance de un único laboratorio, mayoría de las
+referencias identificadas por bola de nieve) y propondrá líneas de
+trabajo futuro.\]
+
+<span class="smallcaps">Disponibilidad de datos y código</span>
+
+El protocolo, los registros de búsqueda y cribado (CSV), los scripts de
+medición y análisis, y el código del demostrador están en el
+repositorio público
+https://github.com/jhamer0709/infraestructura-lab-unajma. Los datos
+crudos de la línea base y de las configuraciones con caché o mirror se
+publicarán en el mismo repositorio al concluir la sesión 7.
+
+<span class="smallcaps">Conflictos de interés</span>
+
+Los autores declaran no tener conflictos de interés relacionados con
+este trabajo.
+
+<span class="smallcaps">Financiamiento</span>
+
+Este trabajo no recibió financiamiento externo; se desarrolló como parte
+del Diplomado en Metodología Científica en Ingeniería de Sistemas
+(ITEC–UNAJMA) con recursos propios de los autores y de la
+EPIS-UNAJMA.
+
+<span class="smallcaps">Contribución de los autores (CRediT)</span>
+
+Jhamer Anderson Rojas Silva, Edwing Alcides Maquera Flores, Richard
+Carrion Abollaneda, Ruben Apaza Apaza y Norma Catacora Flores:
+conceptualización, metodología, investigación, curación de datos,
+redacción (borrador original y revisión) y administración del
+proyecto, por igual. Todos los autores revisaron y aprobaron la
+versión final.
+
 <span class="smallcaps">Referencias</span>
 
 *Nota: las referencias \[1\]–\[6\], \[8\] y \[9\] se verificaron contra
 el texto del propio artículo (autores, medio, año y, cuando existe,
-DOI); el volumen y el número de \[6\] provienen de la página del grupo
-autor. \[7\] y \[10\] se comprobaron en arXiv y en la página web,
+DOI); el volumen y el número de \[6\] se verificaron directamente en IEEE
+Xplore (documento 9311876: vol. 48, n.º 6, pp. 2040–2052, publicado el
+01/06/2022; la página del grupo autor decía n.º 8, dato corregido). \[7\] y \[10\] se comprobaron en arXiv y en la página web,
 respectivamente; \[9\] se confirmó en la ficha de IEEE Xplore (documento
-8891000). La indexación se comprobó en Scopus (\[3\]–\[5\], \[9\]) y
-Scimago (\[1\], \[2\], \[6\]). Falta la lectura a texto completo.*
+8891000). \[11\] se verificó en las actas de SC'23 Workshops
+(sc23.supercomputing.org), en DBLP y, a texto completo, en
+arXiv:2309.00166v1. La indexación se comprobó en Scopus (\[3\]–\[5\],
+\[9\]), Scimago (\[1\], \[2\], \[6\]) y ACM Digital Library (\[11\]).
+Falta la lectura a texto completo de \[1\]–\[10\]; \[11\] ya se leyó
+completo (ver nota en II.B).*
 
 \[1\] W. Shi, J. Cao, Q. Zhang, Y. Li y L. Xu, «Edge computing: Vision
 and challenges», IEEE Internet Things J., vol. 3, n.º 5, pp. 637–646,
@@ -426,8 +565,8 @@ Storage Technologies (FAST ’18), Oakland, CA, 2018, pp. 265–278.
 
 \[6\] K. Gallaba, J. Ewart, Y. Junqueira y S. McIntosh, «Accelerating
 continuous integration by caching environments and inferring
-dependencies», IEEE Trans. Softw. Eng., vol. 48, n.º 8, pp. 2040–2052,
-2022. doi: 10.1109/TSE.2020.3048335
+dependencies», IEEE Trans. Softw. Eng., vol. 48, n.º 6, pp. 2040–2052,
+jun. 2022. doi: 10.1109/TSE.2020.3048335
 
 \[7\] T. A. Ghaleb, D. A. da Costa y Y. Zou, «The promise and reality of
 continuous integration caching: An empirical study of Travis CI builds»,
@@ -446,3 +585,10 @@ en Proc. IEEE Int. Conf. Cluster Computing (CLUSTER), Albuquerque, NM,
 Python Packaging User Guide. \[En línea\]. Disponible en:
 https://packaging.python.org/en/latest/guides/index-mirrors-and-caches/
 (consultado el 7 de nov. de 2026).
+
+\[11\] R. Priedhorsky, J. Ogas, C. H. Davis IV, Z. N. Hounshel,
+A. Lee, B. Stormer y R. S. Goff, «Charliecloud's layer-free, Git-based
+container build cache», en Proc. SC '23 Workshops (Int. Conf. for High
+Performance Computing, Networking, Storage and Analysis), Denver, CO,
+nov. 2023, pp. 134–146. Disponible también en acceso abierto:
+arXiv:2309.00166.

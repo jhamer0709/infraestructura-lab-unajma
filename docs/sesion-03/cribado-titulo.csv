@@ -1,81 +1,81 @@
 titulo,bases,pasa_resumen,motivo_exclusion_resumen
-A Model-Driven Approach to Aol-Based Cache Management in IoT,IEEE,,
-A Secure and Accessible Internet Proxy System with DNS-Based Ad-Blocking and Remote Tunneling Support Using Ngrok,Scopus,,
-A caching and streaming framework for mulitmedia,ACM,,
-A framework for caching multimedia objects in the Internet,ACM,,
-A novel web caching scheme using hybrid least frequently used and support vector machine,IEEE,,
-A reliable multicast webcast protocol for multimedia collaboration and caching,ACM,,
-AI Agents Enable Adaptive Computer Worms,Scholar,,
-Accelerating the Internet in the presence of Big Data: Reducing user delays by leveraging historical user request patterns for web caching,SciELO,,
-Adaptive Resource Allocation for DASH-based Video Streaming in Mobile Networks,Scholar,,
-Adaptive and lazy segmentation based proxy caching for streaming media delivery,ACM,,
-An Adaptive Coherence-Replacement Protocol for Web Proxy Cache Systems,SciELO,,
-An ICN In-Network Caching Policy for Butterfly Network in DCN,Scholar,,
-Analysis of buffer replacement policies for WWW proxy,ACM,,
-Application-Specific Proxy Servers as HTTP Stream Transducers,ACM,,
-Architecture of a quality based intelligent proxy (QBIX) for MPEG-4 videos,ACM,,
-Automated Infrastructure Provisioning for Heterogeneous High-Performance Computing Environments,Scholar,,
-Bitrate adaptation for video streaming services in edge caching systems,Scholar,,
-Cache architecture for on-demand streaming on the Web,ACM,,
-Cache-Aided Distributed Storage Systems,Scopus,,
-CacheCatalyst: Enhancing Web Caching for the Latency-Constrained Internet,Scholar,,
-Cached and confused: Web cache deception in the wild,Scopus,,
-Caching XML Web Services for Mobility,ACM,,
-Can Orbital Servers Provide Mars-Wide Edge Computing?,ACM,,
-Capture: a desktop display-centric text recorder,ACM,,
-"Charliecloud's layer-free, Git-based container build cache",ACM; Scholar,,
-Clustering-based quality selection heuristics for HTTP adaptive streaming over cache networks,Scholar,,
-Collaborative edge caching through service function chaining: Architecture and challenges,Scholar,,
-Configurable SOAP proxy cache for data provisioning web services,ACM,,
-Data-driven management of CDN performance,Scholar,,
-Design and Implementation of a P2P Cooperative Proxy Cache System,ACM,,
-Docker High Performance: Complete your Docker journey by optimizing your application's workflows and performance,Scholar,,
-Enabling adaptive and reliable video delivery over hybrid unicast/broadcast networks,ACM,,
-Enabling service cache in edge clouds,Scholar,,
-"Exploiting Caching, Proxy Re-encryption, Incentives, and Wi-Fi Direct for Authorized Content Distribution",Scopus,,
-Extended Internet caching protocol: a foundation for building ubiquitous Web caching,ACM,,
-Extending hypertext streaming protocol to realize effective web page transmission via a caching proxy,ACM,,
-Flow caching for high entropy packet fields,ACM,,
-Framework for Authoring and Delivery of Targeted Media Presentations using a Smart Edge Proxy Cache,ACM,,
-From the Cloud to the Edge: An Infrastructure for Cloud & Edge Computing,Scholar,,
-Gestion de contenus dans les reseaux par la qualite d'experience (QoE): caching et transport,Scholar,,
-Improvement of the neural network proxy cache replacement strategy,ACM,,
-Integrated prefetching and caching for adaptive video streaming over HTTP: an online approach,ACM,,
-Integrating CCNx into the APT Package Manager: Design and Preliminary Evaluation,Scholar,,
-Interactions between HTTP adaptive streaming and TCP,ACM,,
-Intermediate Caching Technique via Fog Layer to Achieve Low-latency Video Analytic Solutions on Cloud,IEEE; Scholar; Scopus,,
-Just-in-time proactive caching for dash video streaming,Scholar,,
-LPCC: hierarchical persistent client caching for lustre,ACM,,
-MSC: a multi-version shared caching for multi-bitrate VoD services,Scopus,,
-Making World Wide Web Caching Servers Cooperate,ACM,,
-Mugshot: deterministic capture and replay for Javascript applications,ACM,,
-Multi-Turn Semantic Caching for LLM Gateways with Calibrated Out-of-Domain Rejection,ACM,,
-NVMM-Oriented Hierarchical Persistent Client Caching for Lustre,ACM,,
-ODNS Clustering: Unveiling Client-Side Dependency in Open DNS Infrastructure,ACM,,
-Off-chip latency-driven dynamic voltage and frequency scaling for an MPEG decoding,ACM,,
-On designing a cost-aware virtual CDN for the federated cloud,Scopus,,
-PCCNA: A Probabilistic Caching Strategy Based on Strong Content Consistency and Node Attributes,Scopus,,
-Panache: a parallel file system cache for global file access,ACM,,
-Performance Analysis of WWW Cache Proxy Hierarchies,SciELO,,
-Popularity-based full replica caching for erasure-coded distributed storage systems,Scholar,,
-QoE-aware content management in the Internet: caching and transport,Scholar,,
-QoS3: Secure Caching in HTTPS Based on Fine-Grained Trust Delegation,Scopus,,
-Rebuilding debian using distributed computing,ACM,,
-Remote-control caching: Proxy-based url rewriting to decrease mobile browsing bandwidth,Scopus,,
-Removal policies in network caches for World-Wide Web documents,ACM,,
-Replacement algorithms for object caching,ACM,,
-Replacement policies for a proxy cache,ACM,,
-Response order rearrangement on a caching proxy for reducing WWW latency,ACM,,
-Rethinking web caching: An optimization for the latency-constrained internet,Scholar,,
-Reverse Proxy Comparison Analysis for Optimization of Web Server Services,Scholar,,
-Summary cache: a scalable wide-area web cache sharing protocol,ACM,,
-"The Design and Experimental Use of CReB, a Container Registry Benchmark",Scholar,,
-The future of next generation web: Juxtaposing machine learning and deep learning-based web cache replacement models in web caching systems,Scholar,,
-Toward QoE-assured 4K video-on-demand delivery through mobile edge virtualization with adaptive prefetching,Scholar,,
-Toward one-second latency: Evolution of live media streaming,Scholar,,
-Tracker-assisted rate adaptation for MPEG DASH live streaming,Scholar,,
-Understanding and Detecting Peer Dependency Resolving Loop in npm Ecosystem,ACM,,
-Web cache location,SciELO,,
-Web caching on smartphones: ideal vs. reality,ACM,,
-Web prefetching between low-bandwidth clients and proxies,ACM,,
-Web resource cacheable edge device in fog computing,IEEE; Scopus,,
+A Model-Driven Approach to Aol-Based Cache Management in IoT,IEEE,NO,"Fuera de alcance temático: caché de borde IoT por Age-of-Information, no de paquetes/dependencias de software"
+A Secure and Accessible Internet Proxy System with DNS-Based Ad-Blocking and Remote Tunneling Support Using Ngrok,Scopus,NO,"Fuera de alcance: proxy de bloqueo de anuncios/túnel remoto, no caché de paquetes; no se encontró evidencia de mediciones de tiempo de instalación/descarga"
+A caching and streaming framework for mulitmedia,ACM,NO,Fuera de alcance temático: caché de streaming multimedia
+A framework for caching multimedia objects in the Internet,ACM,NO,Fuera de alcance temático: caché de objetos multimedia
+A novel web caching scheme using hybrid least frequently used and support vector machine,IEEE,NO,"Fuera de alcance: caché de páginas web genérica (no paquetes de software), aunque sí reporta tasa de aciertos"
+A reliable multicast webcast protocol for multimedia collaboration and caching,ACM,NO,Fuera de alcance temático: multicast/webcast multimedia
+AI Agents Enable Adaptive Computer Worms,Scholar,NO,"Falso positivo del cribado por título (seguridad/malware, no caché)"
+Accelerating the Internet in the presence of Big Data: Reducing user delays by leveraging historical user request patterns for web caching,SciELO,NO,"Fuera de alcance temático: caché de páginas web genérica, no de paquetes/dependencias"
+Adaptive Resource Allocation for DASH-based Video Streaming in Mobile Networks,Scholar,NO,Fuera de alcance temático: streaming de video (DASH)
+Adaptive and lazy segmentation based proxy caching for streaming media delivery,ACM,NO,Fuera de alcance temático: caché de streaming media
+An Adaptive Coherence-Replacement Protocol for Web Proxy Cache Systems,SciELO,NO,Fuera de alcance temático: caché de páginas web genérica
+An ICN In-Network Caching Policy for Butterfly Network in DCN,Scholar,NO,Fuera de alcance temático: caché de contenido genérico en redes ICN/datacenter
+Analysis of buffer replacement policies for WWW proxy,ACM,NO,Fuera de alcance temático y probablemente anterior a 2016: caché de páginas web clásica
+Application-Specific Proxy Servers as HTTP Stream Transducers,ACM,NO,Fuera de alcance temático: streaming HTTP
+Architecture of a quality based intelligent proxy (QBIX) for MPEG-4 videos,ACM,NO,Fuera de alcance temático: video MPEG-4
+Automated Infrastructure Provisioning for Heterogeneous High-Performance Computing Environments,Scholar,NO,No se pudo localizar un artículo revisado por pares con este título exacto (la búsqueda solo devuelve patentes y entradas de blog); no verificable
+Bitrate adaptation for video streaming services in edge caching systems,Scholar,NO,Fuera de alcance temático: streaming de video
+Cache architecture for on-demand streaming on the Web,ACM,NO,Fuera de alcance temático: streaming on-demand
+Cache-Aided Distributed Storage Systems,Scopus,NO,"Fuera de alcance temático: codificación/teoría de la información para almacenamiento distribuido, no mide tiempo de descarga/instalación de paquetes"
+CacheCatalyst: Enhancing Web Caching for the Latency-Constrained Internet,Scholar,NO,Fuera de alcance temático: caché de páginas web genérica
+Cached and confused: Web cache deception in the wild,Scopus,NO,"Fuera de alcance: estudio de seguridad (vulnerabilidad), no de rendimiento/mediciones de caché"
+Caching XML Web Services for Mobility,ACM,NO,Fuera de alcance temático: servicios web XML y movilidad
+Can Orbital Servers Provide Mars-Wide Edge Computing?,ACM,NO,"Fuera de alcance temático: cómputo de borde orbital/satelital, artículo especulativo"
+Capture: a desktop display-centric text recorder,ACM,NO,"Falso positivo del cribado por título: grabador de texto de escritorio, no relacionado con caché"
+"Charliecloud's layer-free, Git-based container build cache",ACM; Scholar,SI,
+Clustering-based quality selection heuristics for HTTP adaptive streaming over cache networks,Scholar,NO,Fuera de alcance temático: streaming adaptativo HTTP
+Collaborative edge caching through service function chaining: Architecture and challenges,Scholar,NO,Fuera de alcance temático: caché de borde en redes de telecomunicaciones (NFV/SFC)
+Configurable SOAP proxy cache for data provisioning web services,ACM,NO,Fuera de alcance temático: servicios web SOAP
+Data-driven management of CDN performance,Scholar,NO,"Fuera de alcance temático: CDN de contenido web/video, no caché de paquetes de software"
+Design and Implementation of a P2P Cooperative Proxy Cache System,ACM,NO,Fuera de alcance temático: caché de páginas web P2P
+Docker High Performance: Complete your Docker journey by optimizing your application's workflows and performance,Scholar,NO,"Es un libro técnico comercial (Packt), no una revista o congreso con revisión por pares"
+Enabling adaptive and reliable video delivery over hybrid unicast/broadcast networks,ACM,NO,Fuera de alcance temático: entrega de video
+Enabling service cache in edge clouds,Scholar,NO,"Fuera de alcance temático: caché de servicios en nubes de borde, genérico"
+"Exploiting Caching, Proxy Re-encryption, Incentives, and Wi-Fi Direct for Authorized Content Distribution",Scopus,NO,"Fuera de alcance temático: distribución de contenido con DRM/incentivos, no instalación de paquetes"
+Extended Internet caching protocol: a foundation for building ubiquitous Web caching,ACM,NO,Fuera de alcance temático y probablemente anterior a 2016: protocolo de caché web clásico
+Extending hypertext streaming protocol to realize effective web page transmission via a caching proxy,ACM,NO,Fuera de alcance temático: transmisión de páginas web
+Flow caching for high entropy packet fields,ACM,NO,"Fuera de alcance temático: caché de flujos de red/SDN, no de paquetes de software"
+Framework for Authoring and Delivery of Targeted Media Presentations using a Smart Edge Proxy Cache,ACM,NO,Fuera de alcance temático: presentaciones multimedia dirigidas/publicidad
+From the Cloud to the Edge: An Infrastructure for Cloud & Edge Computing,Scholar,NO,No se pudo localizar un artículo revisado por pares con este título exacto; no verificable y título demasiado genérico
+Gestion de contenus dans les reseaux par la qualite d'experience (QoE): caching et transport,Scholar,NO,"Fuera de alcance temático: calidad de experiencia (QoE) de contenido multimedia; en francés, probablemente tesis"
+Improvement of the neural network proxy cache replacement strategy,ACM,NO,Fuera de alcance temático: caché de páginas web genérica con redes neuronales
+Integrated prefetching and caching for adaptive video streaming over HTTP: an online approach,ACM,NO,Fuera de alcance temático: streaming de video adaptativo
+Integrating CCNx into the APT Package Manager: Design and Preliminary Evaluation,Scholar,SI,Funasaka (2025) IEEE Conf. on Dependable Autonomic and Secure Computing (DASC); integra ICN/CCNx en apt (Ubuntu) para descarga de paquetes por nombre en vez de ubicación; evaluación preliminar de rendimiento
+Interactions between HTTP adaptive streaming and TCP,ACM,NO,Fuera de alcance temático: streaming de video y TCP
+Intermediate Caching Technique via Fog Layer to Achieve Low-latency Video Analytic Solutions on Cloud,IEEE; Scholar; Scopus,NO,"Fuera de alcance temático: caché para análisis de video en fog computing, no paquetes de software"
+Just-in-time proactive caching for dash video streaming,Scholar,NO,Fuera de alcance temático: streaming de video DASH
+LPCC: hierarchical persistent client caching for lustre,ACM,NO,"Fuera de alcance temático: caché de sistema de archivos paralelo (Lustre) para HPC científico, no de paquetes/dependencias"
+MSC: a multi-version shared caching for multi-bitrate VoD services,Scopus,NO,Fuera de alcance temático: video bajo demanda (VoD)
+Making World Wide Web Caching Servers Cooperate,ACM,NO,"Fuera de alcance temático y anterior a 2016: protocolo clásico de cooperación entre cachés web (ICP, 1996)"
+Mugshot: deterministic capture and replay for Javascript applications,ACM,NO,"Falso positivo del cribado por título: depuración de JavaScript, no relacionado con caché"
+Multi-Turn Semantic Caching for LLM Gateways with Calibrated Out-of-Domain Rejection,ACM,NO,Fuera de alcance temático: caché semántica para pasarelas de modelos de lenguaje (LLM)
+NVMM-Oriented Hierarchical Persistent Client Caching for Lustre,ACM,NO,Fuera de alcance temático: caché de sistema de archivos paralelo (Lustre) para HPC científico
+ODNS Clustering: Unveiling Client-Side Dependency in Open DNS Infrastructure,ACM,NO,"Falso positivo del cribado por título: 'dependencia' se refiere a resolución DNS, no a dependencias de software"
+Off-chip latency-driven dynamic voltage and frequency scaling for an MPEG decoding,ACM,NO,"Falso positivo del cribado por título: escalado de voltaje/frecuencia en hardware, no caché de software"
+On designing a cost-aware virtual CDN for the federated cloud,Scopus,NO,"Fuera de alcance temático: CDN virtual para contenido en la nube, no caché de paquetes"
+PCCNA: A Probabilistic Caching Strategy Based on Strong Content Consistency and Node Attributes,Scopus,NO,Fuera de alcance temático: caché de contenido genérico en redes ICN
+Panache: a parallel file system cache for global file access,ACM,NO,"Fuera de alcance temático: caché de sistema de archivos paralelo para HPC científico, no de paquetes/dependencias"
+Performance Analysis of WWW Cache Proxy Hierarchies,SciELO,NO,Fuera de alcance temático: jerarquías de caché de páginas web genérica
+Popularity-based full replica caching for erasure-coded distributed storage systems,Scholar,NO,Fuera de alcance temático: almacenamiento distribuido con codificación de borrado
+QoE-aware content management in the Internet: caching and transport,Scholar,NO,Fuera de alcance temático: calidad de experiencia (QoE) de contenido multimedia
+QoS3: Secure Caching in HTTPS Based on Fine-Grained Trust Delegation,Scopus,NO,"Fuera de alcance temático: seguridad de caché HTTPS, no rendimiento de instalación de paquetes"
+Rebuilding debian using distributed computing,ACM,NO,"Anterior a 2016 (CLADE '09, 2009); no cumple el filtro temporal del protocolo"
+Remote-control caching: Proxy-based url rewriting to decrease mobile browsing bandwidth,Scopus,NO,"Fuera de alcance temático: navegación web móvil, no paquetes de software"
+Removal policies in network caches for World-Wide Web documents,ACM,NO,"Fuera de alcance temático y anterior a 2016: política clásica de reemplazo en caché web (Williams et al., 1996)"
+Replacement algorithms for object caching,ACM,NO,"Fuera de alcance temático y anterior a 2016: algoritmo clásico de reemplazo en caché web (Williams et al., 1996)"
+Replacement policies for a proxy cache,ACM,NO,Fuera de alcance temático y probablemente anterior a 2016: política clásica de caché proxy web
+Response order rearrangement on a caching proxy for reducing WWW latency,ACM,NO,Fuera de alcance temático: latencia de páginas web genérica
+Rethinking web caching: An optimization for the latency-constrained internet,Scholar,NO,Fuera de alcance temático: caché de páginas web genérica
+Reverse Proxy Comparison Analysis for Optimization of Web Server Services,Scholar,NO,"Parece ser tesis de pregrado no indexada (repositorio institucional, Indonesia), no revista/congreso con revisión por pares; no verificable como tal"
+Summary cache: a scalable wide-area web cache sharing protocol,ACM,NO,"Fuera de alcance temático y anterior a 2016: protocolo clásico de caché web compartida (Fan et al., 1998)"
+"The Design and Experimental Use of CReB, a Container Registry Benchmark",Scholar,NO,"Es tesis de maestría (P. Galic, Universiteit van Amsterdam, 2020), no revista/congreso con revisión por pares"
+The future of next generation web: Juxtaposing machine learning and deep learning-based web cache replacement models in web caching systems,Scholar,NO,Fuera de alcance temático: revisión de modelos de caché web genérica
+Toward QoE-assured 4K video-on-demand delivery through mobile edge virtualization with adaptive prefetching,Scholar,NO,Fuera de alcance temático: video bajo demanda 4K
+Toward one-second latency: Evolution of live media streaming,Scholar,NO,Fuera de alcance temático: streaming de medios en vivo
+Tracker-assisted rate adaptation for MPEG DASH live streaming,Scholar,NO,Fuera de alcance temático: streaming de video en vivo
+Understanding and Detecting Peer Dependency Resolving Loop in npm Ecosystem,ACM,NO,"Tema adyacente (dependencias npm) pero no mide caché/tiempo de descarga: estudia un bug de resolución de dependencias (bucles infinitos), no rendimiento de instalación"
+Web cache location,SciELO,NO,Fuera de alcance temático y probablemente anterior a 2016: ubicación óptima de cachés web clásica
+Web caching on smartphones: ideal vs. reality,ACM,NO,Fuera de alcance temático: caché web en navegación móvil
+Web prefetching between low-bandwidth clients and proxies,ACM,NO,"Fuera de alcance temático: prefetching de páginas web, no paquetes de software (aunque el contexto de bajo ancho de banda es afín)"
+Web resource cacheable edge device in fog computing,IEEE; Scopus,NO,"Fuera de alcance temático: dispositivo de borde para recursos web en fog computing, no paquetes de software"

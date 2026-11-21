@@ -57,6 +57,56 @@ Resultados reales y cadenas finales en `registro-busqueda.csv`. Resumen:
 
 **Deduplicación:** 298 registros brutos (13+62+165+54+4) → 285 únicos tras normalizar título (minúsculas, sin puntuación) y comparar exactamente entre las cinco bases. 12 títulos duplicados entre bases (13 repeticiones de más); el más repetido, "Intermediate Caching Technique via Fog Layer..." (Thakur y Srinivasa, 2020), apareció en IEEE, Scopus y Google Scholar.
 
-**Cribado por título:** de los 285 únicos, 80 tienen un título temáticamente plausible para el dominio del artículo (caché, proxy, mirror, registry, tiempo de build/descarga/provisioning, CDN, Docker/npm/apt, edge computing); el resto es ruido de la ambigüedad de "mirror" y "cache" (sobre todo "mirror symmetry" en física/matemáticas, mayoritario en Scopus y ACM, y memoria caché de hardware). Falta el cribado por resumen y la lectura a texto completo de los 80.
+**Cribado por título:** de los 285 únicos, 80 tienen un título temáticamente plausible para el dominio del artículo (caché, proxy, mirror, registry, tiempo de build/descarga/provisioning, CDN, Docker/npm/apt, edge computing); el resto es ruido de la ambigüedad de "mirror" y "cache" (sobre todo "mirror symmetry" en física/matemáticas, mayoritario en Scopus y ACM, y memoria caché de hardware).
+
+**Cribado por resumen (20/11/2026):** de los 80, 78 se excluyen — la mayoría (≈60) porque el título plausible resultó ser caché de páginas web, video/streaming, CDN, IoT, ICN/DNS o sistemas de archivos paralelos de HPC genéricos, no de paquetes o dependencias de software (el mismo ruido de ambigüedad léxica de "cache"/"proxy", ya detectado en el cribado por título, pero que solo se confirma leyendo el resumen); el resto se excluye por año (anteriores a 2016, p. ej. los clásicos de caché web de Williams et al. 1996 y Fan et al. 1998), por no ser revista/congreso con revisión por pares (un libro técnico, una tesis de maestría), o por no reportar mediciones de caché aunque el tema sea adyacente (p. ej. el estudio de bucles de resolución de dependencias en npm no mide tiempo ni tasa de aciertos). Detalle fila por fila en `cribado-titulo.csv`.
+
+Pasan: **Charliecloud's layer-free, Git-based container build cache** (Priedhorsky et al., SC'23 Workshops, ACM — caché de build de contenedores basada en Git, mide tiempo de build y uso de disco) e **Integrating CCNx into the APT Package Manager: Design and Preliminary Evaluation** (Funasaka, IEEE DASC 2025 — integra una red de contenido por nombre (ICN) en apt para mitigar la dependencia de la distancia/congestión en la descarga de paquetes, con evaluación preliminar de rendimiento). El de Priedhorsky et al. ya se leyó a texto completo
+(acceso abierto en arXiv); el de Funasaka sigue bloqueado por el muro de
+pago de IEEE Xplore (ver nota más abajo y `tabla-extraccion.md`).
 
 **Nota importante sobre las diez referencias ya leídas (tabla-extraccion.md):** ninguna de las diez apareció en los 298 registros de esta ejecución, revisados de forma sistemática (título por título) en las cinco bases. No es evidencia de que la búsqueda esté mal construida: las diez se identificaron originalmente por bola de nieve (ver "Búsqueda complementaria" arriba), no por esta cadena principal, y varias usan vocabulario distinto al de la cadena (p. ej. [6] habla de "caching environments", no de "caching proxy" ni "registry cache") o se publicaron en venues de cobertura irregular en estas bases (FAST/USENIX para [3] y [5]). Queda como limitación declarada del protocolo, no como hallazgo nuevo de brecha: la cadena principal y la bola de nieve son procedimientos complementarios, y este resultado es exactamente lo esperable de esa complementariedad.
+
+## Enmienda del alcance (19/11/2026)
+
+El alcance declarado arriba ("Pregunta") fija diez referencias. Al leer
+a texto completo el candidato de Priedhorsky et al. (Charliecloud, SC'23
+Workshops, ACM) que pasó el cribado por título y por resumen de esta
+misma cadena principal —a diferencia de las diez referencias originales,
+identificadas por bola de nieve—, el autor decidió incorporarlo como
+referencia [11], ampliando el alcance a once referencias. Justificación:
+es la comparación con/sin caché de build mejor instrumentada entre los
+80 candidatos del cribado (24 repeticiones por condición, estados frío/
+tibio/caliente), y es la única de las once referencias identificada por
+la cadena principal y no por bola de nieve. Las reglas de excepción
+declaradas (máximo cuatro preprints o documentación técnica, mínimo
+seis indexadas) se cumplen igual con once: [11] está indexado en ACM DL
+y no es preprint ni documentación técnica. Afecta `paper/articulo.md`
+(Tabla III, Tabla IV, lista de referencias) y `tabla-extraccion.md`.
+
+## Prueba de validación de la cadena (auditoría, 19/11/2026)
+
+La auditoría estricta de esta sesión señaló que la cadena principal no
+recupera 10 de las 11 referencias incluidas (ver "Nota importante" más
+arriba), lo que indica una cadena sub-sensibilizada según la práctica
+PRESS (probar la cadena contra estudios ya conocidos). Se probó en vivo
+agregar la cláusula `OR "caching environment"` a la cadena de IEEE
+Xplore: el conteo subió de 13 a 86 resultados (sigue dentro de la zona
+de trabajo 50–300), y se confirmó por separado que el título exacto de
+[6] ("Accelerating Continuous Integration by Caching Environments and
+Inferring Dependencies") está indexado en IEEE Xplore (documento
+9311876) y es recuperable con ese vocabulario. Esto confirma que la
+cadena original puede fortalecerse agregando variantes de "environment"
+junto a "cache"/"proxy"/"mirror". **No se re-ejecutó el cribado
+completo con la cadena ampliada** (deduplicación, cribado por título y
+por resumen de los ~73 registros adicionales) por alcance de esta
+sesión de auditoría; queda documentado como mejora pendiente antes de
+intentar una revista Q2 o Q1. Para el nivel actual (entrega de
+diplomado / revista Q3 regional) la limitación ya declarada en el
+artículo es información suficiente para que un lector evalúe el
+riesgo.
+
+De paso, esta verificación en IEEE Xplore corrigió un dato: la ficha
+oficial del documento 9311876 muestra **Volumen 48, Número 6** (no
+Número 8, como indicaba la página del grupo autor usada antes). Se
+corrigió en `paper/articulo.md` y en `referencias-ieee.md`.
