@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diseño de pruebas experimentales · demostrador</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 980px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; background: #faf8f3; }
+  h1 { font-weight: normal; border-bottom: 2px solid #1c1c1c; padding-bottom: .4rem; }
+  h3 { font-weight: normal; margin: 0 0 .6rem; }
+  .aviso { background: #fbf0dc; border-left: 4px solid #c77d00; padding: .6rem .9rem; font-size: .95rem; }
+  .error { background: #fbe0dc; border-left: 4px solid #b83a2b; padding: .6rem .9rem; font-size: .95rem; }
+  fieldset { margin: 1.2rem 0; border: 1px solid #999; padding: .8rem 1rem; }
+  .rejilla { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem 1.4rem; }
+  .campo label { display: block; font-size: .85rem; color: #333; margin-bottom: .2rem; }
+  .campo input { width: 100%; font: inherit; padding: .3rem; box-sizing: border-box; }
+  .campo .ayuda { font-size: .78rem; color: #777; }
+  button { font: inherit; padding: .6rem 1.4rem; background: #2b5db8; color: #fff; border: 0; cursor: pointer; }
+  button.secundario { background: #fff; color: #2b5db8; border: 1px solid #2b5db8; padding: .35rem .9rem; margin: 0 .3rem .3rem 0; }
+  button:disabled { background: #999; cursor: wait; }
+  table { border-collapse: collapse; width: 100%; margin: .6rem 0 0; font-family: monospace; font-size: .86rem; }
+  td, th { border-bottom: 1px dotted #999; padding: .3rem .5rem; text-align: right; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  .tarjeta { background: #fff; border: 1px solid #ddd; padding: 1rem 1.2rem; margin: 1rem 0; overflow-x: auto; }
+  .nota { font-size: .87rem; color: #555; }
+  .pill { background: #e6edfb; color: #2b5db8; border-radius: 4px; padding: .05rem .4rem; font-size: .82rem; }
+  nav.principal { display: flex; gap: 1.4rem; font-size: .95rem; margin-bottom: .6rem; }
+  nav.principal a { color: #2b5db8; text-decoration: none; }
+  nav.principal a.activo { color: #1c1c1c; font-weight: bold; border-bottom: 2px solid #2b5db8; }
+</style>
+</head>
+<body>
+<nav class="principal">
+  <a href="/">Sesiones</a>
+  <a class="activo" href="/experimentos.html">Experimentos</a>
+  <a href="/estadistica.html">Estadística</a>
+</nav>
+<h1>Diseño de pruebas experimentales</h1>
+<p class="aviso">Experimento controlado con las cuatro configuraciones del artículo (línea base, caché, mirror,
+  ambos): corridas aleatorizadas, calentamiento descartado, Mann-Whitney e IC por remuestreo. Se ejecuta en
+  memoria sobre el origen y enlace <strong>simulados</strong>: no guarda sesiones ni toca la base de datos. Con
+  parámetros grandes puede tardar — la función corre en Vercel con un límite de tiempo.</p>
+
+<fieldset>
+  <legend>Parámetros</legend>
+  <div class="rejilla">
+    <div class="campo"><label>Tamaños (N estaciones)</label>
+      <input id="p-tamanos" value="10, 20"><span class="ayuda">Separados por coma. 1–30 cada uno.</span></div>
+    <div class="campo"><label>Corridas medidas por celda</label>
+      <input id="p-corridas" type="number" value="20" min="1" max="200">
+      <span class="ayuda">Sesiones por configuración y tamaño</span></div>
+    <div class="campo"><label>Corridas de calentamiento</label>
+      <input id="p-calentamiento" type="number" value="3" min="0" max="50">
+      <span class="ayuda">Se descartan y se reportan aparte</span></div>
+    <div class="campo"><label>Retardo del origen (ms)</label>
+      <input id="p-retardo" type="number" value="50" min="1">
+      <span class="ayuda">Intensidad de la descarga simulada</span></div>
+    <div class="campo"><label>Configuraciones</label>
+      <input id="p-configuraciones" value="base, cache, mirror, ambos">
+      <span class="ayuda">Subconjunto de las cuatro del artículo</span></div>
+    <div class="campo"><label>Semilla</label>
+      <input id="p-semilla" type="number" value="2026">
+      <span class="ayuda">Reproduce el orden aleatorio de las corridas</span></div>
+    <div class="campo"><label>Nivel de significancia α</label>
+      <input id="p-alfa" type="number" value="0.05" step="0.01" min="0.001" max="0.5"></div>
+    <div class="campo"><label>Umbral de aceptación p95 (s)</label>
+      <input id="p-umbral" type="number" value="20" step="0.1" min="0.001">
+      <span class="ayuda">Declarado antes de medir</span></div>
+    <div class="campo"><label>Réplicas del bootstrap</label>
+      <input id="p-bootstrap" type="number" value="10000" min="100" max="100000"></div>
+    <div class="campo"><label>Productos en el catálogo</label>
+      <input value="5" disabled><span class="ayuda">Variable de control (lista versionada)</span></div>
+  </div>
+  <p style="margin-top:1rem"><button id="ir">Ejecutar experimento</button></p>
+</fieldset>
+
+<div id="mensaje"></div>
+<div id="resumen-corrida"></div>
+
+<div class="tarjeta" id="descarga" style="display:none">
+  <h3>Datos para el artículo</h3>
+  <p class="nota">Los datos crudos (una fila por corrida) permiten recalcular cualquier estadístico sin repetir el experimento.</p>
+  <button class="secundario" id="csv-corridas">Corridas (CSV)</button>
+  <button class="secundario" id="csv-calentamiento">Calentamiento (CSV)</button>
+  <button class="secundario" id="csv-condicion">Resultados por condición (CSV)</button>
+  <button class="secundario" id="csv-comparaciones">Comparaciones (CSV)</button>
+  <button class="secundario" id="csv-todo">Todo (JSON)</button>
+</div>
+
+<div id="panel"></div>
+
+<script src="panel.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+let ultimo = null;
+
+function leerLista(id) {
+  return $(id).value.split(",").map((v) => v.trim()).filter(Boolean);
+}
+
+$("#ir").addEventListener("click", async () => {
+  const cuerpo = {
+    tamanos: leerLista("#p-tamanos").map(Number),
+    corridas_por_celda: +$("#p-corridas").value,
+    corridas_calentamiento: +$("#p-calentamiento").value,
+    retardo_origen_ms: +$("#p-retardo").value,
+    configuraciones: leerLista("#p-configuraciones"),
+    semilla: +$("#p-semilla").value,
+    nivel_significancia: +$("#p-alfa").value,
+    umbral_p95_s: +$("#p-umbral").value,
+    replicas_bootstrap: +$("#p-bootstrap").value,
+  };
+  $("#ir").disabled = true;
+  $("#mensaje").innerHTML = "<p class=\"nota\">ejecutando…</p>";
+  $("#panel").innerHTML = "";
+  $("#descarga").style.display = "none";
+  try {
+    const r = await fetch("/api/experimentos", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+    const datos = await r.json();
+    if (!r.ok) throw new Error(datos.detail || ("HTTP " + r.status));
+    ultimo = datos;
+    $("#mensaje").innerHTML = "";
+    $("#resumen-corrida").innerHTML = `<p class="nota">${datos.corridas.length} corridas medidas,
+      ${datos.calentamiento.length} de calentamiento descartadas · duración total ${datos.duracion_total_s.toFixed(1)} s
+      · semilla ${datos.parametros.semilla}.</p>`;
+    $("#descarga").style.display = "block";
+    renderPanel("panel", datos.panel);
+  } catch (e) {
+    $("#mensaje").innerHTML = `<p class="error">Error: ${e.message}</p>`;
+  }
+  $("#ir").disabled = false;
+});
+
+$("#csv-corridas").addEventListener("click", () => ultimo && descargarCSV("corridas.csv", ultimo.corridas,
+  ["orden", "configuracion", "n", "mediana", "p95", "duracion_corrida_s", "salidas_origen", "sincronizacion_mirror"]));
+$("#csv-calentamiento").addEventListener("click", () => ultimo && descargarCSV("calentamiento.csv", ultimo.calentamiento,
+  ["orden", "configuracion", "n", "mediana", "p95", "duracion_corrida_s", "salidas_origen", "sincronizacion_mirror"]));
+$("#csv-condicion").addEventListener("click", () => ultimo && descargarCSV("resultados_por_condicion.csv",
+  ultimo.panel.resultados_por_condicion,
+  ["motor", "n", "sesiones", "mediana", "p90", "p95", "p99", "media", "desv", "min", "max", "p95_bajo_umbral"]));
+$("#csv-comparaciones").addEventListener("click", () => ultimo && descargarCSV("comparaciones.csv",
+  ultimo.panel.comparacion_por_tamano,
+  ["n", "configuracion", "mediana_base", "mediana_config", "delta_mediana", "p", "reduccion_pct",
+   "aceleracion", "r_rank_biserial", "significativo"]));
+$("#csv-todo").addEventListener("click", () => {
+  if (!ultimo) return;
+  const blob = new Blob([JSON.stringify(ultimo, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "experimento.json"; a.click();
+  URL.revokeObjectURL(a.href);
+});
+</script>
+</body>
+</html>
