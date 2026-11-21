@@ -22,12 +22,13 @@ Repositorio del artículo y de su prototipo. El historial es la bitácora de la 
 | `api/` | Punto de entrada del servicio |
 | `demostrador/` | Capas: controladores, servicios, repositorios y modelos |
 | `public/` | Páginas: Sesiones (ejecutar y ver el resumen), Experimentos (diseño paramétrico), Estadística (pruebas sobre las sesiones reales) y Rendimiento y calidad (ISO/IEC 25010) |
-| `scripts/` | `medir.py` (runner) y `analizar.py` (mediana y p95 desde el CSV crudo) |
+| `scripts/` | `medir.py`/`analizar.py` (demostrador); `estacion_laboratorio.py`, `consolidar_sesion_laboratorio.py` e `inventario_estacion.py` (laboratorio real) |
 | `tests/` | Pruebas automáticas; corren en cada PR |
 | `supabase/migrations/` | Esquema de la base de datos |
 | `docs/` | Planes de estructura, base de datos y medición; despliegue; ADR; documentos por sesión |
 | `paper/` | Artículo (`articulo.md`, `Articulo_IMRyD.docx`) y figuras |
 | `experimento/` | Ensayo con Docker Compose |
+| `laboratorio/` | Configuración de Nginx (caché, mirror) y guía para medir en el laboratorio real |
 
 ## Configuraciones
 
@@ -59,6 +60,18 @@ python -m uvicorn api.index:app --port 8000
 
 Abrir http://127.0.0.1:8000. Sin `DATABASE_URL` usa SQLite local. Para medir, ver `docs/PLAN_MEDICION.md`.
 
+## Medición en el laboratorio
+
+- **`scripts/estacion_laboratorio.py`:** cliente de una estación real. Mismo enrutamiento que
+  `demostrador/services/entrega.py` (`base`/`cache`/`mirror`/`ambos`), reloj monotónico, y detecta
+  si una petición salió de verdad a origen leyendo `X-Cache-Status` (lo agrega `laboratorio/cache.conf`).
+- **`scripts/consolidar_sesion_laboratorio.py`:** junta los archivos de todas las estaciones de una
+  sesión en el formato crudo de `docs/PLAN_MEDICION.md` (el mismo `CAMPOS_CSV` que usa el demostrador),
+  calculando `salidas_origen` a nivel de sesión.
+- **`scripts/inventario_estacion.py`:** SO, paquetes (`apt`/`dpkg`) y hardware de una estación.
+- **`laboratorio/`:** configuración real de Nginx para el proxy de caché y el mirror, y la guía de
+  despliegue. Probado contra servidores HTTP locales, no contra hardware del laboratorio todavía.
+
 ## Qué es dato real y qué no
 
 El demostrador y el ensayo usan un origen simulado: validan el procedimiento. Los resultados del artículo salen de la medición en el laboratorio.
@@ -76,6 +89,6 @@ El demostrador y el ensayo usan un origen simulado: validan el procedimiento. Lo
 | v0.3 | Panel de Experimentos (diseño factorial en memoria) | Hecho |
 | v0.3 | Panel de Estadística (sobre sesiones reales guardadas) | Hecho |
 | v0.3 | Rendimiento y calidad: ISO/IEC 25010, complejidad de código, benchmark de escalado | Hecho |
-| v1.0 | Inventario del laboratorio: SO, paquetes y hardware | Programado |
-| v1.0 | Medición en el laboratorio y sección de resultados | Programado |
+| v1.0 | Inventario del laboratorio: SO, paquetes y hardware | Script listo; falta correrlo en el laboratorio |
+| v1.0 | Medición en el laboratorio y sección de resultados | Scripts y configuración de Nginx listos (`laboratorio/`); falta desplegar y medir de verdad |
 | v1.0 | Registro de búsqueda y matriz de literatura consolidados | En curso |

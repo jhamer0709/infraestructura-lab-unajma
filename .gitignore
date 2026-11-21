@@ -5,3 +5,5 @@ __pycache__/
 .vercel/
 *.db
 experimento/resultados/
+resultados/
+datos/
