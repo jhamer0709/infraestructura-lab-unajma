@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estadística · demostrador</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 980px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; background: #faf8f3; }
+  h1 { font-weight: normal; border-bottom: 2px solid #1c1c1c; padding-bottom: .4rem; }
+  h3 { font-weight: normal; margin: 0 0 .6rem; }
+  .aviso { background: #fbf0dc; border-left: 4px solid #c77d00; padding: .6rem .9rem; font-size: .95rem; }
+  .error { background: #fbe0dc; border-left: 4px solid #b83a2b; padding: .6rem .9rem; font-size: .95rem; }
+  fieldset { margin: 1.2rem 0; border: 1px solid #999; padding: .8rem 1rem; }
+  .rejilla { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem 1.4rem; align-items: end; }
+  .campo label { display: block; font-size: .85rem; color: #333; margin-bottom: .2rem; }
+  .campo input { width: 100%; font: inherit; padding: .3rem; box-sizing: border-box; }
+  button { font: inherit; padding: .6rem 1.4rem; background: #2b5db8; color: #fff; border: 0; cursor: pointer; }
+  button:disabled { background: #999; cursor: wait; }
+  table { border-collapse: collapse; width: 100%; margin: .6rem 0 0; font-family: monospace; font-size: .86rem; }
+  td, th { border-bottom: 1px dotted #999; padding: .3rem .5rem; text-align: right; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  .tarjeta { background: #fff; border: 1px solid #ddd; padding: 1rem 1.2rem; margin: 1rem 0; overflow-x: auto; }
+  .nota { font-size: .87rem; color: #555; }
+  .pill { background: #e6edfb; color: #2b5db8; border-radius: 4px; padding: .05rem .4rem; font-size: .82rem; }
+  nav.principal { display: flex; gap: 1.4rem; font-size: .95rem; margin-bottom: .6rem; }
+  nav.principal a { color: #2b5db8; text-decoration: none; }
+  nav.principal a.activo { color: #1c1c1c; font-weight: bold; border-bottom: 2px solid #2b5db8; }
+</style>
+</head>
+<body>
+<nav class="principal">
+  <a href="/">Sesiones</a>
+  <a href="/experimentos.html">Experimentos</a>
+  <a class="activo" href="/estadistica.html">Estadística</a>
+  <a href="/calidad.html">Rendimiento y calidad</a>
+</nav>
+<h1>Estadística</h1>
+<p class="aviso">Pruebas sobre las <strong>sesiones reales</strong> guardadas en la base (las que se ejecutan desde
+  la página de Sesiones). Para analizar una corrida sintética sin guardarla, usa el panel que aparece debajo del
+  formulario en la página de Experimentos — usa el mismo cálculo.</p>
+
+<fieldset>
+  <legend>Parámetros de la prueba</legend>
+  <div class="rejilla">
+    <div class="campo"><label>Nivel de significancia α</label>
+      <input id="e-alfa" type="number" value="0.05" step="0.01" min="0.001" max="0.5"></div>
+    <div class="campo"><label>Umbral de aceptación p95 (s)</label>
+      <input id="e-umbral" type="number" value="20" step="0.1" min="0.001"></div>
+    <div class="campo"><label>Réplicas del bootstrap</label>
+      <input id="e-bootstrap" type="number" value="10000" min="100" max="100000"></div>
+    <div class="campo"><button id="calcular">Calcular pruebas</button></div>
+  </div>
+</fieldset>
+
+<div id="mensaje"></div>
+<div id="panel"></div>
+
+<script src="panel.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+
+async function calcular() {
+  const params = new URLSearchParams({
+    alfa: $("#e-alfa").value, umbral_p95_s: $("#e-umbral").value, replicas_bootstrap: $("#e-bootstrap").value });
+  $("#calcular").disabled = true;
+  $("#mensaje").innerHTML = "<p class=\"nota\">calculando…</p>";
+  try {
+    const datos = await fetchJSON("/api/estadistica?" + params.toString());
+    $("#mensaje").innerHTML = "";
+    renderPanel("panel", datos);
+  } catch (e) {
+    $("#mensaje").innerHTML = `<p class="error">${e.message}</p>`;
+    $("#panel").innerHTML = "";
+  }
+  $("#calcular").disabled = false;
+}
+
+$("#calcular").addEventListener("click", calcular);
+calcular();
+</script>
+</body>
+</html>

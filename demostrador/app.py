@@ -5,6 +5,9 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from demostrador import config
+from demostrador.controllers.calidad import rutas as rutas_calidad
+from demostrador.controllers.estadistica import rutas as rutas_estadistica
+from demostrador.controllers.experimentos import rutas as rutas_experimentos
 from demostrador.controllers.sesiones import rutas
 from demostrador.repositories.base_datos import crear_fabrica
 from demostrador.repositories.sesiones import RepositorioSesiones
@@ -18,6 +21,9 @@ def crear_app() -> FastAPI:
     repositorio.asegurar_catalogos()
     app.state.medicion = ServicioMedicion(repositorio)
     app.include_router(rutas)
+    app.include_router(rutas_experimentos)
+    app.include_router(rutas_estadistica)
+    app.include_router(rutas_calidad)
 
     # En local la aplicación sirve también la página. En Vercel la sirve
     # public/ y esta función solo recibe /api/*.

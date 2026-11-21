@@ -21,9 +21,18 @@
   #ultimo { font-family: monospace; margin-top: 1rem; }
   .nota { font-size: .9rem; color: #555; }
   .ok { color: #1f6b3a; }
+  nav.principal { display: flex; gap: 1.4rem; font-size: .95rem; margin-bottom: .6rem; }
+  nav.principal a { color: #2b5db8; text-decoration: none; }
+  nav.principal a.activo { color: #1c1c1c; font-weight: bold; border-bottom: 2px solid #2b5db8; }
 </style>
 </head>
 <body>
+<nav class="principal">
+  <a class="activo" href="/">Sesiones</a>
+  <a href="/experimentos.html">Experimentos</a>
+  <a href="/estadistica.html">Estadística</a>
+  <a href="/calidad.html">Rendimiento y calidad</a>
+</nav>
 <h1>Preparación de entornos</h1>
 <p class="aviso">Demostrador con origen y enlace <strong>simulados</strong>. Valida el procedimiento de medición; los resultados del artículo se miden en el laboratorio.</p>
 

@@ -85,6 +85,12 @@ class ServicioMedicion:
             filas.append(fila)
         return filas
 
+    def corridas(self) -> list[dict]:
+        """Una fila por sesión real guardada: su p95, para el panel de Estadística."""
+        return [{"configuracion": s.configuracion.codigo, "n": s.n_estaciones,
+                  "p95": round(p95([o.segundos for o in s.observaciones]), 6)}
+                for s in self._repo.listar()]
+
     def filas_crudas(self) -> list[list]:
         """Una fila por estación y sesión, incluidas las de calentamiento."""
         return [[_utc(s.iniciada_en), s.entorno, s.lista.version,
