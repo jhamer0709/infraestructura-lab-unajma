@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from scripts.actualizar_evidencia_pruebas import contar_pruebas, SALIDA  # noqa: E402
+from scripts.actualizar_evidencia_pruebas import contar_pruebas, listar_workflows, SALIDA  # noqa: E402
 
 
 def main() -> int:
@@ -19,15 +19,26 @@ def main() -> int:
         return 1
     guardado = json.loads(SALIDA.read_text(encoding="utf-8"))
     funciones, casos = contar_pruebas()
+    workflows = listar_workflows()
+    problemas = []
     if (guardado.get("funciones"), guardado.get("casos")) != (funciones, casos):
+        problemas.append(
+            f"guarda {guardado.get('funciones')} funciones/{guardado.get('casos')} casos, "
+            f"pero tests/ tiene {funciones} funciones/{casos} casos ahora"
+        )
+    if guardado.get("workflows") != workflows:
+        problemas.append(
+            f"guarda workflows {guardado.get('workflows')}, pero .github/workflows/ tiene {workflows} ahora"
+        )
+    if problemas:
         print(
             "::error::demostrador/services/evidencia_pruebas.json quedó desactualizado: "
-            f"guarda {guardado.get('funciones')} funciones/{guardado.get('casos')} casos, "
-            f"pero tests/ tiene {funciones} funciones/{casos} casos ahora. "
-            "Ejecuta 'python scripts/actualizar_evidencia_pruebas.py' y commitea el resultado."
+            + "; ".join(problemas)
+            + ". Ejecuta 'python scripts/actualizar_evidencia_pruebas.py' y commitea el resultado."
         )
         return 1
-    print(f"OK: evidencia_pruebas.json coincide con tests/ ({funciones} funciones, {casos} casos).")
+    print(f"OK: evidencia_pruebas.json coincide con tests/ y .github/workflows/ "
+          f"({funciones} funciones, {casos} casos, workflows {workflows}).")
     return 0
 
 

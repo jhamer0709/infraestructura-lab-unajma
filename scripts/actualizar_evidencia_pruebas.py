@@ -41,6 +41,11 @@ def contar_pruebas() -> tuple[int, int]:
     return funciones, casos
 
 
+def listar_workflows() -> list[str]:
+    carpeta = RAIZ / ".github" / "workflows"
+    return sorted(p.name for p in carpeta.glob("*.yml")) if carpeta.is_dir() else []
+
+
 def commit_actual() -> str:
     try:
         return subprocess.run(
@@ -53,15 +58,17 @@ def commit_actual() -> str:
 
 def main() -> None:
     funciones, casos = contar_pruebas()
+    workflows = listar_workflows()
     datos = {
         "funciones": funciones,
         "casos": casos,
+        "workflows": workflows,
         "generado_en_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "generado_en_commit": commit_actual(),
     }
     SALIDA.write_text(json.dumps(datos, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Escrito {SALIDA.relative_to(RAIZ)}: {funciones} funciones, {casos} casos "
-          f"(commit {datos['generado_en_commit']}).")
+    print(f"Escrito {SALIDA.relative_to(RAIZ)}: {funciones} funciones, {casos} casos, "
+          f"workflows {workflows} (commit {datos['generado_en_commit']}).")
 
 
 if __name__ == "__main__":

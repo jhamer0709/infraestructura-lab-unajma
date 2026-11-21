@@ -56,14 +56,24 @@ def _contar_pruebas() -> tuple[int, int, str]:
     return 0, 0, "no se encontró tests/ ni el snapshot de evidencia_pruebas.json"
 
 
-def _workflows() -> list[str]:
+def _workflows() -> tuple[list[str], str]:
+    """(nombres de workflow, procedencia). .github/ también está en .vercelignore,
+    así que en producción se cae al mismo snapshot que _contar_pruebas()."""
     carpeta = RAIZ / ".github" / "workflows"
-    return sorted(p.name for p in carpeta.glob("*.yml")) if carpeta.is_dir() else []
+    if carpeta.is_dir():
+        return sorted(p.name for p in carpeta.glob("*.yml")), "medido en este entorno"
+    if SNAPSHOT_PRUEBAS.is_file():
+        datos = json.loads(SNAPSHOT_PRUEBAS.read_text(encoding="utf-8"))
+        return (
+            datos.get("workflows", []),
+            f"snapshot del commit {datos.get('generado_en_commit', '?')}; .github/ no se despliega (ver .vercelignore)",
+        )
+    return [], "no se encontró .github/workflows ni el snapshot"
 
 
 def tabla() -> list[dict]:
     funciones, casos, procedencia_pruebas = _contar_pruebas()
-    workflows = _workflows()
+    workflows, procedencia_workflows = _workflows()
     tiene_ci = bool(workflows)
     tiene_seguridad_ci = any("codeql" in w or "seguridad" in w or "security" in w for w in workflows)
 
@@ -86,7 +96,8 @@ def tabla() -> list[dict]:
                       "sobre el propio código. Ver /api/calidad/metricas-estaticas."},
         {"caracteristica": "Mantenibilidad", "subcaracteristica": "Capacidad de ser probada", "estado": "medido",
          "evidencia": f"{funciones} funciones de prueba ({casos} casos, con parametrize), {procedencia_pruebas}; "
-                      f"CI: {', '.join(workflows) if workflows else 'ningún workflow configurado'}."},
+                      f"CI ({procedencia_workflows}): "
+                      f"{', '.join(workflows) if workflows else 'ningún workflow configurado'}."},
         {"caracteristica": "Fiabilidad", "subcaracteristica": "Madurez / Tolerancia a fallos", "estado": "no medido",
          "evidencia": "No se evaluó tasa de fallos ni recuperación: el origen y el enlace simulados no modelan errores."},
         {"caracteristica": "Seguridad", "subcaracteristica": "Confidencialidad / Autenticidad", "estado": "no medido",

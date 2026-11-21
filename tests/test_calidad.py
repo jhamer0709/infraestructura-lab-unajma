@@ -50,27 +50,34 @@ def test_iso25010_cuenta_pruebas_en_vivo_cuando_existe_tests():
     assert "medido en este entorno" in procedencia
 
 
-def test_iso25010_usa_snapshot_cuando_no_hay_carpeta_tests(tmp_path, monkeypatch):
-    # Simula el entorno de producción (Vercel), donde tests/ no se despliega
-    # (.vercelignore): debe caer al snapshot versionado en vez de reportar 0.
+def test_iso25010_usa_snapshot_cuando_no_hay_carpeta_tests_ni_github(tmp_path, monkeypatch):
+    # Simula el entorno de producción (Vercel), donde ni tests/ ni .github/ se
+    # despliegan (.vercelignore): debe caer al snapshot versionado en vez de
+    # reportar 0 pruebas y "ningún workflow configurado".
     snapshot = tmp_path / "evidencia_pruebas.json"
     snapshot.write_text(
-        '{"funciones": 29, "casos": 38, "generado_en_utc": "2026-01-01T00:00:00Z", '
-        '"generado_en_commit": "abc123"}',
+        '{"funciones": 29, "casos": 38, "workflows": ["pruebas.yml"], '
+        '"generado_en_utc": "2026-01-01T00:00:00Z", "generado_en_commit": "abc123"}',
         encoding="utf-8",
     )
-    monkeypatch.setattr(iso25010, "RAIZ", tmp_path / "no-existe-tests-aqui")
+    carpeta_vacia = tmp_path / "no-existe-tests-ni-github-aqui"
+    monkeypatch.setattr(iso25010, "RAIZ", carpeta_vacia)
     monkeypatch.setattr(iso25010, "SNAPSHOT_PRUEBAS", snapshot)
+
     funciones, casos, procedencia = iso25010._contar_pruebas()
     assert (funciones, casos) == (29, 38)
     assert "snapshot generado en commit abc123" in procedencia
     assert "no se despliega a producción" in procedencia
 
+    workflows, procedencia_wf = iso25010._workflows()
+    assert workflows == ["pruebas.yml"]
+    assert "snapshot del commit abc123" in procedencia_wf
+
     # Y esa procedencia debe quedar visible en la fila de la tabla, no solo en la cifra.
-    monkeypatch.setattr(iso25010.config, "MAX_ESTACIONES", iso25010.config.MAX_ESTACIONES)
     fila = next(f for f in iso25010.tabla() if f["subcaracteristica"] == "Capacidad de ser probada")
     assert "29 funciones de prueba (38 casos" in fila["evidencia"]
     assert "snapshot generado en commit abc123" in fila["evidencia"]
+    assert "pruebas.yml" in fila["evidencia"]
 
 
 def test_endpoint_correccion():
