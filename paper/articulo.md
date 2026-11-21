@@ -1,5 +1,7 @@
 Optimización de la infraestructura de laboratorios de cómputo mediante
-un servidor de caché y repositorio local (mirror)
+un servidor de caché y repositorio local (mirror): efecto sobre el
+tiempo p95 de preparación y el tráfico de salida con 30 estaciones
+concurrentes
 
 Jhamer Anderson Rojas Silva, Edwing Alcides Maquera Flores, Richard Carrion Abollaneda, Ruben Apaza Apaza, Norma Catacora Flores
 
@@ -254,8 +256,14 @@ los 285 y 80 registros lo ejecutó un único revisor (herramienta de IA
 bajo supervisión del autor principal), sin segundo revisor humano
 independiente ni cálculo de concordancia (kappa); el autor resolvió
 personalmente los dos casos límite que quedaron ambiguos tras el cribado
-automático y tomó la decisión editorial de incorporar \[11\]. Se declara
-como amenaza al proceso de selección, no se subsana en este trabajo. De
+automático y tomó la decisión editorial de incorporar \[11\]. Por lo
+tanto, no se puede descartar que el cribado haya dejado fuera algún
+estudio pertinente, o incorporado alguno por un criterio que otro
+revisor no habría aplicado igual; la brecha de II.D se apoya en un
+cribado no verificado por una segunda persona. Antes de apuntar a una
+revista de mayor exigencia haría falta repetir el cribado por título y
+por resumen de los 285 y 80 registros con un segundo revisor humano
+independiente y calcular la concordancia (kappa) entre ambos. De
 las once referencias, ocho están indexadas: \[3\]–\[5\] y
 \[9\] figuran como documentos en Scopus, \[1\], \[2\] y \[6\] se
 publicaron en revistas Q1 de Scimago en su año de publicación (2016,
@@ -457,15 +465,51 @@ Se reportan mediana, p95 y dispersión, por sesión y agrupados, con una prueba 
 
 *E. Resultados*
 
-\[Pendiente: sesión 7. Esta subsección se completará con las mediciones de las cuatro configuraciones (línea base, caché, mirror y ambos) una vez ejecutadas las sesiones declaradas en V.A.\]
+TABLA VIII
+
+<span class="smallcaps">Tiempo de preparación y tráfico por configuración y N</span>
+
+| **Configuración** | **N** | **Sesiones** | **Mediana (s)** | **p95 (s)** | **Reducción p95 vs. base (%)** | **Tráfico (GB/sesión)** | **Tasa de error (%)** |
+|--------------------|-------|---------------|------------------|-------------|----------------------------------|---------------------------|--------------------------|
+| Base               | 1     | —             | —                | —           | —                                | —                         | —                        |
+| Base               | 10    | —             | —                | —           | —                                | —                         | —                        |
+| Base               | 30    | —             | —                | —           | —                                | —                         | —                        |
+| Caché              | 1     | —             | —                | —           | —                                | —                         | —                        |
+| Caché              | 10    | —             | —                | —           | —                                | —                         | —                        |
+| Caché              | 30    | —             | —                | —           | —                                | —                         | —                        |
+| Mirror             | 1     | —             | —                | —           | —                                | —                         | —                        |
+| Mirror             | 10    | —             | —                | —           | —                                | —                         | —                        |
+| Mirror             | 30    | —             | —                | —           | —                                | —                         | —                        |
+| Ambos              | 1     | —             | —                | —           | —                                | —                         | —                        |
+| Ambos              | 10    | —             | —                | —           | —                                | —                         | —                        |
+| Ambos              | 30    | —             | —                | —           | —                                | —                         | —                        |
+
+Los valores de la Tabla VIII aparecen como marcadores porque la campaña de
+medición no se ha ejecutado. La tabla se incluye con su estructura
+definitiva para mostrar qué se reporta y en qué forma: una fila por
+configuración y tamaño, con la reducción de p95 calculada siempre frente
+a la línea base del mismo N, como fija V.A.
 
 *F. Significancia y tamaño del efecto*
 
-\[Pendiente: sesión 7. Se reportará la prueba no paramétrica, el tamaño del efecto y el intervalo de confianza para la diferencia de medianas, junto con el cruce o no de los umbrales declarados en H1a y H1b.\]
+TABLA IX
+
+<span class="smallcaps">Contraste de hipótesis en N = 30</span>
+
+| **Hipótesis** | **Umbral declarado** | **Valor observado** | **Prueba** | **IC 95 %** | **p** | **Decisión** |
+|----------------|------------------------|------------------------|-------------|---------------|-------|----------------|
+| H1a (tiempo p95) | Reducción ≥ 90 % | —            | No paramétrica, sesión como unidad (V.D) | —      | —     | —              |
+| H1b (tráfico)    | Reducción ≥ 90 % | —            | No paramétrica, sesión como unidad (V.D) | —      | —     | —              |
+
+Los valores de la Tabla IX aparecen como marcadores por la misma razón
+que los de la Tabla VIII: la campaña de medición no se ha ejecutado. Se
+reportará además el tamaño del efecto y qué intervención, caché o
+mirror, aporta la mayor parte de la reducción cuando ambas están
+activas (OE3, OE4).
 
 <span class="smallcaps">VI. Amenazas a la validez</span>
 
-TABLA VIII
+TABLA X
 
 <span class="smallcaps">Amenazas y mitigaciones</span>
 
@@ -475,7 +519,7 @@ TABLA VIII
 | Estado del caché                | Un caché ya poblado favorece a una configuración                  | Vaciarlo antes de cada sesión medida, también después del calentamiento, y declararlo                                |
 | Cambios en repositorios         | Un paquete se actualiza entre configuraciones                     | Lista de paquetes con versiones fijas                                     |
 | Observaciones no independientes | Las estaciones de una sesión comparten el enlace                  | Tomar la sesión como unidad de la prueba y reportar el p95 por sesión además del agrupado                                |
-| Un solo laboratorio             | El resultado no generaliza a otro hardware                        | Declararlo como límite del estudio                                        |
+| Un solo laboratorio             | El resultado no generaliza a otro hardware                        | Declararlo como límite del estudio; para generalizar haría falta repetir la medición en al menos otro laboratorio con hardware distinto |
 
 Declarar estas amenazas no debilita el trabajo: indica qué se controló y
 qué queda como límite.
